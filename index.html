@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repertorio</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  margin: 0;
+}
+
+/* contenedor */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* header */
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+/* buscador */
+#search {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border-radius: 12px;
+  border: none;
+  background: #161b22;
+  color: white;
+  font-size: 14px;
+}
+
+/* filtros */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: #21262d;
+  color: white;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.filter-btn:hover {
+  background: #30363d;
+}
+
+.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+/* tarjetas */
+.card {
+  background: #161b22;
+  padding: 10px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transition: 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  background: #1c2128;
+}
+
+/* imagen */
+.thumb {
+  width: 100px;
+  height: 65px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* info */
+.info {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.sub {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 3px;
+}
+
+/* botón play */
+button.play {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .thumb {
+    width: 80px;
+    height: 55px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎧 Repertorio Jóvenes</h1>
+
+  <input id="search" placeholder="Buscar..." onkeyup="applyFilters()">
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥Este Mes</button>
+    <button class="filter-btn" onclick="setFilter('all', this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('lenta', this)">🎶 Lentas</button>
+    <button class="filter-btn" onclick="setFilter('rapida', this)">⚡ Rápidas</button>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script>
+const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6QgrmaVQhta8eiWVbG0Ts3DMnWaRfvgUyivmI-2Xrh2UyGgqWg02oC6jKXyOHX9DZsvDHls8oUb8d/pub?gid=0&single=true&output=csv";
+
+let songs = [];
+let currentFilter = "semanal"; // 🔥 DEFAULT
+
+fetch(URL)
+  .then(res => res.text())
+  .then(data => {
+    const rows = data.split("\n").slice(1);
+
+    songs = rows.map(row => {
+      const [name, link, tono, tipo, ra] = row.split(",");
+
+      return {
+        name,
+        link,
+        tono,
+        tipo: (tipo || "").trim() === "1" ? "lenta" :
+              (tipo || "").trim() === "2" ? "rapida" : "",
+        ra: (ra || "").trim() === "1"
+      };
+    }).filter(s => s.name);
+
+    applyFilters();
+  });
+
+function getYouTubeID(url) {
+  const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+}
+
+function getThumbnail(url) {
+  const id = getYouTubeID(url);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
+}
+
+function render(data) {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.forEach((s, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <img class="thumb" src="${getThumbnail(s.link)}">
+        <div class="info">
+          <div class="title">
+            ${currentFilter === "semanal" ? (i + 1) + ". " : ""}${s.name}
+          </div>
+          <div class="sub">
+            🎸 ${s.tono || "-"} | ${s.tipo}
+          </div>
+        </div>
+        <button class="play" onclick="window.open('${s.link}')">▶</button>
+      </div>
+    `;
+  });
+}
+
+function applyFilters() {
+  const text = document.getElementById("search").value.toLowerCase();
+
+  let filtered = songs.filter(s =>
+    s.name.toLowerCase().includes(text) ||
+    (s.tono && s.tono.toLowerCase().includes(text))
+  );
+
+  if (currentFilter === "semanal") {
+    filtered = filtered.filter(s => s.ra);
+  } else if (currentFilter !== "all") {
+    filtered = filtered.filter(s => s.tipo === currentFilter);
+  }
+
+  render(filtered);
+}
+
+function setFilter(type, btn) {
+  currentFilter = type;
+
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  applyFilters();
+}
+</script>
+
+</body>
+</html>
