@@ -8,6 +8,10 @@
 <style>
 
 /* ===== BASE ===== */
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -15,20 +19,17 @@ html, body {
   font-family: 'Segoe UI', sans-serif;
   color: white;
   background: #0d1117;
+  overflow-x: hidden;
 }
 
 body {
   background: radial-gradient(circle at top, #1f2937, #0d1117);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
 }
 
-/* ===== HEADER GLASS (bonito como antes) ===== */
+/* ===== HEADER (EXPANDIDO) ===== */
 .header {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   z-index: 1000;
 
@@ -37,32 +38,58 @@ body {
   -webkit-backdrop-filter: blur(14px);
 
   border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.3s ease;
 }
 
 .header-inner {
   max-width: 800px;
   margin: auto;
-  padding: 12px 14px;
+  padding: 14px;
+  transition: all 0.3s ease;
 }
 
-/* título */
+/* estado compacto */
+.header.compact .header-inner {
+  padding: 6px 12px;
+}
+
 h1 {
   text-align: center;
   margin: 6px 0 10px;
   font-size: 18px;
+  transition: 0.3s;
 }
 
-/* buscador */
+/* título se reduce al hacer scroll */
+.header.compact h1 {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+/* ===== BUSCADOR estilo Spotify ===== */
 #search {
   width: 100%;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 999px;
 
   border: none;
   outline: none;
 
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.08);
   color: white;
+
+  transition: 0.3s;
+}
+
+/* compacto */
+.header.compact #search {
+  padding: 8px 12px;
+}
+
+/* focus estilo Spotify */
+#search:focus {
+  background: rgba(255,255,255,0.12);
 }
 
 /* botones */
@@ -70,18 +97,20 @@ h1 {
   display: flex;
   gap: 6px;
   margin-top: 10px;
+  transition: 0.3s;
+}
+
+.header.compact .filters {
+  margin-top: 6px;
 }
 
 .filter-btn {
   flex: 1;
   padding: 10px;
-
   border-radius: 999px;
   border: none;
-
   background: rgba(255,255,255,0.06);
   color: white;
-
   font-size: 13px;
 }
 
@@ -94,37 +123,25 @@ h1 {
   max-width: 800px;
   margin: auto;
   padding: 14px;
-
-  padding-top: 165px;
+  padding-top: 170px;
 }
 
-/* ===== SECCIONES (LO BONITO QUE TE GUSTABA) ===== */
+/* ===== SECCIONES ===== */
 .section-title {
-  margin: 26px 0 12px;
+  margin: 24px 0 12px;
   font-size: 13px;
-
   padding: 8px 12px;
+
   border-radius: 12px;
 
   display: inline-block;
 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
+  background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* LENTAS BONITO AZUL GLASS */
-.lentas {
-  background: rgba(59,130,246,0.12);
-  color: #60a5fa;
-}
-
-/* RAPIDAS BONITO AMARILLO GLASS */
-.rapidas {
-  background: rgba(245,158,11,0.12);
-  color: #fbbf24;
-}
+.lentas { color: #60a5fa; }
+.rapidas { color: #fbbf24; }
 
 /* ===== CARDS ===== */
 .card {
@@ -139,10 +156,18 @@ h1 {
 
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.06);
+
+  /* 🎬 animación suave */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.3s ease forwards;
 }
 
-.card:hover {
-  transform: scale(1.01);
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .thumb {
@@ -174,7 +199,6 @@ h1 {
 button.play {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   border: none;
-
   padding: 8px 10px;
   border-radius: 10px;
   color: white;
@@ -186,12 +210,12 @@ button.play {
 <body>
 
 <!-- HEADER -->
-<div class="header">
+<div class="header" id="header">
   <div class="header-inner">
 
     <h1>🎧 Repertorio</h1>
 
-    <input id="search" placeholder="Buscar..." onkeyup="applyFilters()">
+    <input id="search" placeholder="Buscar canciones..." onkeyup="applyFilters()">
 
     <div class="filters">
       <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥 Mes</button>
@@ -237,6 +261,18 @@ fetch(URL)
   applyFilters();
 });
 
+/* ===== HEADER COMPACTO AL SCROLL ===== */
+window.addEventListener("scroll", () => {
+  const header = document.getElementById("header");
+
+  if (window.scrollY > 40) {
+    header.classList.add("compact");
+  } else {
+    header.classList.remove("compact");
+  }
+});
+
+/* ===== YOUTUBE ===== */
 function getYouTubeID(url) {
   const reg = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
   const m = url.match(reg);
@@ -268,6 +304,7 @@ function render(data) {
   }
 }
 
+/* ===== CARD ===== */
 function card(s,i=null) {
   return `
     <div class="card">
