@@ -10,90 +10,100 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at top, #1f2937, #0d1117);
-}
-
-/* FIX MOBILE SCROLL WHITE */
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  color: #e6edf3;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
   background: #0d1117;
 }
 
+/* ===== APP SCROLL FIX REAL ===== */
 body {
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+
   position: fixed;
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
+
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+
   background: radial-gradient(circle at top, #1f2937, #0d1117);
 }
 
-/* contenedor */
+/* ===== HOJA PRINCIPAL ===== */
 .container {
   max-width: 800px;
   margin: auto;
-  padding: 20px;
+  padding: 18px;
+
   min-height: 100vh;
+
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(25px);
+
+  border-left: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
-/* header */
+/* ===== TITULO ===== */
 h1 {
   text-align: center;
-  margin-bottom: 10px;
+  margin: 10px 0 20px;
+  font-size: 22px;
 }
 
-/* buscador */
+/* ===== BUSCADOR ===== */
 #search {
   width: 100%;
   padding: 14px;
-  margin: 15px 0;
-  border-radius: 12px;
+  border-radius: 14px;
   border: none;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
+
+  background: rgba(255,255,255,0.06);
   color: white;
+
+  outline: none;
+  font-size: 14px;
 }
 
-/* filtros */
+/* ===== FILTROS estilo pills ===== */
 .filters {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin: 14px 0 18px;
   flex-wrap: wrap;
 }
 
 .filter-btn {
   flex: 1;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 999px;
   border: none;
+
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+
+  font-size: 12px;
   cursor: pointer;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  color: white;
+
   transition: 0.2s;
+}
+
+.filter-btn:active {
+  transform: scale(0.96);
 }
 
 .active {
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
-/* títulos */
+/* ===== SECCIONES ===== */
 .section-title {
-  margin: 20px 0 10px;
-  font-size: 14px;
+  margin: 18px 0 10px;
+  font-size: 12px;
   padding: 6px 10px;
   border-radius: 10px;
   display: inline-block;
+  letter-spacing: 0.5px;
 }
 
 .lentas {
@@ -106,35 +116,35 @@ h1 {
   color: #fbbf24;
 }
 
-/* cards */
+/* ===== CARD estilo Spotify ===== */
 .card {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-  padding: 10px;
-  border-radius: 16px;
-  margin-bottom: 12px;
   display: flex;
-  gap: 12px;
   align-items: center;
-  transition: 0.25s;
+  gap: 12px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+
+  transition: 0.2s;
+}
+
+.card:active {
+  transform: scale(0.98);
 }
 
 .card:hover {
-  transform: scale(1.02);
-}
-
-.card.lenta {
-  border-left: 3px solid #3b82f6;
-}
-
-.card.rapida {
-  border-left: 3px solid #f59e0b;
+  transform: translateY(-2px);
 }
 
 /* imagen */
 .thumb {
-  width: 100px;
-  height: 65px;
+  width: 85px;
+  height: 55px;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -146,39 +156,40 @@ h1 {
 
 .title {
   font-weight: 600;
+  font-size: 14px;
 }
 
 .sub {
   font-size: 12px;
   opacity: 0.7;
+  margin-top: 2px;
 }
 
-/* botón */
+/* botón play */
 button.play {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   border: none;
-  padding: 10px;
+  padding: 10px 12px;
   border-radius: 12px;
   color: white;
   cursor: pointer;
 }
 
-/* animación */
+/* animación play */
 .playing {
-  animation: pulse 0.6s ease;
+  animation: pulse 0.5s ease;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  50% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
 
-/* mobile */
+/* móvil */
 @media (max-width: 600px) {
-  .thumb {
-    width: 80px;
-    height: 55px;
+  .container {
+    border: none;
   }
 }
 </style>
@@ -241,7 +252,7 @@ function getThumbnail(url) {
 
 function playSong(link, btn) {
   btn.classList.add("playing");
-  setTimeout(() => btn.classList.remove("playing"), 600);
+  setTimeout(() => btn.classList.remove("playing"), 500);
   window.open(link);
 }
 
