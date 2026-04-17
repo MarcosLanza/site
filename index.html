@@ -8,7 +8,7 @@
 <style>
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #0d1117;
+  background: radial-gradient(circle at top, #1f2937, #0d1117);
   color: #e6edf3;
   margin: 0;
 }
@@ -24,7 +24,6 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 10px;
-  font-size: 26px;
 }
 
 /* buscador */
@@ -34,9 +33,9 @@ h1 {
   margin: 15px 0;
   border-radius: 12px;
   border: none;
-  background: #161b22;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
   color: white;
-  font-size: 14px;
 }
 
 /* filtros */
@@ -53,23 +52,39 @@ h1 {
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  background: #21262d;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
   color: white;
-  font-size: 13px;
   transition: 0.2s;
-}
-
-.filter-btn:hover {
-  background: #30363d;
 }
 
 .active {
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
-/* tarjetas */
+/* títulos */
+.section-title {
+  margin: 20px 0 10px;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.lentas {
+  background: rgba(59,130,246,0.15);
+  color: #60a5fa;
+}
+
+.rapidas {
+  background: rgba(245,158,11,0.15);
+  color: #fbbf24;
+}
+
+/* cards */
 .card {
-  background: #161b22;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
   padding: 10px;
   border-radius: 16px;
   margin-bottom: 12px;
@@ -80,8 +95,15 @@ h1 {
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  background: #1c2128;
+  transform: scale(1.02);
+}
+
+.card.lenta {
+  border-left: 3px solid #3b82f6;
+}
+
+.card.rapida {
+  border-left: 3px solid #f59e0b;
 }
 
 /* imagen */
@@ -99,48 +121,39 @@ h1 {
 
 .title {
   font-weight: 600;
-  font-size: 15px;
 }
 
 .sub {
   font-size: 12px;
   opacity: 0.7;
-  margin-top: 3px;
 }
 
-/* botón play */
+/* botón */
 button.play {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   border: none;
-  padding: 10px 12px;
+  padding: 10px;
   border-radius: 12px;
   color: white;
   cursor: pointer;
-  font-size: 14px;
 }
 
-/* 📱 MOBILE */
+/* 🎵 animación */
+.playing {
+  animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* mobile */
 @media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
   .thumb {
     width: 80px;
     height: 55px;
-  }
-
-  .title {
-    font-size: 14px;
-  }
-
-  .filter-btn {
-    font-size: 12px;
-    padding: 8px;
   }
 }
 </style>
@@ -154,7 +167,7 @@ button.play {
   <input id="search" placeholder="Buscar..." onkeyup="applyFilters()">
 
   <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥Este Mes</button>
+    <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥 Este Mes</button>
     <button class="filter-btn" onclick="setFilter('all', this)">Todos</button>
     <button class="filter-btn" onclick="setFilter('lenta', this)">🎶 Lentas</button>
     <button class="filter-btn" onclick="setFilter('rapida', this)">⚡ Rápidas</button>
@@ -167,7 +180,7 @@ button.play {
 const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6QgrmaVQhta8eiWVbG0Ts3DMnWaRfvgUyivmI-2Xrh2UyGgqWg02oC6jKXyOHX9DZsvDHls8oUb8d/pub?gid=0&single=true&output=csv";
 
 let songs = [];
-let currentFilter = "semanal"; // 🔥 DEFAULT
+let currentFilter = "semanal";
 
 fetch(URL)
   .then(res => res.text())
@@ -201,26 +214,47 @@ function getThumbnail(url) {
   return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
 }
 
+function playSong(link, btn) {
+  btn.classList.add("playing");
+  setTimeout(() => btn.classList.remove("playing"), 600);
+  window.open(link);
+}
+
 function render(data) {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  data.forEach((s, i) => {
-    list.innerHTML += `
-      <div class="card">
-        <img class="thumb" src="${getThumbnail(s.link)}">
-        <div class="info">
-          <div class="title">
-            ${currentFilter === "semanal" ? (i + 1) + ". " : ""}${s.name}
-          </div>
-          <div class="sub">
-            🎸 ${s.tono || "-"} | ${s.tipo}
-          </div>
-        </div>
-        <button class="play" onclick="window.open('${s.link}')">▶</button>
+  if (currentFilter === "semanal") {
+
+    const lentas = data.filter(s => s.tipo === "lenta");
+    const rapidas = data.filter(s => s.tipo === "rapida");
+
+    if (lentas.length) {
+      list.innerHTML += `<div class="section-title lentas">🎶 Lentas</div>`;
+      lentas.forEach((s, i) => list.innerHTML += cardHTML(s, i+1));
+    }
+
+    if (rapidas.length) {
+      list.innerHTML += `<div class="section-title rapidas">⚡ Rápidas</div>`;
+      rapidas.forEach((s, i) => list.innerHTML += cardHTML(s, i+1));
+    }
+
+  } else {
+    data.forEach(s => list.innerHTML += cardHTML(s));
+  }
+}
+
+function cardHTML(s, num=null) {
+  return `
+    <div class="card ${s.tipo}">
+      <img class="thumb" src="${getThumbnail(s.link)}">
+      <div class="info">
+        <div class="title">${num ? num+". " : ""}${s.name}</div>
+        <div class="sub">🎸 ${s.tono || "-"}</div>
       </div>
-    `;
-  });
+      <button class="play" onclick="playSong('${s.link}', this)">▶</button>
+    </div>
+  `;
 }
 
 function applyFilters() {
