@@ -7,32 +7,36 @@
 
 <style>
 
-/* ===== BASE ===== */
+/* ===== BASE MOBILE FIX ===== */
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   font-family: 'Segoe UI', sans-serif;
   color: white;
   background: #0d1117;
 }
 
-/* fondo suave tipo app */
 body {
   background: radial-gradient(circle at top, #1f2937, #0d1117);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+html {
+  background: #0d1117;
 }
 
 /* ===== HEADER ===== */
 .header {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 1000;
 
-  /* 🔥 GLASS EFFECT (lo que te gustaba) */
-  background: rgba(13, 17, 23, 0.75);
+  background: rgba(13, 17, 23, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
@@ -50,28 +54,22 @@ body {
   max-width: 800px;
   margin: auto;
   padding: 18px;
-  padding-top: 160px;
+  padding-top: 170px;
+  padding-bottom: 120px; /* 🔥 espacio para player */
 }
 
-/* título */
-h1 {
-  text-align: center;
-  margin: 10px 0 15px;
-}
-
-/* buscador */
+/* ===== INPUT ===== */
 #search {
   width: 100%;
   padding: 14px;
   border-radius: 14px;
   border: none;
-
   background: rgba(255,255,255,0.06);
   color: white;
   outline: none;
 }
 
-/* botones */
+/* ===== BOTONES ===== */
 .filters {
   display: flex;
   gap: 8px;
@@ -83,7 +81,6 @@ h1 {
   padding: 10px;
   border-radius: 999px;
   border: none;
-
   background: rgba(255,255,255,0.06);
   color: white;
 }
@@ -92,22 +89,18 @@ h1 {
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
-/* ===== SECCIONES (MEJOR ESPACIADO) ===== */
+/* ===== SECCIONES ===== */
 .section-title {
-  margin: 28px 0 14px;   /* 🔥 MÁS AIRE ARRIBA */
+  margin: 24px 0 12px;
   font-size: 13px;
   padding: 8px 12px;
-
   border-radius: 10px;
+
   display: inline-block;
-
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* estilos suaves */
 .lentas {
   background: rgba(59,130,246,0.12);
   color: #60a5fa;
@@ -118,7 +111,7 @@ h1 {
   color: #fbbf24;
 }
 
-/* ===== CARDS ===== */
+/* ===== CARD ===== */
 .card {
   display: flex;
   align-items: center;
@@ -128,7 +121,6 @@ h1 {
   margin-bottom: 10px;
 
   border-radius: 14px;
-
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.06);
 }
@@ -161,6 +153,54 @@ button.play {
   color: white;
 }
 
+/* ===== MINI PLAYER ===== */
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(14px);
+
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 14px;
+  z-index: 2000;
+}
+
+.player img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.player-sub {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.player button {
+  background: #22c55e;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: white;
+}
 </style>
 </head>
 
@@ -170,12 +210,12 @@ button.play {
 <div class="header">
   <div class="header-inner">
 
-    <h1>🎧 Repertorio Jóvenes</h1>
+    <h3 style="text-align:center;margin:6px 0;">🎧 Repertorio</h3>
 
     <input id="search" placeholder="Buscar..." onkeyup="applyFilters()">
 
     <div class="filters">
-      <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥 Este Mes</button>
+      <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥 Mes</button>
       <button class="filter-btn" onclick="setFilter('all', this)">Todos</button>
       <button class="filter-btn" onclick="setFilter('lenta', this)">🎶 Lentas</button>
       <button class="filter-btn" onclick="setFilter('rapida', this)">⚡ Rápidas</button>
@@ -184,37 +224,51 @@ button.play {
   </div>
 </div>
 
-<!-- CONTENIDO -->
+<!-- LISTA -->
 <div class="container">
   <div id="list"></div>
 </div>
 
+<!-- MINI PLAYER -->
+<div class="player" id="player" style="display:none;">
+  <img id="pimg">
+  <div class="player-info">
+    <div class="player-title" id="ptitle">-</div>
+    <div class="player-sub" id="psub">Reproduciendo</div>
+  </div>
+  <button onclick="stopPlayer()">⏹</button>
+</div>
+
 <script>
+
 const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6QgrmaVQhta8eiWVbG0Ts3DMnWaRfvgUyivmI-2Xrh2UyGgqWg02oC6jKXyOHX9DZsvDHls8oUb8d/pub?gid=0&single=true&output=csv";
 
 let songs = [];
 let currentFilter = "semanal";
 
+let currentSong = null;
+
 fetch(URL)
-  .then(r => r.text())
-  .then(data => {
-    const rows = data.split("\n").slice(1);
+.then(r => r.text())
+.then(data => {
 
-    songs = rows.map(row => {
-      const [name, link, tono, tipo, ra] = row.split(",");
+  const rows = data.split("\n").slice(1);
 
-      return {
-        name,
-        link,
-        tono,
-        tipo: (tipo || "").trim() === "1" ? "lenta" :
-              (tipo || "").trim() === "2" ? "rapida" : "",
-        ra: (ra || "").trim() === "1"
-      };
-    }).filter(s => s.name);
+  songs = rows.map(row => {
+    const [name, link, tono, tipo, ra] = row.split(",");
 
-    applyFilters();
-  });
+    return {
+      name,
+      link,
+      tono,
+      tipo: (tipo || "").trim() === "1" ? "lenta" :
+            (tipo || "").trim() === "2" ? "rapida" : "",
+      ra: (ra || "").trim() === "1"
+    };
+  }).filter(s => s.name);
+
+  applyFilters();
+});
 
 function getYouTubeID(url) {
   const reg = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
@@ -222,16 +276,31 @@ function getYouTubeID(url) {
   return m ? m[1] : null;
 }
 
-function getThumbnail(url) {
+function thumb(url) {
   const id = getYouTubeID(url);
   return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
 }
 
-function playSong(link, btn) {
-  window.open(link);
+/* ===== PLAYER ===== */
+function playSong(song) {
+
+  currentSong = song;
+
+  document.getElementById("player").style.display = "flex";
+  document.getElementById("pimg").src = thumb(song.link);
+  document.getElementById("ptitle").innerText = song.name;
+
+  window.open(song.link);
 }
 
+function stopPlayer() {
+  document.getElementById("player").style.display = "none";
+  currentSong = null;
+}
+
+/* ===== RENDER ===== */
 function render(data) {
+
   const list = document.getElementById("list");
   list.innerHTML = "";
 
@@ -240,29 +309,31 @@ function render(data) {
 
   if (lentas.length) {
     list.innerHTML += `<div class="section-title lentas">🎶 Lentas</div>`;
-    lentas.forEach((s, i) => list.innerHTML += cardHTML(s, i+1));
+    lentas.forEach((s,i)=>list.innerHTML += card(s,i+1));
   }
 
   if (rapidas.length) {
     list.innerHTML += `<div class="section-title rapidas">⚡ Rápidas</div>`;
-    rapidas.forEach((s, i) => list.innerHTML += cardHTML(s, i+1));
+    rapidas.forEach((s,i)=>list.innerHTML += card(s,i+1));
   }
 }
 
-function cardHTML(s, num=null) {
+function card(s, i=null) {
   return `
-    <div class="card ${s.tipo}">
-      <img class="thumb" src="${getThumbnail(s.link)}">
+    <div class="card">
+      <img class="thumb" src="${thumb(s.link)}">
       <div class="info">
-        <div class="title">${num ? num+". " : ""}${s.name}</div>
+        <div class="title">${i?i+". ":""}${s.name}</div>
         <div class="sub">🎸 ${s.tono || "-"}</div>
       </div>
-      <button class="play" onclick="playSong('${s.link}', this)">▶</button>
+      <button class="play" onclick='playSong(${JSON.stringify(s)})'>▶</button>
     </div>
   `;
 }
 
+/* ===== FILTERS ===== */
 function applyFilters() {
+
   const text = document.getElementById("search").value.toLowerCase();
 
   let filtered = songs.filter(s =>
@@ -280,6 +351,7 @@ function applyFilters() {
 }
 
 function setFilter(type, btn) {
+
   currentFilter = type;
 
   document.querySelectorAll(".filter-btn")
@@ -289,6 +361,7 @@ function setFilter(type, btn) {
 
   applyFilters();
 }
+
 </script>
 
 </body>
