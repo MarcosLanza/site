@@ -244,19 +244,57 @@ fetch(URL)
 
   const rows = data.split("\n").slice(1);
 
-  songs = rows.map(row => {
-    const [name, link, tono, tipo, ra, acordes] = row.split(",");
+songs = rows.map(row => {
 
-    return {
-      name,
-      link,
-      tono,
-      tipo: (tipo || "").trim() === "1" ? "lenta" :
-            (tipo || "").trim() === "2" ? "rapida" : "",
-      ra: (ra || "").trim() === "1",
-      acordes: acordes || ""
-    };
-  }).filter(s => s.name);
+  let cols = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let char of row) {
+    if (char === '"') {
+      inQuotes = !inQuotes;
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      cols.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  cols.push(current);
+
+  const [name, link, tono, tipo, ra, acordes] = cols;
+
+  return {
+    name,
+    link,
+    tono,
+    tipo: (tipo || "").trim() === "1" ? "lenta" :
+          (tipo || "").trim() === "2" ? "rapida" : "",
+    ra: parseInt((ra || "0").trim()) || 0,
+    acordes: (acordes || "")
+  };
+})
+.filter(s => s.name)
+.sort((a, b) => {
+
+  const raA = parseInt(a.ra) || 0;
+  const raB = parseInt(b.ra) || 0;
+
+  // si ambos son 0 → no importa el orden
+  if (raA === 0 && raB === 0) return 0;
+
+  // si A es 0, va al final
+  if (raA === 0) return 1;
+
+  // si B es 0, va al final
+  if (raB === 0) return -1;
+
+  // ordenar normal 1 → 2 → 3 → 4 → 5 → 6
+  return raA - raB;
+});   // 🔥 AQUÍ EL ORDEN
 
   applyFilters();
 });
@@ -279,8 +317,16 @@ function thumb(url) {
 
 /* ===== MODAL ===== */
 function openModal(text) {
-  document.getElementById("modalText").innerText =
-    decodeURIComponent(text);
+
+  let clean = String(text || "");
+
+  // limpia comillas raras del CSV
+  clean = clean
+    .replace(/^"+|"+$/g, "")   // quita " al inicio y final
+    .replace(/""/g, '"')       // arregla dobles comillas
+    .trim();
+
+  document.getElementById("modalText").innerText = clean;
   document.getElementById("modal").style.display = "block";
 }
 
@@ -294,6 +340,26 @@ function render(data) {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
+  // 🔥 SOLO EN "MES"
+  if (currentFilter === "semanal") {
+
+    const inicio = data.slice(0, 3);
+    const ofrenda = data.slice(3, 4);
+    const predica = data.slice(4, 6);
+
+    list.innerHTML += `<div class="section-title lentas">🎬 Inicio</div>`;
+    inicio.forEach((s,i)=>list.innerHTML += card(s,i+1));
+
+    list.innerHTML += `<div class="section-title rapidas">💰 Ofrenda</div>`;
+    ofrenda.forEach((s,i)=>list.innerHTML += card(s,i+1));
+
+    list.innerHTML += `<div class="section-title lentas">📖 Predica</div>`;
+    predica.forEach((s,i)=>list.innerHTML += card(s,i+1));
+
+    return;
+  }
+
+  // 🔥 RESTO DE FILTROS (NO SE TOCA TU LOGICA)
   const lentas = data.filter(s => s.tipo === "lenta");
   const rapidas = data.filter(s => s.tipo === "rapida");
 
