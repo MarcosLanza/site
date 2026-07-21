@@ -1,254 +1,1559 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repertorio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Banda Trinidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #4A5D45;
+      --green-light: #6b8c64;
+      --orange: #F7941D;
+      --orange-light: #fbb04e;
+      --cream: #F2EFE9;
+      --dark: #2c3a29;
+      --card-bg: #ffffff;
+      --surface: #f7f5f0;
+      --border: #e8e4dc;
+      --text-muted: #8a8a8a;
+      --shadow-sm: 0 2px 8px rgba(44,58,41,0.08);
+      --shadow-md: 0 6px 20px rgba(44,58,41,0.13);
+      --shadow-lg: 0 12px 40px rgba(44,58,41,0.18);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
 
-<style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
-  margin: 0;
-}
+    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
 
-/* contenedor */
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-}
+    /* ── NAV ── */
+    nav {
+      background: var(--dark);
+      display: flex; align-items: center;
+      padding: 0 14px; position: sticky; top: 0; z-index: 100;
+      height: 60px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+      gap: 10px;
+    }
+    .nav-logo {
+      color: var(--orange); font-size: 1rem; font-weight: 900;
+      letter-spacing: 1.5px; white-space: nowrap; flex-shrink: 0;
+    }
 
-/* header */
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 26px;
-}
+    /* ── NAV CAROUSEL ── */
+    .nav-carousel-wrap {
+      flex: 1; overflow: hidden; position: relative; min-width: 0;
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .nav-carousel-track {
+      display: flex; gap: 8px; align-items: center;
+      animation: navScroll 20s linear infinite;
+      width: max-content;
+    }
+    .nav-carousel-track:hover { animation-play-state: paused; }
+    @keyframes navScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .nav-pill {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 30px; padding: 3px 10px 3px 3px;
+      white-space: nowrap; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .nav-pill:hover { background: rgba(247,148,29,0.18); border-color: var(--orange); }
+    .nav-pill img, .nav-pill .nav-pill-av {
+      width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+    }
+    .nav-pill-av {
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: white; font-weight: 800;
+    }
+    .nav-pill-info { display: flex; flex-direction: column; }
+    .nav-pill-name { font-size: 0.72rem; color: rgba(255,255,255,0.9); font-weight: 700; line-height: 1.2; }
+    .nav-pill-role { font-size: 0.58rem; color: rgba(255,255,255,0.4); }
 
-/* buscador */
-#search {
-  width: 100%;
-  padding: 14px;
-  margin: 15px 0;
-  border-radius: 12px;
-  border: none;
-  background: #161b22;
-  color: white;
-  font-size: 14px;
-}
+    .nav-tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding: 8px 0; flex-shrink: 0; }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-tabs button {
+      background: transparent; border: none;
+      color: rgba(255,255,255,0.55); padding: 6px 11px; border-radius: 8px;
+      cursor: pointer; font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .nav-tabs button.active { background: var(--orange); color: white; }
+    .nav-tabs button:hover:not(.active) { background: rgba(255,255,255,0.1); color: white; }
 
-/* filtros */
-.filters {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
+    main { max-width: 860px; margin: 0 auto; padding: 20px 14px 80px; }
+    .section { display: none; }
+    .section.active { display: block; }
 
-.filter-btn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background: #21262d;
-  color: white;
-  font-size: 13px;
-  transition: 0.2s;
-}
+    h2 { color: var(--dark); margin-bottom: 18px; font-size: 1.2rem; font-weight: 800; }
 
-.filter-btn:hover {
-  background: #30363d;
-}
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 16px;
+      margin-bottom: 10px; box-shadow: var(--shadow-sm);
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid var(--border); transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); }
+    .card-info { flex: 1; }
+    .card-title { font-weight: 700; font-size: 0.95rem; }
+    .card-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+    .card-actions { display: flex; gap: 6px; }
+    .btn-icon {
+      background: none; border: none; cursor: pointer; font-size: 1rem;
+      padding: 6px 8px; border-radius: 8px; transition: background 0.2s;
+    }
+    .btn-icon:hover { background: var(--surface); }
 
-.active {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-}
+    /* ── FORMS ── */
+    .form-box {
+      background: var(--card-bg); border-radius: var(--radius); padding: 20px;
+      margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+    }
+    .form-box h3 { color: var(--green); margin-bottom: 14px; font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
+    .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .form-row input, .form-row select, .form-row textarea {
+      flex: 1; min-width: 130px; padding: 10px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 0.88rem; outline: none; transition: border 0.2s, box-shadow 0.2s; font-family: inherit;
+      background: var(--surface); color: var(--dark);
+    }
+    .form-row input:focus, .form-row select:focus {
+      border-color: var(--orange); background: white;
+      box-shadow: 0 0 0 3px rgba(247,148,29,0.12);
+    }
+    .btn-primary {
+      background: var(--orange); color: white; border: none;
+      padding: 10px 22px; border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 0.88rem; font-weight: 800; transition: all 0.2s; font-family: inherit;
+    }
+    .btn-primary:hover { background: #e07d0a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(247,148,29,0.35); }
+    .btn-primary:active { transform: translateY(0); }
 
-/* tarjetas */
-.card {
-  background: #161b22;
-  padding: 10px;
-  border-radius: 16px;
-  margin-bottom: 12px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  transition: 0.25s;
-}
+    /* ── BADGES ── */
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; margin-left: 6px; }
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-orange { background: #fff3cd; color: #856404; }
 
-.card:hover {
-  transform: translateY(-2px);
-  background: #1c2128;
-}
+    /* ── SONGS ── */
+    .song-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
+      margin-bottom: 10px; box-shadow: var(--shadow-sm);
+      display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
+    }
+    .song-thumb { width: 80px; height: 56px; border-radius: 8px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+    .song-thumb-placeholder {
+      width: 80px; height: 56px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+    }
+    .song-info { flex: 1; }
+    .btn-yt {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #FF0000; color: white; border: none;
+      padding: 4px 10px; border-radius: 6px; font-size: 0.72rem;
+      font-weight: 700; cursor: pointer; text-decoration: none; margin-top: 6px;
+    }
 
-/* imagen */
-.thumb {
-  width: 100px;
-  height: 65px;
-  border-radius: 10px;
-  object-fit: cover;
-}
+    /* ── REPE SONGS ── */
+    .repe-songs { margin-top: 10px; }
+    .repe-song-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem;
+    }
+    .repe-song-item:last-child { border-bottom: none; }
+    .song-num {
+      background: var(--orange); color: white;
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 800; flex-shrink: 0;
+    }
 
-/* info */
-.info {
-  flex: 1;
-}
+    /* ── EMPTY ── */
+    .empty { text-align: center; color: #bbb; padding: 40px 0; font-size: 0.9rem; }
+    .empty span { font-size: 2.5rem; display: block; margin-bottom: 8px; }
 
-.title {
-  font-weight: 600;
-  font-size: 15px;
-}
+    /* ── STATUS BAR ── */
+    #status-bar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--dark); color: white; padding: 10px 22px;
+      border-radius: 30px; font-size: 0.82rem; display: none;
+      box-shadow: var(--shadow-lg); z-index: 999; font-weight: 600;
+    }
 
-.sub {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-top: 3px;
-}
+    /* ══════════════════════════════════════
+       INICIO — WELCOME CARD
+    ══════════════════════════════════════ */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--dark) 0%, #3d5238 60%, var(--green) 100%);
+      color: white; border-radius: 22px; padding: 24px 22px 20px; margin-bottom: 24px;
+      box-shadow: var(--shadow-lg); overflow: hidden; position: relative;
+    }
+    .welcome-card::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(247,148,29,0.1);
+    }
+    .welcome-top { display: flex; justify-content: space-between; align-items: center; }
+    .welcome-card h1 { color: var(--orange); font-size: 1.5rem; margin: 6px 0 4px; font-weight: 900; }
+    .welcome-card p { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+    .welcome-label { letter-spacing: 1.5px; font-size: 0.62rem !important; font-weight: 800; opacity: 0.55; text-transform: uppercase; }
+    .welcome-icon { font-size: 3rem; position: relative; z-index: 1; }
 
-/* botón play */
-button.play {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  border: none;
-  padding: 10px 12px;
-  border-radius: 12px;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-}
+    /* ── HERO CAROUSEL ── */
+    .hero-carousel-wrap {
+      overflow: hidden; position: relative; margin-top: 18px;
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+    .hero-carousel-track {
+      display: flex; gap: 10px; align-items: center;
+      animation: heroScroll 24s linear infinite;
+      width: max-content;
+    }
+    .hero-carousel-track:hover { animation-play-state: paused; }
+    @keyframes heroScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .hero-member-card {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 12px 14px; flex-shrink: 0; min-width: 76px;
+      transition: background 0.2s, transform 0.2s; cursor: default;
+    }
+    .hero-member-card:hover { background: rgba(247,148,29,0.2); transform: translateY(-3px); border-color: rgba(247,148,29,0.4); }
+    .hero-member-card img, .hero-member-card .hero-av {
+      width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+      border: 2px solid rgba(247,148,29,0.5);
+    }
+    .hero-av {
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: white; font-weight: 800;
+    }
+    .hero-member-name { font-size: 0.68rem; color: rgba(255,255,255,0.92); font-weight: 700; text-align: center; max-width: 68px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hero-member-role { font-size: 0.58rem; color: rgba(255,255,255,0.45); text-align: center; }
 
-/* 📱 MOBILE */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
+    /* ── EVENT HOME CARD ── */
+    .event-home-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 18px;
+      margin-bottom: 14px; border-left: 5px solid var(--orange);
+      box-shadow: var(--shadow-sm); border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .event-home-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .event-home-title { color: var(--dark); font-size: 1.05rem; font-weight: 800; }
+    .event-home-date { color: var(--text-muted); font-size: 0.8rem; margin-top: 3px; }
+    .event-repes-title {
+      font-size: 0.7rem; color: var(--green); font-weight: 800;
+      margin-top: 16px; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .home-repe { background: var(--surface); border-radius: 12px; padding: 12px; margin-top: 8px; }
+    .home-repe-title { font-weight: 700; font-size: 0.88rem; color: var(--dark); }
+    .home-repe-meta { font-size: 0.76rem; color: var(--text-muted); margin-top: 2px; }
+    .home-repe-songs { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .home-repe-song {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; padding: 4px 0; color: var(--dark);
+    }
+    .home-repe-song-num {
+      background: var(--orange); color: white;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; font-weight: 800; flex-shrink: 0;
+    }
+    .home-repe-song-thumb { width: 40px; height: 28px; border-radius: 4px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
 
-  h1 {
-    font-size: 20px;
-  }
+    /* ── QUIÉN CANTA CADA DÍA ── */
+    .culto-days-section {
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+    }
+    .culto-days-label {
+      font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--green); margin-bottom: 10px;
+    }
+    .culto-days-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .culto-day-card {
+      border-radius: 14px; padding: 12px; overflow: hidden; position: relative;
+    }
+    .culto-day-card.sab {
+      background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%);
+    }
+    .culto-day-card.dom {
+      background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%);
+    }
+    .culto-day-card::before {
+      content: ''; position: absolute; bottom: -16px; right: -16px;
+      width: 70px; height: 70px; border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .culto-day-title {
+      font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.2px; color: rgba(255,255,255,0.7); margin-bottom: 8px;
+    }
+    .culto-day-members { display: flex; flex-direction: column; gap: 6px; }
+    .culto-day-member {
+      display: flex; align-items: center; gap: 7px;
+    }
+    .culto-day-member img, .culto-day-member .day-av {
+      width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .day-av {
+      background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: white; font-weight: 800;
+    }
+    .culto-day-member-info { flex: 1; min-width: 0; }
+    .culto-day-member-name { font-size: 0.72rem; color: white; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .culto-day-member-role { font-size: 0.58rem; color: rgba(255,255,255,0.5); }
+    .culto-day-empty { font-size: 0.72rem; color: rgba(255,255,255,0.35); font-style: italic; }
 
-  .thumb {
-    width: 80px;
-    height: 55px;
-  }
+    /* ── ROLE BADGES ── */
+    .role-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; margin-left: 4px; }
+    .role-VOICE { background: #fce4ec; color: #880e4f; }
+    .role-GA { background: #e8f5e9; color: #1b5e20; }
+    .role-GE { background: #e3f2fd; color: #0d47a1; }
+    .role-BASS { background: #ede7f6; color: #4527a0; }
+    .role-PIANO { background: #fff8e1; color: #f57f17; }
+    .role-DRUM { background: #fbe9e7; color: #bf360c; }
+    .role-OTHER { background: #f5f5f5; color: #555; }
 
-  .title {
-    font-size: 14px;
-  }
+    /* ── MEMBER CARD ── */
+    .member-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
+      margin-bottom: 10px; box-shadow: var(--shadow-sm);
+      display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
+    }
+    .member-avatar-big { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .member-avatar-placeholder {
+      width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: white; font-weight: 800;
+    }
 
-  .filter-btn {
-    font-size: 12px;
-    padding: 8px;
-  }
-}
-</style>
+    /* ══════════════════════════════════════
+       MODALES
+    ══════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 200;
+      align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: 22px 22px 0 0; padding: 24px;
+      width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);
+      max-height: 90vh; overflow-y: auto;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-box h3 { color: var(--green); margin-bottom: 16px; font-size: 1.05rem; font-weight: 800; }
+    .modal-box .form-row { margin-bottom: 10px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+    .btn-secondary {
+      background: var(--surface); color: var(--dark); border: 1.5px solid var(--border);
+      padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.88rem; font-weight: 700; font-family: inherit;
+    }
+
+    /* ══════════════════════════════════════
+       CULTO
+    ══════════════════════════════════════ */
+    .culto-top {
+      background: linear-gradient(135deg, var(--dark) 0%, #3d5238 100%);
+      border-radius: 20px; padding: 20px; margin-bottom: 20px;
+      box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+    }
+    .culto-top::after {
+      content: '🎤'; position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%); font-size: 3.5rem; opacity: 0.12;
+    }
+    .culto-top-title { color: var(--orange); font-size: 1.2rem; font-weight: 900; }
+    .culto-top-sub { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 4px; }
+    .culto-repe-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .culto-repe-row select {
+      flex: 1; min-width: 200px; padding: 10px 14px;
+      border: 1.5px solid rgba(255,255,255,0.2); border-radius: 12px;
+      font-size: 0.88rem; outline: none; font-family: inherit;
+      background: rgba(255,255,255,0.1); color: white; cursor: pointer;
+    }
+    .culto-repe-row select option { background: var(--dark); color: white; }
+    .culto-repe-row select:focus { border-color: var(--orange); }
+    .btn-save-culto {
+      background: var(--orange); color: white; border: none;
+      padding: 10px 20px; border-radius: 12px; cursor: pointer;
+      font-size: 0.88rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; font-family: inherit;
+    }
+    .btn-save-culto:hover { background: #e07d0a; transform: translateY(-1px); }
+
+    .culto-repe-banner {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px 16px;
+      margin-bottom: 16px; border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm); display: none;
+    }
+    .culto-repe-banner.visible { display: block; }
+    .culto-repe-banner-title { font-weight: 800; font-size: 0.95rem; color: var(--dark); }
+    .culto-repe-banner-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+    .culto-repe-banner-songs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .culto-repe-banner-song {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 12px; font-size: 0.75rem; font-weight: 600; color: var(--dark);
+    }
+
+    .culto-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .culto-summary-card { border-radius: var(--radius); padding: 14px; position: relative; overflow: hidden; }
+    .culto-summary-card.sab { background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%); }
+    .culto-summary-card.dom { background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%); }
+    .culto-summary-card::before { content: ''; position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+    .culto-summary-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.65); margin-bottom: 6px; }
+    .culto-summary-count { font-size: 2rem; font-weight: 900; color: white; line-height: 1; }
+    .culto-summary-sub { font-size: 0.72rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .culto-summary-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .culto-summary-chip {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.15); border-radius: 20px;
+      padding: 3px 8px 3px 4px; font-size: 0.7rem; color: white; font-weight: 600;
+    }
+    .culto-summary-chip img, .culto-summary-chip .sum-avatar {
+      width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+    }
+    .sum-avatar {
+      background: rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; font-weight: 800; color: white;
+    }
+    .culto-summary-empty { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 8px; font-style: italic; }
+
+    .culto-dnd-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: start; }
+    @media (max-width: 640px) { .culto-dnd-layout { grid-template-columns: 1fr; } .culto-summary { grid-template-columns: 1fr 1fr; } }
+
+    .dnd-col { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1.5px solid var(--border); }
+    .dnd-col-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; }
+    .dnd-col.pool .dnd-col-header { background: var(--surface); border-bottom: 1.5px solid var(--border); }
+    .dnd-col.sab .dnd-col-header { background: linear-gradient(90deg, var(--green), var(--green-light)); }
+    .dnd-col.dom .dnd-col-header { background: linear-gradient(90deg, #c96a00, var(--orange)); }
+    .dnd-col-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+    .dnd-col.pool .dnd-col-title { color: var(--dark); }
+    .dnd-col.sab .dnd-col-title, .dnd-col.dom .dnd-col-title { color: white; }
+    .dnd-col-count { font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .dnd-col.pool .dnd-col-count { background: var(--border); color: var(--text-muted); }
+    .dnd-col.sab .dnd-col-count, .dnd-col.dom .dnd-col-count { background: rgba(255,255,255,0.25); color: white; }
+    .dnd-col-saved { font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 20px; background: rgba(255,255,255,0.9); color: var(--green); display: none; }
+
+    .drop-zone { min-height: 140px; padding: 10px; transition: background 0.2s; }
+    .drop-zone.drag-over { background: rgba(247,148,29,0.08); outline: 2px dashed var(--orange); outline-offset: -4px; }
+
+    .role-group { margin-bottom: 8px; }
+    .role-group-label { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; padding-left: 4px; }
+
+    .voice-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface); border-radius: 12px; padding: 8px 10px;
+      margin-bottom: 6px; cursor: grab; user-select: none;
+      transition: all 0.15s; border: 1.5px solid transparent;
+    }
+    .voice-chip:hover { border-color: var(--orange); background: white; box-shadow: var(--shadow-sm); }
+    .voice-chip:active { cursor: grabbing; }
+    .voice-chip.dragging { opacity: 0.35; transform: scale(0.97); }
+    .voice-chip img, .voice-chip .voice-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .voice-avatar {
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; color: white; font-weight: 800;
+    }
+    .voice-chip-info { flex: 1; min-width: 0; }
+    .voice-chip-name { font-weight: 700; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .voice-chip-role { font-size: 0.68rem; color: var(--text-muted); margin-top: 1px; }
+    .voice-chip-badges { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+    .day-badge { font-size: 0.6rem; font-weight: 800; padding: 1px 6px; border-radius: 10px; }
+    .day-badge-sab { background: #d4edda; color: #155724; }
+    .day-badge-dom { background: #fff3cd; color: #856404; }
+    .voice-chip-remove { background: none; border: none; cursor: pointer; font-size: 0.85rem; color: #ccc; padding: 3px; border-radius: 6px; transition: color 0.2s; flex-shrink: 0; }
+    .voice-chip-remove:hover { color: #e74c3c; background: #ffeaea; }
+
+    .dnd-empty { text-align: center; color: #ccc; font-size: 0.78rem; padding: 24px 10px; pointer-events: none; }
+    .dnd-empty span { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
-  <h1>🎧 Repertorio Jóvenes</h1>
+<nav>
+  <div class="nav-logo">🎺 TRINIDAD</div>
 
-  <input id="search" placeholder="Buscar..." onkeyup="applyFilters()">
-
-  <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('semanal', this)">🔥Este Mes</button>
-    <button class="filter-btn" onclick="setFilter('all', this)">Todos</button>
-    <button class="filter-btn" onclick="setFilter('lenta', this)">🎶 Lentas</button>
-    <button class="filter-btn" onclick="setFilter('rapida', this)">⚡ Rápidas</button>
+  <!-- Carrusel animado en el nav -->
+  <div class="nav-carousel-wrap">
+    <div class="nav-carousel-track" id="nav-carousel-track"></div>
   </div>
 
-  <div id="list"></div>
+  <div class="nav-tabs">
+    <button class="active" onclick="showSection('inicio', this)">🏠 Inicio</button>
+    <button onclick="showSection('culto', this)">🎤 Culto</button>
+    <button onclick="showSection('canciones', this)">🎵 Canciones</button>
+    <button onclick="showSection('repes', this)">📋 Repes</button>
+    <button onclick="showSection('integrantes', this)">👥 Integrantes</button>
+    <button onclick="showSection('eventos', this)">📅 Eventos</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ══ INICIO ══ -->
+  <div id="inicio" class="section active">
+    <div class="welcome-card">
+      <div class="welcome-top">
+        <div>
+          <p class="welcome-label">Red de Jóvenes · Iglesia Metodista CQ</p>
+          <h1>🎺 Banda Trinidad</h1>
+          <p>Todo listo para servir con excelencia.</p>
+        </div>
+        <div class="welcome-icon">🎶</div>
+      </div>
+      <!-- Carrusel animado en el hero -->
+      <div class="hero-carousel-wrap">
+        <div class="hero-carousel-track" id="hero-carousel-track"></div>
+      </div>
+    </div>
+    <h2>📅 Próximos eventos</h2>
+    <div id="home-events-list"></div>
+  </div>
+
+  <!-- ══ CULTO ══ -->
+  <div id="culto" class="section">
+    <div class="culto-top">
+      <div class="culto-top-title">🎤 Planificación de Culto</div>
+      <div class="culto-top-sub">Asigna integrantes por día arrastrando desde el pool</div>
+      <div class="culto-repe-row">
+        <select id="culto-repe-select" onchange="onCultoRepeChange()">
+          <option value="">— Selecciona un repe —</option>
+        </select>
+        <button class="btn-save-culto" onclick="saveCulto()">💾 Guardar</button>
+      </div>
+    </div>
+
+    <div class="culto-repe-banner" id="culto-repe-banner">
+      <div class="culto-repe-banner-title" id="culto-repe-banner-title"></div>
+      <div class="culto-repe-banner-meta" id="culto-repe-banner-meta"></div>
+      <div class="culto-repe-banner-songs" id="culto-repe-banner-songs"></div>
+    </div>
+
+    <div class="culto-summary" id="culto-summary">
+      <div class="culto-summary-card sab">
+        <div class="culto-summary-label">⛪ Sábado</div>
+        <div class="culto-summary-count" id="sum-sab-count">0</div>
+        <div class="culto-summary-sub">integrantes</div>
+        <div class="culto-summary-chips" id="sum-sab-chips"></div>
+      </div>
+      <div class="culto-summary-card dom">
+        <div class="culto-summary-label">☀️ Domingo</div>
+        <div class="culto-summary-count" id="sum-dom-count">0</div>
+        <div class="culto-summary-sub">integrantes</div>
+        <div class="culto-summary-chips" id="sum-dom-chips"></div>
+      </div>
+    </div>
+
+    <div class="culto-dnd-layout">
+      <div class="dnd-col pool">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title">🎙️ Disponibles</span>
+          <span class="dnd-col-count" id="pool-count">0</span>
+        </div>
+        <div class="drop-zone" id="pool-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'pool')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="pool-empty"><span>👤</span>Sin integrantes</div>
+        </div>
+      </div>
+      <div class="dnd-col sab">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title">⛪ Sábado</span>
+          <span class="dnd-col-count" id="sab-count">0</span>
+          <span class="dnd-col-saved" id="sab-tag">✓ guardado</span>
+        </div>
+        <div class="drop-zone" id="sabado-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'sabado')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="sab-empty"><span>🎤</span>Arrastra aquí</div>
+        </div>
+      </div>
+      <div class="dnd-col dom">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title">☀️ Domingo</span>
+          <span class="dnd-col-count" id="dom-count">0</span>
+          <span class="dnd-col-saved" id="dom-tag">✓ guardado</span>
+        </div>
+        <div class="drop-zone" id="domingo-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'domingo')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="dom-empty"><span>🎤</span>Arrastra aquí</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CANCIONES ══ -->
+  <div id="canciones" class="section">
+    <h2>🎵 Canciones</h2>
+    <div class="form-box">
+      <h3>Agregar canción</h3>
+      <div class="form-row">
+        <input id="song-title" placeholder="Nombre de la canción" />
+        <input id="song-artist" placeholder="Artista / Autor" />
+      </div>
+      <div class="form-row">
+        <input id="song-key" placeholder="Tono (ej: Do, Sol, La)" />
+        <select id="song-genre">
+          <option value="">Género</option>
+          <option>Rapida</option><option>Lenta</option><option>Corito</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="song-youtube" placeholder="🔗 Link de YouTube (opcional)" />
+      </div>
+      <button class="btn-primary" onclick="addSong()">+ Agregar</button>
+    </div>
+    <div id="songs-list"></div>
+  </div>
+
+  <!-- ══ REPES ══ -->
+  <div id="repes" class="section">
+    <h2>📋 Ensayos / Repes</h2>
+    <div class="form-box">
+      <h3>Crear repe</h3>
+      <div class="form-row">
+        <input id="repe-name" placeholder="Nombre del repe (ej: Repe Domingo)" />
+        <input id="repe-date" type="date" />
+      </div>
+      <div class="form-row">
+        <select id="repe-event-select"><option value="">Evento relacionado (opcional)</option></select>
+      </div>
+      <div class="form-row">
+        <select id="repe-song-select"><option value="">Seleccionar canción...</option></select>
+        <button class="btn-primary" onclick="addSongToRepe()">+ Canción</button>
+      </div>
+      <div id="repe-selected-songs" class="repe-songs"></div>
+      <br/>
+      <button class="btn-primary" onclick="saveRepe()">💾 Guardar Repe</button>
+    </div>
+    <div id="repes-list"></div>
+  </div>
+
+  <!-- ══ INTEGRANTES ══ -->
+  <div id="integrantes" class="section">
+    <h2>👥 Integrantes</h2>
+    <div class="form-box">
+      <h3>Agregar integrante</h3>
+      <div class="form-row">
+        <input id="member-name" placeholder="Nombre completo" />
+        <select id="member-instrument">
+          <option value="">Instrumento / Rol</option>
+          <option value="VOICE">🎤 VOICE (Voz)</option>
+          <option value="GA">🎸 GA (Guitarra Acústica)</option>
+          <option value="GE">⚡ GE (Guitarra Eléctrica)</option>
+          <option value="BASS">🎸 BASS (Bajo)</option>
+          <option value="PIANO">🎹 PIANO</option>
+          <option value="DRUM">🥁 DRUM (Batería)</option>
+          <option value="Otro">🎵 Otro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="member-phone" placeholder="Teléfono (opcional)" />
+        <select id="member-status">
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="member-photo" placeholder="🖼️ URL de foto (opcional)" />
+      </div>
+      <button class="btn-primary" onclick="addMember()">+ Agregar</button>
+    </div>
+    <div id="members-list"></div>
+  </div>
+
+  <!-- ══ EVENTOS ══ -->
+  <div id="eventos" class="section">
+    <h2>📅 Eventos</h2>
+    <div class="form-box">
+      <h3>Agregar evento</h3>
+      <div class="form-row">
+        <input id="event-name" placeholder="Nombre del evento" />
+        <input id="event-date" type="date" />
+      </div>
+      <div class="form-row">
+        <input id="event-place" placeholder="Lugar" />
+        <select id="event-type">
+          <option value="">Tipo</option>
+          <option>Culto</option><option>Concierto</option>
+          <option>Ensayo especial</option><option>Actividad</option><option>Otro</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="addEvent()">+ Agregar</button>
+    </div>
+    <div id="events-list"></div>
+  </div>
+
+</main>
+
+<div id="status-bar"></div>
+
+<!-- MODALES -->
+<div class="modal-overlay" id="modal-song">
+  <div class="modal-box">
+    <h3>✏️ Editar canción</h3>
+    <input type="hidden" id="edit-song-id" />
+    <div class="form-row"><input id="edit-song-title" placeholder="Nombre" /></div>
+    <div class="form-row"><input id="edit-song-artist" placeholder="Artista" /></div>
+    <div class="form-row">
+      <input id="edit-song-key" placeholder="Tono" />
+      <select id="edit-song-genre"><option value="">Género</option><option>Rapida</option><option>Lenta</option><option>Corito</option></select>
+    </div>
+    <div class="form-row"><input id="edit-song-youtube" placeholder="Link YouTube" /></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-song')">Cancelar</button>
+      <button class="btn-primary" onclick="saveSongEdit()">💾 Guardar</button>
+    </div>
+  </div>
 </div>
 
-<script>
-const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6QgrmaVQhta8eiWVbG0Ts3DMnWaRfvgUyivmI-2Xrh2UyGgqWg02oC6jKXyOHX9DZsvDHls8oUb8d/pub?gid=0&single=true&output=csv";
+<div class="modal-overlay" id="modal-repe">
+  <div class="modal-box">
+    <h3>✏️ Editar repe</h3>
+    <input type="hidden" id="edit-repe-id" />
+    <div class="form-row"><input id="edit-repe-name" placeholder="Nombre del repe" /></div>
+    <div class="form-row"><input id="edit-repe-date" type="date" /></div>
+    <div class="form-row"><select id="edit-repe-event"><option value="">Evento relacionado (opcional)</option></select></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-repe')">Cancelar</button>
+      <button class="btn-primary" onclick="saveRepeEdit()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
 
-let songs = [];
-let currentFilter = "semanal"; // 🔥 DEFAULT
+<div class="modal-overlay" id="modal-member">
+  <div class="modal-box">
+    <h3>✏️ Editar integrante</h3>
+    <input type="hidden" id="edit-member-id" />
+    <div class="form-row"><input id="edit-member-name" placeholder="Nombre completo" /></div>
+    <div class="form-row">
+      <select id="edit-member-instrument">
+        <option value="">Instrumento / Rol</option>
+        <option value="VOICE">🎤 VOICE</option><option value="GA">🎸 GA</option>
+        <option value="GE">⚡ GE</option><option value="BASS">🎸 BASS</option>
+        <option value="PIANO">🎹 PIANO</option><option value="DRUM">🥁 DRUM</option>
+        <option value="Otro">🎵 Otro</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <input id="edit-member-phone" placeholder="Teléfono" />
+      <select id="edit-member-status"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
+    </div>
+    <div class="form-row"><input id="edit-member-photo" placeholder="🖼️ URL de foto" /></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-member')">Cancelar</button>
+      <button class="btn-primary" onclick="saveMemberEdit()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
 
-fetch(URL)
-  .then(res => res.text())
-  .then(data => {
-    const rows = data.split("\n").slice(1);
+<div class="modal-overlay" id="modal-event">
+  <div class="modal-box">
+    <h3>✏️ Editar evento</h3>
+    <input type="hidden" id="edit-event-id" />
+    <div class="form-row"><input id="edit-event-name" placeholder="Nombre del evento" /></div>
+    <div class="form-row"><input id="edit-event-date" type="date" /></div>
+    <div class="form-row"><input id="edit-event-place" placeholder="Lugar" /></div>
+    <div class="form-row">
+      <select id="edit-event-type">
+        <option value="">Tipo</option><option>Culto</option><option>Concierto</option>
+        <option>Ensayo especial</option><option>Actividad</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-event')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEventEdit()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
 
-    songs = rows.map(row => {
-      const [name, link, tono, tipo, ra] = row.split(",");
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, updateDoc,
+    doc, onSnapshot, setDoc, getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-      return {
-        name,
-        link,
-        tono,
-        tipo: (tipo || "").trim() === "1" ? "lenta" :
-              (tipo || "").trim() === "2" ? "rapida" : "",
-        ra: (ra || "").trim() === "1"
-      };
-    }).filter(s => s.name);
+  const firebaseConfig = {
+    apiKey: "AIzaSyD1swPIz1cra63Ih4QQTk9wVOZnQJj_eYc",
+    authDomain: "projectp-8681f.firebaseapp.com",
+    projectId: "projectp-8681f",
+    storageBucket: "projectp-8681f.firebasestorage.app",
+    messagingSenderId: "590728614696",
+    appId: "1:590728614696:web:14397604795d39b9d4361d"
+  };
 
-    applyFilters();
-  });
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-function getYouTubeID(url) {
-  const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
-  const match = url.match(regExp);
-  return match ? match[1] : null;
-}
+  let currentRepeSongs = [];
+  let allEvents = [];
+  let allRepes = [];
+  let allMembers = [];
+  let allSongs = [];
+  let allCultos = {};
 
-function getThumbnail(url) {
-  const id = getYouTubeID(url);
-  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
-}
+  const ROLE_CONFIG = {
+    VOICE: { label: '🎤 VOICE', cls: 'role-VOICE' },
+    GA:    { label: '🎸 GA',    cls: 'role-GA' },
+    GE:    { label: '⚡ GE',    cls: 'role-GE' },
+    BASS:  { label: '🎸 BASS',  cls: 'role-BASS' },
+    PIANO: { label: '🎹 PIANO', cls: 'role-PIANO' },
+    DRUM:  { label: '🥁 DRUM',  cls: 'role-DRUM' },
+    Otro:  { label: '🎵 Otro',  cls: 'role-OTHER' },
+  };
+  function getRoleConfig(role) { return ROLE_CONFIG[role] || { label: role || 'Sin rol', cls: 'role-OTHER' }; }
 
-function render(data) {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+  let cultoState = { pool: [], sabado: [], domingo: [] };
+  let draggedMemberId = null;
+  let draggedFromZone = null;
 
-  data.forEach((s, i) => {
-    list.innerHTML += `
-      <div class="card">
-        <img class="thumb" src="${getThumbnail(s.link)}">
-        <div class="info">
-          <div class="title">
-            ${currentFilter === "semanal" ? (i + 1) + ". " : ""}${s.name}
-          </div>
-          <div class="sub">
-            🎸 ${s.tono || "-"} | ${s.tipo}
-          </div>
+  // ══ CARRUSELES ══
+  function buildCarousels() {
+    const active = allMembers.filter(m => m.status === 'Activo');
+    if (!active.length) return;
+
+    // Duplicamos para loop infinito
+    const doubled = [...active, ...active];
+
+    // NAV carousel
+    const navTrack = document.getElementById('nav-carousel-track');
+    navTrack.innerHTML = doubled.map(m => {
+      const hasPhoto = m.photo && m.photo.trim();
+      const av = hasPhoto
+        ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'" /><div class="nav-pill-av" style="display:none">${m.name.charAt(0)}</div>`
+        : `<div class="nav-pill-av">${m.name.charAt(0)}</div>`;
+      const rc = getRoleConfig(m.instrument);
+      return `<div class="nav-pill">
+        ${av}
+        <div class="nav-pill-info">
+          <span class="nav-pill-name">${m.name.split(' ')[0]}</span>
+          <span class="nav-pill-role">${rc.label}</span>
         </div>
-        <button class="play" onclick="window.open('${s.link}')">▶</button>
-      </div>
-    `;
-  });
-}
+      </div>`;
+    }).join('');
 
-function applyFilters() {
-  const text = document.getElementById("search").value.toLowerCase();
+    // Ajustar velocidad según cantidad
+    const navDuration = Math.max(12, active.length * 3);
+    navTrack.style.animationDuration = navDuration + 's';
 
-  let filtered = songs.filter(s =>
-    s.name.toLowerCase().includes(text) ||
-    (s.tono && s.tono.toLowerCase().includes(text))
-  );
+    // HERO carousel
+    const heroTrack = document.getElementById('hero-carousel-track');
+    heroTrack.innerHTML = doubled.map(m => {
+      const hasPhoto = m.photo && m.photo.trim();
+      const av = hasPhoto
+        ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'" /><div class="hero-av" style="display:none">${m.name.charAt(0)}</div>`
+        : `<div class="hero-av">${m.name.charAt(0)}</div>`;
+      const rc = getRoleConfig(m.instrument);
+      return `<div class="hero-member-card">
+        ${av}
+        <div class="hero-member-name">${m.name.split(' ')[0]}</div>
+        <div class="hero-member-role">${rc.label}</div>
+      </div>`;
+    }).join('');
 
-  if (currentFilter === "semanal") {
-    filtered = filtered.filter(s => s.ra);
-  } else if (currentFilter !== "all") {
-    filtered = filtered.filter(s => s.tipo === currentFilter);
+    const heroDuration = Math.max(16, active.length * 4);
+    heroTrack.style.animationDuration = heroDuration + 's';
   }
 
-  render(filtered);
-}
+  // ── NAV ──
+  window.showSection = (id, btn) => {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    if (id === 'culto') updateCultoRepeSelect();
+  };
 
-function setFilter(type, btn) {
-  currentFilter = type;
+  function showStatus(msg) {
+    const bar = document.getElementById('status-bar');
+    bar.textContent = msg; bar.style.display = 'block';
+    setTimeout(() => bar.style.display = 'none', 2500);
+  }
+  function emptyState(msg) { return `<div class="empty"><span>🎶</span>${msg}</div>`; }
+  window.openModal = (id) => document.getElementById(id).classList.add('open');
+  window.closeModal = (id) => document.getElementById(id).classList.remove('open');
 
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+  function getYoutubeId(url) {
+    if (!url) return null;
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
 
-  applyFilters();
-}
+  // ══ CULTO ══
+  function updateCultoRepeSelect() {
+    const sel = document.getElementById('culto-repe-select');
+    const prev = sel.value;
+    sel.innerHTML = '<option value="">— Selecciona un repe —</option>';
+    allRepes.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r.id;
+      const evName = r.eventName ? ` · ${r.eventName}` : '';
+      const dateStr = r.date ? ` (${r.date})` : '';
+      opt.textContent = `📋 ${r.name}${dateStr}${evName}`;
+      sel.appendChild(opt);
+    });
+    if (prev && allRepes.find(r => r.id === prev)) sel.value = prev;
+  }
+
+  window.onCultoRepeChange = () => {
+    const repeId = document.getElementById('culto-repe-select').value;
+    if (!repeId) {
+      document.getElementById('culto-repe-banner').classList.remove('visible');
+      cultoState.sabado = []; cultoState.domingo = [];
+      document.getElementById('sab-tag').style.display = 'none';
+      document.getElementById('dom-tag').style.display = 'none';
+      renderCultoZones(); return;
+    }
+    loadCultoForRepe(repeId);
+  };
+
+  function showCultoBanner(repe) {
+    const banner = document.getElementById('culto-repe-banner');
+    document.getElementById('culto-repe-banner-title').textContent = '📋 ' + repe.name;
+    const parts = [];
+    if (repe.date) parts.push('📅 ' + repe.date);
+    if (repe.eventName) parts.push('🎪 ' + repe.eventName);
+    if (repe.songs) parts.push(repe.songs.length + ' canciones');
+    document.getElementById('culto-repe-banner-meta').textContent = parts.join(' · ');
+    const songsEl = document.getElementById('culto-repe-banner-songs');
+    songsEl.innerHTML = repe.songs && repe.songs.length
+      ? repe.songs.map(s => `<span class="culto-repe-banner-song">🎵 ${s.name}</span>`).join('') : '';
+    banner.classList.add('visible');
+  }
+
+  async function loadCultoForRepe(repeId) {
+    const repe = allRepes.find(r => r.id === repeId);
+    if (repe) showCultoBanner(repe);
+    try {
+      const snap = await getDoc(doc(db, 'cultos', 'culto_repe_' + repeId));
+      if (snap.exists()) {
+        const data = snap.data();
+        cultoState.sabado = data.sabado || [];
+        cultoState.domingo = data.domingo || [];
+        document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
+        document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
+      } else {
+        cultoState.sabado = []; cultoState.domingo = [];
+        document.getElementById('sab-tag').style.display = 'none';
+        document.getElementById('dom-tag').style.display = 'none';
+      }
+    } catch(e) { cultoState.sabado = []; cultoState.domingo = []; }
+    renderCultoZones();
+  }
+
+  window.saveCulto = async () => {
+    const repeId = document.getElementById('culto-repe-select').value;
+    if (!repeId) return alert('Selecciona un repe primero');
+    const repe = allRepes.find(r => r.id === repeId);
+    try {
+      await setDoc(doc(db, 'cultos', 'culto_repe_' + repeId), {
+        repeId, repeName: repe ? repe.name : '',
+        repeDate: repe ? (repe.date || '') : '',
+        eventId: repe ? (repe.eventId || '') : '',
+        eventName: repe ? (repe.eventName || '') : '',
+        sabado: cultoState.sabado, domingo: cultoState.domingo,
+        updatedAt: Date.now()
+      });
+      document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
+      document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
+      allCultos['culto_repe_' + repeId] = { sabado: cultoState.sabado, domingo: cultoState.domingo };
+      renderHomeEvents();
+      showStatus('✅ Planificación guardada');
+    } catch(e) { alert('Error al guardar: ' + e.message); }
+  };
+
+  function getActiveMembers() { return allMembers.filter(m => m.status === 'Activo'); }
+
+  function memberAvatar(member, size = 34) {
+    const hasPhoto = member.photo && member.photo.trim();
+    return hasPhoto
+      ? `<img src="${member.photo}" alt="${member.name}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.style.display='none';this.nextSibling.style.display='flex'" /><div class="voice-avatar" style="display:none;width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0">${member.name.charAt(0)}</div>`
+      : `<div class="voice-avatar" style="width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0">${member.name.charAt(0)}</div>`;
+  }
+
+  function buildVoiceChip(member, zone) {
+    const rc = getRoleConfig(member.instrument);
+    let dayBadges = '';
+    if (zone === 'pool') {
+      const inSab = cultoState.sabado.includes(member.id);
+      const inDom = cultoState.domingo.includes(member.id);
+      if (inSab || inDom) {
+        dayBadges = `<div class="voice-chip-badges">
+          ${inSab ? '<span class="day-badge day-badge-sab">⛪ Sáb</span>' : ''}
+          ${inDom ? '<span class="day-badge day-badge-dom">☀️ Dom</span>' : ''}
+        </div>`;
+      }
+    }
+    return `
+      <div class="voice-chip" id="chip-${zone}-${member.id}"
+        draggable="true"
+        ondragstart="onDragStart(event,'${member.id}','${zone}')"
+        ondragend="onDragEnd(event)">
+        ${memberAvatar(member, 34)}
+        <div class="voice-chip-info">
+          <div class="voice-chip-name">${member.name}</div>
+          <div class="voice-chip-role"><span class="role-badge ${rc.cls}">${rc.label}</span></div>
+          ${dayBadges}
+        </div>
+        ${zone !== 'pool' ? `<button class="voice-chip-remove" onclick="returnToPool('${member.id}','${zone}')">✕</button>` : ''}
+      </div>`;
+  }
+
+  function renderCultoSummary() {
+    const activeMembers = getActiveMembers();
+    ['sabado','domingo'].forEach(zone => {
+      const key = zone === 'sabado' ? 'sab' : 'dom';
+      const ids = cultoState[zone];
+      const members = ids.map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
+      document.getElementById(`sum-${key}-count`).textContent = members.length;
+      const chipsEl = document.getElementById(`sum-${key}-chips`);
+      if (members.length === 0) {
+        chipsEl.innerHTML = `<div class="culto-summary-empty">Sin asignaciones aún</div>`;
+      } else {
+        chipsEl.innerHTML = members.map(m => {
+          const hasPhoto = m.photo && m.photo.trim();
+          const av = hasPhoto
+            ? `<img src="${m.photo}" alt="${m.name}" style="width:20px;height:20px;border-radius:50%;object-fit:cover" />`
+            : `<div class="sum-avatar" style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.3);font-size:0.6rem;color:white;font-weight:800">${m.name.charAt(0)}</div>`;
+          return `<div class="culto-summary-chip">${av}${m.name.split(' ')[0]}</div>`;
+        }).join('');
+      }
+    });
+  }
+
+  function renderCultoZones() {
+    const activeMembers = getActiveMembers();
+    document.getElementById('pool-count').textContent = activeMembers.length;
+    document.getElementById('sab-count').textContent = cultoState.sabado.length;
+    document.getElementById('dom-count').textContent = cultoState.domingo.length;
+
+    const poolZone = document.getElementById('pool-zone');
+    poolZone.querySelectorAll('.voice-chip, .role-group').forEach(c => c.remove());
+    const poolEmpty = document.getElementById('pool-empty');
+    if (activeMembers.length === 0) {
+      poolEmpty.style.display = 'block';
+    } else {
+      poolEmpty.style.display = 'none';
+      const roleOrder = ['VOICE','GA','GE','BASS','PIANO','DRUM','Otro'];
+      const grouped = {};
+      activeMembers.forEach(m => {
+        const role = m.instrument || 'Otro';
+        if (!grouped[role]) grouped[role] = [];
+        grouped[role].push(m);
+      });
+      roleOrder.forEach(role => {
+        if (!grouped[role] || !grouped[role].length) return;
+        const rc = getRoleConfig(role);
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'role-group';
+        groupDiv.innerHTML = `<div class="role-group-label">${rc.label}</div>` +
+          grouped[role].map(m => buildVoiceChip(m, 'pool')).join('');
+        poolZone.appendChild(groupDiv);
+      });
+    }
+
+    ['sabado','domingo'].forEach(zone => {
+      const zoneEl = document.getElementById(zone + '-zone');
+      const emptyEl = document.getElementById(zone === 'sabado' ? 'sab-empty' : 'dom-empty');
+      const ids = cultoState[zone];
+      const members = ids.map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
+      zoneEl.querySelectorAll('.voice-chip').forEach(c => c.remove());
+      if (members.length === 0) {
+        emptyEl.style.display = 'block';
+      } else {
+        emptyEl.style.display = 'none';
+        members.forEach(m => zoneEl.insertAdjacentHTML('beforeend', buildVoiceChip(m, zone)));
+      }
+    });
+
+    renderCultoSummary();
+  }
+
+  window.onDragStart = (e, memberId, fromZone) => {
+    draggedMemberId = memberId; draggedFromZone = fromZone;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => {
+      document.querySelectorAll(`[id^="chip-"][id$="-${memberId}"]`).forEach(c => c.classList.add('dragging'));
+    }, 0);
+  };
+  window.onDragEnd = () => { document.querySelectorAll('.voice-chip').forEach(c => c.classList.remove('dragging')); };
+  window.onDragOver = (e) => { e.preventDefault(); e.currentTarget.classList.add('drag-over'); };
+  window.onDragLeave = (e) => { e.currentTarget.classList.remove('drag-over'); };
+  window.onDrop = (e, toZone) => {
+    e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+    if (!draggedMemberId) return;
+    if (draggedFromZone !== 'pool') {
+      cultoState[draggedFromZone] = cultoState[draggedFromZone].filter(id => id !== draggedMemberId);
+    }
+    if (toZone !== 'pool') {
+      if (!cultoState[toZone].includes(draggedMemberId)) cultoState[toZone].push(draggedMemberId);
+    }
+    draggedMemberId = null; draggedFromZone = null;
+    renderCultoZones();
+  };
+  window.returnToPool = (memberId, fromZone) => {
+    cultoState[fromZone] = cultoState[fromZone].filter(id => id !== memberId);
+    renderCultoZones();
+  };
+
+  // ══ CANCIONES ══
+  window.addSong = async () => {
+    const title = document.getElementById('song-title').value.trim();
+    const artist = document.getElementById('song-artist').value.trim();
+    const key = document.getElementById('song-key').value.trim();
+    const genre = document.getElementById('song-genre').value;
+    const youtube = document.getElementById('song-youtube').value.trim();
+    if (!title) return alert('Escribe el nombre de la canción');
+    try {
+      await addDoc(collection(db, 'songs'), { title, artist, key, genre, youtube, createdAt: Date.now() });
+      ['song-title','song-artist','song-key','song-youtube'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('song-genre').value = '';
+      showStatus('✅ Canción guardada');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditSong = (id, title, artist, key, genre, youtube) => {
+    document.getElementById('edit-song-id').value = id;
+    document.getElementById('edit-song-title').value = title;
+    document.getElementById('edit-song-artist').value = artist;
+    document.getElementById('edit-song-key').value = key;
+    document.getElementById('edit-song-genre').value = genre;
+    document.getElementById('edit-song-youtube').value = youtube;
+    openModal('modal-song');
+  };
+  window.saveSongEdit = async () => {
+    const id = document.getElementById('edit-song-id').value;
+    const title = document.getElementById('edit-song-title').value.trim();
+    const artist = document.getElementById('edit-song-artist').value.trim();
+    const key = document.getElementById('edit-song-key').value.trim();
+    const genre = document.getElementById('edit-song-genre').value;
+    const youtube = document.getElementById('edit-song-youtube').value.trim();
+    if (!title) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'songs', id), { title, artist, key, genre, youtube });
+      closeModal('modal-song'); showStatus('✏️ Canción actualizada');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteSong = async (id) => {
+    if (!confirm('¿Eliminar esta canción?')) return;
+    await deleteDoc(doc(db, 'songs', id)); showStatus('🗑️ Canción eliminada');
+  };
+
+  onSnapshot(collection(db, 'songs'), (snap) => {
+    allSongs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const list = document.getElementById('songs-list');
+    const sel = document.getElementById('repe-song-select');
+    sel.innerHTML = '<option value="">Seleccionar canción...</option>';
+    allSongs.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id; opt.textContent = s.title + (s.artist ? ` — ${s.artist}` : '');
+      sel.appendChild(opt);
+    });
+    if (!allSongs.length) { list.innerHTML = emptyState('Aún no hay canciones'); return; }
+    list.innerHTML = allSongs.map(s => {
+      const ytId = getYoutubeId(s.youtube);
+      const thumb = ytId
+        ? `<a href="${s.youtube}" target="_blank"><img class="song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
+        : `<div class="song-thumb-placeholder">🎵</div>`;
+      const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank">▶ YouTube</a>` : '';
+      return `
+        <div class="song-card">
+          ${thumb}
+          <div class="song-info">
+            <div class="card-title">${s.title}${s.genre ? ` <span class="badge badge-orange">${s.genre}</span>` : ''}</div>
+            <div class="card-sub">${s.artist || 'Sin artista'}${s.key ? ' · ' + s.key : ''}</div>
+            ${ytBtn}
+          </div>
+          <div class="card-actions">
+            <button class="btn-icon" onclick="openEditSong('${s.id}',${JSON.stringify(s.title)},${JSON.stringify(s.artist||'')},${JSON.stringify(s.key||'')},${JSON.stringify(s.genre||'')},${JSON.stringify(s.youtube||'')})">✏️</button>
+            <button class="btn-icon" onclick="deleteSong('${s.id}')">🗑️</button>
+          </div>
+        </div>`;
+    }).join('');
+  });
+
+  // ══ REPES ══
+  function updateEventSelects() {
+    ['repe-event-select','edit-repe-event'].forEach(selId => {
+      const sel = document.getElementById(selId);
+      if (!sel) return;
+      const prev = sel.value;
+      sel.innerHTML = '<option value="">Evento relacionado (opcional)</option>';
+      allEvents.forEach(ev => {
+        const opt = document.createElement('option');
+        opt.value = ev.id; opt.textContent = ev.name + (ev.date ? ' — ' + ev.date : '');
+        sel.appendChild(opt);
+      });
+      sel.value = prev;
+    });
+  }
+  window.addSongToRepe = () => {
+    const sel = document.getElementById('repe-song-select');
+    const id = sel.value; const name = sel.options[sel.selectedIndex].text;
+    if (!id) return showStatus('Selecciona una canción primero');
+    if (currentRepeSongs.find(s => s.id === id)) return showStatus('Ya está en el repe');
+    currentRepeSongs.push({ id, name }); renderRepeSongs();
+  };
+  function renderRepeSongs() {
+    const container = document.getElementById('repe-selected-songs');
+    if (!currentRepeSongs.length) { container.innerHTML = ''; return; }
+    container.innerHTML = currentRepeSongs.map((s, i) => `
+      <div class="repe-song-item">
+        <div class="song-num">${i + 1}</div>
+        <span style="flex:1">${s.name}</span>
+        <button class="btn-icon" onclick="removeRepeSong(${i})">✕</button>
+      </div>`).join('');
+  }
+  window.removeRepeSong = (i) => { currentRepeSongs.splice(i, 1); renderRepeSongs(); };
+  window.saveRepe = async () => {
+    const name = document.getElementById('repe-name').value.trim();
+    const date = document.getElementById('repe-date').value;
+    const evSel = document.getElementById('repe-event-select');
+    const eventId = evSel.value;
+    const eventName = eventId ? evSel.options[evSel.selectedIndex].textContent : '';
+    if (!name) return alert('Ponle nombre al repe');
+    if (!currentRepeSongs.length) return alert('Agrega al menos una canción');
+    try {
+      await addDoc(collection(db, 'repes'), { name, date, eventId, eventName, songs: currentRepeSongs, createdAt: Date.now() });
+      document.getElementById('repe-name').value = '';
+      document.getElementById('repe-date').value = '';
+      document.getElementById('repe-event-select').value = '';
+      currentRepeSongs = []; renderRepeSongs();
+      showStatus('✅ Repe guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditRepe = (id, name, date, eventId) => {
+    document.getElementById('edit-repe-id').value = id;
+    document.getElementById('edit-repe-name').value = name;
+    document.getElementById('edit-repe-date').value = date || '';
+    updateEventSelects();
+    document.getElementById('edit-repe-event').value = eventId || '';
+    openModal('modal-repe');
+  };
+  window.saveRepeEdit = async () => {
+    const id = document.getElementById('edit-repe-id').value;
+    const name = document.getElementById('edit-repe-name').value.trim();
+    const date = document.getElementById('edit-repe-date').value;
+    const evSel = document.getElementById('edit-repe-event');
+    const eventId = evSel.value;
+    const eventName = eventId ? evSel.options[evSel.selectedIndex].textContent : '';
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'repes', id), { name, date, eventId, eventName });
+      closeModal('modal-repe'); showStatus('✏️ Repe actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteRepe = async (id) => {
+    if (!confirm('¿Eliminar este repe?')) return;
+    await deleteDoc(doc(db, 'repes', id)); showStatus('🗑️ Repe eliminado');
+  };
+
+  onSnapshot(collection(db, 'repes'), (snap) => {
+    allRepes = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    const list = document.getElementById('repes-list');
+    if (!allRepes.length) { list.innerHTML = emptyState('Aún no hay repes'); renderHomeEvents(); updateCultoRepeSelect(); return; }
+    list.innerHTML = allRepes.map(r => `
+      <div class="card" style="flex-direction:column; align-items:flex-start;">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+          <div>
+            <div class="card-title">📋 ${r.name}</div>
+            <div class="card-sub">${r.date || 'Sin fecha'} · ${r.songs.length} canciones${r.eventName ? ' · 📅 ' + r.eventName : ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-icon" onclick="openEditRepe('${r.id}',${JSON.stringify(r.name)},${JSON.stringify(r.date||'')},${JSON.stringify(r.eventId||'')})">✏️</button>
+            <button class="btn-icon" onclick="deleteRepe('${r.id}')">🗑️</button>
+          </div>
+        </div>
+        <div class="repe-songs" style="width:100%; margin-top:8px;">
+          ${r.songs.map((s, i) => `
+            <div class="repe-song-item">
+              <div class="song-num">${i + 1}</div>
+              <span>${s.name}</span>
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+    updateCultoRepeSelect();
+    renderHomeEvents();
+  });
+
+  // ══ INTEGRANTES ══
+  window.addMember = async () => {
+    const name = document.getElementById('member-name').value.trim();
+    const instrument = document.getElementById('member-instrument').value;
+    const phone = document.getElementById('member-phone').value.trim();
+    const status = document.getElementById('member-status').value;
+    const photo = document.getElementById('member-photo').value.trim();
+    if (!name) return alert('Escribe el nombre del integrante');
+    if (!instrument) return alert('Selecciona un instrumento / rol');
+    try {
+      await addDoc(collection(db, 'members'), { name, instrument, phone, status, photo, createdAt: Date.now() });
+      ['member-name','member-phone','member-photo'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('member-instrument').value = '';
+      showStatus('✅ Integrante guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditMember = (id, name, instrument, phone, status, photo) => {
+    document.getElementById('edit-member-id').value = id;
+    document.getElementById('edit-member-name').value = name;
+    document.getElementById('edit-member-instrument').value = instrument;
+    document.getElementById('edit-member-phone').value = phone;
+    document.getElementById('edit-member-status').value = status;
+    document.getElementById('edit-member-photo').value = photo || '';
+    openModal('modal-member');
+  };
+  window.saveMemberEdit = async () => {
+    const id = document.getElementById('edit-member-id').value;
+    const name = document.getElementById('edit-member-name').value.trim();
+    const instrument = document.getElementById('edit-member-instrument').value;
+    const phone = document.getElementById('edit-member-phone').value.trim();
+    const status = document.getElementById('edit-member-status').value;
+    const photo = document.getElementById('edit-member-photo').value.trim();
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'members', id), { name, instrument, phone, status, photo });
+      closeModal('modal-member'); showStatus('✏️ Integrante actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteMember = async (id) => {
+    if (!confirm('¿Eliminar este integrante?')) return;
+    await deleteDoc(doc(db, 'members', id)); showStatus('🗑️ Integrante eliminado');
+  };
+
+  onSnapshot(collection(db, 'members'), (snap) => {
+    allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const list = document.getElementById('members-list');
+    if (!allMembers.length) { list.innerHTML = emptyState('Aún no hay integrantes'); buildCarousels(); return; }
+    const roleOrder = ['VOICE','GA','GE','BASS','PIANO','DRUM','Otro'];
+    const grouped = {};
+    allMembers.forEach(m => {
+      const role = m.instrument || 'Otro';
+      if (!grouped[role]) grouped[role] = [];
+      grouped[role].push(m);
+    });
+    let html = '';
+    roleOrder.forEach(role => {
+      if (!grouped[role] || !grouped[role].length) return;
+      const rc = getRoleConfig(role);
+      html += `<div style="margin-bottom:4px;margin-top:14px;font-size:0.72rem;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;">${rc.label}</div>`;
+      grouped[role].forEach(m => {
+        const hasPhoto = m.photo && m.photo.trim();
+        const avatar = hasPhoto
+          ? `<img class="member-avatar-big" src="${m.photo}" alt="${m.name}" onerror="this.outerHTML='<div class=member-avatar-placeholder>${m.name.charAt(0)}</div>'" />`
+          : `<div class="member-avatar-placeholder">${m.name.charAt(0)}</div>`;
+        html += `
+          <div class="member-card">
+            ${avatar}
+            <div class="card-info">
+              <div class="card-title">${m.name}
+                <span class="badge ${m.status === 'Activo' ? 'badge-green' : 'badge-orange'}">${m.status}</span>
+                <span class="role-badge ${rc.cls}">${rc.label}</span>
+              </div>
+              <div class="card-sub">${m.phone ? '📞 ' + m.phone : 'Sin teléfono'}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn-icon" onclick="openEditMember('${m.id}',${JSON.stringify(m.name)},${JSON.stringify(m.instrument||'')},${JSON.stringify(m.phone||'')},${JSON.stringify(m.status||'Activo')},${JSON.stringify(m.photo||'')})">✏️</button>
+              <button class="btn-icon" onclick="deleteMember('${m.id}')">🗑️</button>
+            </div>
+          </div>`;
+      });
+    });
+    list.innerHTML = html;
+
+    // Rebuild carousels whenever members change
+    buildCarousels();
+
+    if (document.getElementById('culto').classList.contains('active')) renderCultoZones();
+  });
+
+  // ══ EVENTOS ══
+  window.addEvent = async () => {
+    const name = document.getElementById('event-name').value.trim();
+    const date = document.getElementById('event-date').value;
+    const place = document.getElementById('event-place').value.trim();
+    const type = document.getElementById('event-type').value;
+    if (!name) return alert('Escribe el nombre del evento');
+    try {
+      await addDoc(collection(db, 'events'), { name, date, place, type, createdAt: Date.now() });
+      ['event-name','event-date','event-place'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('event-type').value = '';
+      showStatus('✅ Evento guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditEvent = (id, name, date, place, type) => {
+    document.getElementById('edit-event-id').value = id;
+    document.getElementById('edit-event-name').value = name;
+    document.getElementById('edit-event-date').value = date || '';
+    document.getElementById('edit-event-place').value = place || '';
+    document.getElementById('edit-event-type').value = type || '';
+    openModal('modal-event');
+  };
+  window.saveEventEdit = async () => {
+    const id = document.getElementById('edit-event-id').value;
+    const name = document.getElementById('edit-event-name').value.trim();
+    const date = document.getElementById('edit-event-date').value;
+    const place = document.getElementById('edit-event-place').value.trim();
+    const type = document.getElementById('edit-event-type').value;
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'events', id), { name, date, place, type });
+      closeModal('modal-event'); showStatus('✏️ Evento actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteEvent = async (id) => {
+    if (!confirm('¿Eliminar este evento?')) return;
+    await deleteDoc(doc(db, 'events', id)); showStatus('🗑️ Evento eliminado');
+  };
+
+  // ══ HOME EVENTS con "Quién canta cada día" ══
+  async function loadAllCultos() {
+    // Carga cultos para todos los repes que tienen eventId
+    const promises = allRepes.map(async r => {
+      try {
+        const snap = await getDoc(doc(db, 'cultos', 'culto_repe_' + r.id));
+        if (snap.exists()) allCultos['culto_repe_' + r.id] = snap.data();
+      } catch(e) {}
+    });
+    await Promise.all(promises);
+    renderHomeEvents();
+  }
+
+  function buildDaySection(repeId) {
+    const cultoData = allCultos['culto_repe_' + repeId];
+    if (!cultoData) return '';
+    const sabIds = cultoData.sabado || [];
+    const domIds = cultoData.domingo || [];
+    if (!sabIds.length && !domIds.length) return '';
+
+    function memberRow(id) {
+      const m = allMembers.find(x => x.id === id);
+      if (!m) return '';
+      const rc = getRoleConfig(m.instrument);
+      const hasPhoto = m.photo && m.photo.trim();
+      const av = hasPhoto
+        ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'" /><div class="day-av" style="display:none">${m.name.charAt(0)}</div>`
+        : `<div class="day-av">${m.name.charAt(0)}</div>`;
+      return `<div class="culto-day-member">
+        ${av}
+        <div class="culto-day-member-info">
+          <div class="culto-day-member-name">${m.name}</div>
+          <div class="culto-day-member-role">${rc.label}</div>
+        </div>
+      </div>`;
+    }
+
+    return `
+      <div class="culto-days-section">
+        <div class="culto-days-label">🎤 Quién canta cada día</div>
+        <div class="culto-days-grid">
+          <div class="culto-day-card sab">
+            <div class="culto-day-title">⛪ Sábado</div>
+            <div class="culto-day-members">
+              ${sabIds.length ? sabIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}
+            </div>
+          </div>
+          <div class="culto-day-card dom">
+            <div class="culto-day-title">☀️ Domingo</div>
+            <div class="culto-day-members">
+              ${domIds.length ? domIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderHomeEvents() {
+    const homeList = document.getElementById('home-events-list');
+    if (!homeList) return;
+    if (!allEvents.length) { homeList.innerHTML = emptyState('Aún no hay eventos programados'); return; }
+    homeList.innerHTML = allEvents.map(ev => {
+      const relatedRepes = allRepes.filter(r => r.eventId === ev.id);
+      const repesHtml = relatedRepes.length
+        ? relatedRepes.map(r => {
+            const songsHtml = r.songs && r.songs.length
+              ? `<div class="home-repe-songs">
+                  <div style="font-size:0.7rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">🎵 Canciones</div>
+                  ${r.songs.map((s, i) => {
+                    const songData = allSongs.find(sg => sg.id === s.id);
+                    const ytId = songData ? getYoutubeId(songData.youtube) : null;
+                    const thumb = ytId
+                      ? `<a href="${songData.youtube}" target="_blank"><img class="home-repe-song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
+                      : '';
+                    const nameEl = ytId && songData
+                      ? `<a href="${songData.youtube}" target="_blank" style="color:var(--dark);text-decoration:none;font-weight:600;">${s.name}</a>`
+                      : `<span>${s.name}</span>`;
+                    return `<div class="home-repe-song"><div class="home-repe-song-num">${i+1}</div>${thumb}${nameEl}</div>`;
+                  }).join('')}
+                </div>`
+              : '';
+            return `
+              <div class="home-repe">
+                <div class="home-repe-title">📋 ${r.name}</div>
+                <div class="home-repe-meta">${r.songs ? r.songs.length : 0} canciones${r.date ? ' · ' + r.date : ''}</div>
+                ${songsHtml}
+                ${buildDaySection(r.id)}
+              </div>`;
+          }).join('')
+        : `<div class="home-repe" style="color:#aaa;font-size:0.82rem">✨ Sin repes asociados aún.</div>`;
+      return `
+        <div class="event-home-card">
+          <div class="event-home-head">
+            <div>
+              <div class="event-home-title">📅 ${ev.name}</div>
+              <div class="event-home-date">${ev.date || 'Fecha por definir'}${ev.place ? ' · 📍 ' + ev.place : ''}</div>
+            </div>
+            ${ev.type ? `<span class="badge badge-orange">${ev.type}</span>` : ''}
+          </div>
+          <div class="event-repes-title">📋 Repes para este evento</div>
+          ${repesHtml}
+        </div>`;
+    }).join('');
+  }
+
+  onSnapshot(collection(db, 'events'), (snap) => {
+    allEvents = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    const list = document.getElementById('events-list');
+    if (!allEvents.length) {
+      list.innerHTML = emptyState('Aún no hay eventos');
+      updateEventSelects(); renderHomeEvents(); return;
+    }
+    list.innerHTML = allEvents.map(ev => `
+      <div class="card">
+        <div class="card-info">
+          <div class="card-title">${ev.name}${ev.type ? ` <span class="badge badge-orange">${ev.type}</span>` : ''}</div>
+          <div class="card-sub">${ev.date || 'Sin fecha'}${ev.place ? ' · 📍 ' + ev.place : ''}</div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon" onclick="openEditEvent('${ev.id}',${JSON.stringify(ev.name)},${JSON.stringify(ev.date||'')},${JSON.stringify(ev.place||'')},${JSON.stringify(ev.type||'')})">✏️</button>
+          <button class="btn-icon" onclick="deleteEvent('${ev.id}')">🗑️</button>
+        </div>
+      </div>`).join('');
+    updateEventSelects();
+    loadAllCultos();
+  });
+
+  // Cargar cultos al inicio también cuando cambien los repes
+  onSnapshot(collection(db, 'cultos'), (snap) => {
+    snap.docs.forEach(d => { allCultos[d.id] = d.data(); });
+    renderHomeEvents();
+  });
 </script>
-
 </body>
 </html>
