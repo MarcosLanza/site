@@ -659,6 +659,7 @@
         <button class="btn-save-culto" onclick="saveCulto()"><i class="fas fa-save"></i> Guardar</button>
       </div>
     </div>
+  </div>
 
     <div class="culto-repe-banner" id="culto-repe-banner">
       <div class="culto-repe-banner-title" id="culto-repe-banner-title"></div>
@@ -1022,21 +1023,29 @@
     allRepes.forEach(r => {
       const opt = document.createElement('option');
       opt.value = r.id;
-      opt.textContent = `<i class="fas fa-clipboard-list"></i> ${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
+      // Quitamos los <i>, dejamos solo el texto limpio
+      opt.textContent = `${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
       sel.appendChild(opt);
     });
     if (prev && allRepes.find(r => r.id === prev)) sel.value = prev;
   }
 
   window.onCultoRepeChange = () => {
-    const repeId = document.getElementById('culto-repe-select').value;
+    const sel = document.getElementById('culto-repe-select');
+    const repeId = sel.value;
+    const banner = document.getElementById('culto-repe-banner');
+
     if (!repeId) {
-      document.getElementById('culto-repe-banner').classList.remove('visible');
-      cultoState.sabado = []; cultoState.domingo = [];
-      document.getElementById('sab-tag').style.display = 'none';
-      document.getElementById('dom-tag').style.display = 'none';
-      renderCultoZones(); return;
+      banner.classList.remove('visible');
+      // ... resto de tu lógica de limpiar ...
+      return;
     }
+
+    // AQUÍ está el truco: Ponemos el icono en el banner, NO en la opción.
+    const textoSeleccionado = sel.options[sel.selectedIndex].text;
+    banner.innerHTML = `<i class="fas fa-clipboard-list"></i> ${textoSeleccionado}`;
+    banner.classList.add('visible');
+
     loadCultoForRepe(repeId);
   };
 
@@ -1532,7 +1541,7 @@
     }
 
     return `<div class="culto-days-section">
-      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién canta cada día</div>
+      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién está cada día</div>
       <div class="culto-days-grid">
         <div class="culto-day-card sab">
           <div class="culto-day-title"><i class="fas fa-church"></i> Sábado</div>
