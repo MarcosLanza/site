@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Banda Trinidad</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #4A5D45; --green-light: #6b8c64; --green-dark: #2d3d2a;
+      --orange: #F7941D; --orange-light: #fbb04e; --orange-dark: #c96a00;
+      --cream: #F2EFE9; --dark: #1e2b1c; --dark2: #2c3a29;
+      --card-bg: #ffffff; --surface: #f7f5f0; --border: #e8e4dc;
+      --text-muted: #8a8a8a; --text-light: rgba(255,255,255,0.7);
+      --shadow-xs: 0 1px 4px rgba(44,58,41,0.06);
+      --shadow-sm: 0 2px 10px rgba(44,58,41,0.09);
+      --shadow-md: 0 6px 24px rgba(44,58,41,0.14);
+      --shadow-lg: 0 16px 48px rgba(44,58,41,0.2);
+      --shadow-glow: 0 0 0 3px rgba(247,148,29,0.18);
+      --radius: 18px; --radius-sm: 12px; --radius-xs: 8px;
+      --nav-h: 56px; --bottom-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--cream); color: var(--dark);
+      min-height: 100vh; min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════
+       TOP NAV (solo logo + carrusel en desktop)
+    ══════════════════════════════════════ */
+    .top-nav {
+      background: var(--dark);
+      height: var(--nav-h);
+      display: flex; align-items: center;
+      padding: 0 16px; gap: 12px;
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .nav-logo {
+      color: var(--orange); font-size: 1rem; font-weight: 900;
+      letter-spacing: 1.5px; white-space: nowrap; flex-shrink: 0;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-logo-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange); animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+    /* Carrusel nav */
+    .nav-carousel-wrap {
+      flex: 1; overflow: hidden; min-width: 0;
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+    .nav-carousel-track {
+      display: flex; gap: 8px; align-items: center;
+      animation: navScroll 22s linear infinite; width: max-content;
+    }
+    .nav-carousel-track:hover { animation-play-state: paused; }
+    @keyframes navScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .nav-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 30px; padding: 4px 10px 4px 4px; white-space: nowrap; flex-shrink: 0;
+      transition: all 0.2s; cursor: default;
+    }
+    .nav-pill:hover { background: rgba(247,148,29,0.15); border-color: rgba(247,148,29,0.4); }
+    .nav-pill-av {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: white; font-weight: 800; overflow: hidden;
+    }
+    .nav-pill-av img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-pill-name { font-size: 0.7rem; color: rgba(255,255,255,0.88); font-weight: 700; }
+    .nav-pill-role { font-size: 0.56rem; color: rgba(255,255,255,0.38); }
+
+    /* Tabs desktop en nav */
+    .nav-tabs-desktop {
+      display: flex; gap: 2px; flex-shrink: 0;
+    }
+    .nav-tabs-desktop button {
+      background: transparent; border: none;
+      color: rgba(255,255,255,0.5); padding: 7px 12px; border-radius: 10px;
+      cursor: pointer; font-size: 0.73rem; font-weight: 700; white-space: nowrap;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .nav-tabs-desktop button.active { background: var(--orange); color: white; }
+    .nav-tabs-desktop button:hover:not(.active) { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ══════════════════════════════════════
+       BOTTOM NAV (móvil)
+    ══════════════════════════════════════ */
+    .bottom-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--dark);
+      height: var(--bottom-h);
+      padding: 0 4px;
+      padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: 0 -2px 20px rgba(0,0,0,0.35);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .bottom-nav-inner {
+      display: flex; align-items: center; justify-content: space-around;
+      height: 100%;
+    }
+    .bnav-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      background: none; border: none; cursor: pointer; padding: 6px 10px;
+      border-radius: 14px; transition: all 0.2s; flex: 1; max-width: 72px;
+      font-family: inherit;
+    }
+    .bnav-btn .bnav-icon { font-size: 1.3rem; line-height: 1; transition: transform 0.2s; }
+    .bnav-btn .bnav-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.4); transition: color 0.2s; white-space: nowrap; }
+    .bnav-btn.active .bnav-icon { transform: scale(1.15); }
+    .bnav-btn.active .bnav-label { color: var(--orange); }
+    .bnav-btn.active { background: rgba(247,148,29,0.1); }
+
+    /* ══════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════ */
+    main {
+      max-width: 880px; margin: 0 auto;
+      padding: 20px 16px 100px;
+    }
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+    /* ══════════════════════════════════════
+       WELCOME HERO
+    ══════════════════════════════════════ */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--dark) 0%, #2d4a2a 55%, var(--green) 100%);
+      border-radius: 24px; padding: 22px 20px 18px;
+      margin-bottom: 22px; position: relative; overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .welcome-card::before {
+      content: ''; position: absolute; top: -50px; right: -50px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(247,148,29,0.15) 0%, transparent 70%);
+    }
+    .welcome-card::after {
+      content: ''; position: absolute; bottom: -30px; left: -30px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    }
+    .welcome-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .welcome-label { font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .welcome-card h1 { color: var(--orange); font-size: 1.6rem; font-weight: 900; margin: 6px 0 4px; line-height: 1.1; }
+    .welcome-card p { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+    .welcome-icon { font-size: 2.8rem; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(247,148,29,0.3)); }
+
+    /* Hero carousel */
+    .hero-carousel-wrap {
+      overflow: hidden; margin-top: 18px; position: relative;
+      mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+    .hero-carousel-track {
+      display: flex; gap: 10px; animation: heroScroll 26s linear infinite; width: max-content;
+    }
+    .hero-carousel-track:hover { animation-play-state: paused; }
+    @keyframes heroScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .hero-member-card {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 10px 12px; flex-shrink: 0; min-width: 72px;
+      transition: all 0.2s; cursor: default;
+    }
+    .hero-member-card:hover { background: rgba(247,148,29,0.18); transform: translateY(-3px); border-color: rgba(247,148,29,0.4); }
+    .hero-av {
+      width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+      border: 2px solid rgba(247,148,29,0.45);
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: white; font-weight: 800; flex-shrink: 0;
+    }
+    .hero-av img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-member-name { font-size: 0.65rem; color: rgba(255,255,255,0.9); font-weight: 700; text-align: center; max-width: 64px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hero-member-role { font-size: 0.55rem; color: rgba(255,255,255,0.4); text-align: center; }
+
+    /* ══════════════════════════════════════
+       CARDS
+    ══════════════════════════════════════ */
+    .card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 16px;
+      margin-bottom: 10px; box-shadow: var(--shadow-xs);
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid var(--border); transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .card:hover { box-shadow: var(--shadow-sm); }
+    .card-info { flex: 1; min-width: 0; }
+    .card-title { font-weight: 700; font-size: 0.92rem; }
+    .card-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+    .card-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .btn-icon {
+      background: none; border: none; cursor: pointer; font-size: 1rem;
+      padding: 7px 9px; border-radius: 10px; transition: background 0.2s;
+      line-height: 1;
+    }
+    .btn-icon:hover { background: var(--surface); }
+
+    /* ══════════════════════════════════════
+       FORMS
+    ══════════════════════════════════════ */
+    .form-box {
+      background: var(--card-bg); border-radius: var(--radius); padding: 18px;
+      margin-bottom: 20px; box-shadow: var(--shadow-xs); border: 1px solid var(--border);
+    }
+    .form-box h3 {
+      color: var(--green); margin-bottom: 14px; font-size: 0.78rem;
+      font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .form-row input, .form-row select, .form-row textarea {
+      flex: 1; min-width: 140px; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 0.86rem; outline: none; transition: all 0.2s; font-family: inherit;
+      background: var(--surface); color: var(--dark); -webkit-appearance: none;
+    }
+    .form-row input:focus, .form-row select:focus {
+      border-color: var(--orange); background: white; box-shadow: var(--shadow-glow);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: white; border: none; padding: 11px 22px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 0.86rem; font-weight: 800; transition: all 0.2s;
+      font-family: inherit; box-shadow: 0 4px 14px rgba(247,148,29,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(247,148,29,0.4); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ══════════════════════════════════════
+       BADGES & ROLES
+    ══════════════════════════════════════ */
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; margin-left: 5px; }
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-orange { background: #fff3cd; color: #856404; }
+    .role-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.66rem; font-weight: 800; margin-left: 4px; }
+    .role-VOICE { background: #fce4ec; color: #880e4f; }
+    .role-GA { background: #e8f5e9; color: #1b5e20; }
+    .role-GE { background: #e3f2fd; color: #0d47a1; }
+    .role-BASS { background: #ede7f6; color: #4527a0; }
+    .role-PIANO { background: #fff8e1; color: #f57f17; }
+    .role-DRUM { background: #fbe9e7; color: #bf360c; }
+    .role-OTHER { background: #f5f5f5; color: #555; }
+
+    /* ══════════════════════════════════════
+       SONGS
+    ══════════════════════════════════════ */
+    .song-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 12px;
+      margin-bottom: 10px; box-shadow: var(--shadow-xs);
+      display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
+      transition: box-shadow 0.2s;
+    }
+    .song-card:hover { box-shadow: var(--shadow-sm); }
+    .song-thumb { width: 72px; height: 50px; border-radius: 10px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+    .song-thumb-placeholder {
+      width: 72px; height: 50px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .song-info { flex: 1; min-width: 0; }
+    .btn-yt {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #FF0000; color: white; border: none;
+      padding: 4px 10px; border-radius: 6px; font-size: 0.7rem;
+      font-weight: 700; cursor: pointer; text-decoration: none; margin-top: 5px;
+    }
+
+    /* ══════════════════════════════════════
+       REPE SONGS
+    ══════════════════════════════════════ */
+    .repe-songs { margin-top: 10px; }
+    .repe-song-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.86rem;
+    }
+    .repe-song-item:last-child { border-bottom: none; }
+    .song-num {
+      background: var(--orange); color: white; width: 22px; height: 22px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.66rem; font-weight: 800; flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       EMPTY STATE
+    ══════════════════════════════════════ */
+    .empty { text-align: center; color: #ccc; padding: 48px 0; font-size: 0.88rem; }
+    .empty span { font-size: 2.8rem; display: block; margin-bottom: 10px; }
+
+    /* ══════════════════════════════════════
+       STATUS BAR
+    ══════════════════════════════════════ */
+    #status-bar {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: var(--dark); color: white; padding: 10px 22px;
+      border-radius: 30px; font-size: 0.8rem; display: none;
+      box-shadow: var(--shadow-lg); z-index: 999; font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════════════
+       EVENT HOME CARD
+    ══════════════════════════════════════ */
+    .event-home-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 18px;
+      margin-bottom: 14px; border-left: 4px solid var(--orange);
+      box-shadow: var(--shadow-xs); border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .event-home-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .event-home-title { font-size: 1rem; font-weight: 800; }
+    .event-home-date { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+    .event-repes-title { font-size: 0.68rem; color: var(--green); font-weight: 800; margin-top: 14px; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .home-repe { background: var(--surface); border-radius: 14px; padding: 12px; margin-top: 8px; }
+    .home-repe-title { font-weight: 700; font-size: 0.86rem; }
+    .home-repe-meta { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
+    .home-repe-songs { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .home-repe-song { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; padding: 4px 0; }
+    .home-repe-song-num { background: var(--orange); color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; flex-shrink: 0; }
+    .home-repe-song-thumb { width: 38px; height: 26px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       CULTO SECTION
+    ══════════════════════════════════════ */
+    .culto-top {
+      background: linear-gradient(135deg, var(--dark) 0%, #2d4a2a 100%);
+      border-radius: 22px; padding: 20px; margin-bottom: 18px;
+      box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+    }
+    .culto-top::after {
+      content: '\f3a4'; position: absolute; right: 18px; top: 50%;
+      transform: translateY(-50%); font-size: 3.5rem; opacity: 0.1; pointer-events: none;
+      font-family: "Font Awesome 6 Free"; font-weight: 900; color: white;
+    }
+    .culto-top-title { color: var(--orange); font-size: 1.15rem; font-weight: 900; }
+    .culto-top-sub { color: rgba(255,255,255,0.55); font-size: 0.78rem; margin-top: 4px; }
+    .culto-repe-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .culto-repe-row select {
+      flex: 1; min-width: 180px; padding: 10px 14px;
+      border: 1.5px solid rgba(255,255,255,0.18); border-radius: 12px;
+      font-size: 0.86rem; outline: none; font-family: inherit;
+      background: rgba(255,255,255,0.1); color: white; cursor: pointer; -webkit-appearance: none;
+    }
+    .culto-repe-row select option { background: var(--dark); color: white; }
+    .culto-repe-row select:focus { border-color: var(--orange); }
+    .btn-save-culto {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: white; border: none; padding: 10px 20px; border-radius: 12px;
+      cursor: pointer; font-size: 0.86rem; font-weight: 800; transition: all 0.2s;
+      white-space: nowrap; font-family: inherit; box-shadow: 0 4px 14px rgba(247,148,29,0.3);
+    }
+    .btn-save-culto:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(247,148,29,0.4); }
+
+    .culto-repe-banner {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px 16px;
+      margin-bottom: 16px; border: 1.5px solid var(--border); box-shadow: var(--shadow-xs); display: none;
+    }
+    .culto-repe-banner.visible { display: block; }
+    .culto-repe-banner-title { font-weight: 800; font-size: 0.92rem; }
+    .culto-repe-banner-meta { font-size: 0.76rem; color: var(--text-muted); margin-top: 3px; }
+    .culto-repe-banner-songs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .culto-repe-banner-song {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 12px; font-size: 0.73rem; font-weight: 600;
+    }
+
+    /* Summary cards */
+    .culto-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .culto-summary-card { border-radius: var(--radius); padding: 16px; position: relative; overflow: hidden; }
+    .culto-summary-card.sab { background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%); }
+    .culto-summary-card.dom { background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%); }
+    .culto-summary-card::before { content: ''; position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.07); }
+    .culto-summary-label { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .culto-summary-count { font-size: 2.2rem; font-weight: 900; color: white; line-height: 1; }
+    .culto-summary-sub { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+    .culto-summary-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .culto-summary-chip {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.15); border-radius: 20px;
+      padding: 3px 8px 3px 4px; font-size: 0.68rem; color: white; font-weight: 600;
+    }
+    .culto-summary-chip .chip-av {
+      width: 18px; height: 18px; border-radius: 50%; overflow: hidden;
+      background: rgba(255,255,255,0.3); display: flex; align-items: center;
+      justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;
+    }
+    .culto-summary-chip .chip-av img { width: 100%; height: 100%; object-fit: cover; }
+    .culto-summary-empty { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 8px; font-style: italic; }
+
+    /* DnD layout */
+    .culto-dnd-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: start; }
+    .dnd-col { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-xs); border: 1.5px solid var(--border); }
+    .dnd-col-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .dnd-col.pool .dnd-col-header { background: var(--surface); border-bottom: 1.5px solid var(--border); }
+    .dnd-col.sab .dnd-col-header { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
+    .dnd-col.dom .dnd-col-header { background: linear-gradient(90deg, var(--orange-dark), var(--orange)); }
+    .dnd-col-title { font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
+    .dnd-col.pool .dnd-col-title { color: var(--dark); }
+    .dnd-col.sab .dnd-col-title, .dnd-col.dom .dnd-col-title { color: white; }
+    .dnd-col-count { font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .dnd-col.pool .dnd-col-count { background: var(--border); color: var(--text-muted); }
+    .dnd-col.sab .dnd-col-count, .dnd-col.dom .dnd-col-count { background: rgba(255,255,255,0.22); color: white; }
+    .dnd-col-saved { font-size: 0.62rem; font-weight: 800; padding: 2px 7px; border-radius: 20px; background: rgba(255,255,255,0.9); color: var(--green); display: none; }
+
+    .drop-zone { min-height: 130px; padding: 10px; transition: background 0.2s; }
+    .drop-zone.drag-over { background: rgba(247,148,29,0.07); outline: 2px dashed var(--orange); outline-offset: -4px; border-radius: 10px; }
+
+    .role-group { margin-bottom: 8px; }
+    .role-group-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; padding-left: 4px; }
+
+    .voice-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface); border-radius: 12px; padding: 8px 10px;
+      margin-bottom: 6px; cursor: grab; user-select: none;
+      transition: all 0.15s; border: 1.5px solid transparent;
+    }
+    .voice-chip:hover { border-color: var(--orange); background: white; box-shadow: var(--shadow-sm); }
+    .voice-chip:active { cursor: grabbing; }
+    .voice-chip.dragging { opacity: 0.3; transform: scale(0.96); }
+    .voice-chip-av {
+      width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: white; font-weight: 800;
+    }
+    .voice-chip-av img { width: 100%; height: 100%; object-fit: cover; }
+    .voice-chip-info { flex: 1; min-width: 0; }
+    .voice-chip-name { font-weight: 700; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .voice-chip-role { font-size: 0.65rem; color: var(--text-muted); margin-top: 1px; }
+    .voice-chip-badges { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+    .day-badge { font-size: 0.58rem; font-weight: 800; padding: 1px 6px; border-radius: 10px; }
+    .day-badge-sab { background: #d4edda; color: #155724; }
+    .day-badge-dom { background: #fff3cd; color: #856404; }
+    .voice-chip-remove { background: none; border: none; cursor: pointer; font-size: 0.82rem; color: #ccc; padding: 4px; border-radius: 6px; transition: all 0.2s; flex-shrink: 0; }
+    .voice-chip-remove:hover { color: #e74c3c; background: #ffeaea; }
+
+    .dnd-empty { text-align: center; color: #ccc; font-size: 0.76rem; padding: 22px 10px; pointer-events: none; }
+    .dnd-empty span { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+
+    /* ══════════════════════════════════════
+       QUIÉN CANTA CADA DÍA
+    ══════════════════════════════════════ */
+    .culto-days-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .culto-days-label { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 10px; }
+    .culto-days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .culto-day-card { border-radius: 14px; padding: 12px; overflow: hidden; position: relative; }
+    .culto-day-card.sab { background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%); }
+    .culto-day-card.dom { background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%); }
+    .culto-day-card::before { content: ''; position: absolute; bottom: -16px; right: -16px; width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+    .culto-day-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.65); margin-bottom: 8px; }
+    .culto-day-members { display: flex; flex-direction: column; gap: 6px; }
+    .culto-day-member { display: flex; align-items: center; gap: 7px; }
+    .day-av {
+      width: 26px; height: 26px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; color: white; font-weight: 800;
+    }
+    .day-av img { width: 100%; height: 100%; object-fit: cover; }
+    .culto-day-member-info { flex: 1; min-width: 0; }
+    .culto-day-member-name { font-size: 0.7rem; color: white; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .culto-day-member-role { font-size: 0.56rem; color: rgba(255,255,255,0.45); }
+    .culto-day-empty { font-size: 0.7rem; color: rgba(255,255,255,0.3); font-style: italic; }
+
+    /* ══════════════════════════════════════
+       MEMBER CARD
+    ══════════════════════════════════════ */
+    .member-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
+      margin-bottom: 10px; box-shadow: var(--shadow-xs);
+      display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
+      transition: box-shadow 0.2s;
+    }
+    .member-card:hover { box-shadow: var(--shadow-sm); }
+    .member-avatar-big { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .member-avatar-placeholder {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: white; font-weight: 800;
+    }
+
+
+      .date-field {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e8e4dc);
+    cursor: pointer;
+    min-width: 200px;
+    box-shadow: var(--shadow-xs, 0 1px 4px rgba(0,0,0,0.06));
+  }
+  .date-field i { color: var(--orange, #F7941D); font-size: 1.05rem; }
+  .date-placeholder {
+    color: var(--text-muted, #8a8a8a);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  /* Input transparente encima para mantener accesibilidad y permitir clicks */
+  .date-field input[type="date"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+
+    /* ══════════════════════════════════════
+       MODALES
+    ══════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); z-index: 500;
+      align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: 24px 24px 0 0; padding: 24px;
+      padding-bottom: calc(24px + env(safe-area-inset-bottom));
+      width: 100%; max-width: 520px; box-shadow: var(--shadow-lg);
+      max-height: 92vh; overflow-y: auto; animation: slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes slideUp { from{transform:translateY(80px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .modal-box h3 { color: var(--green); margin-bottom: 16px; font-size: 1rem; font-weight: 800; }
+    .modal-box .form-row { margin-bottom: 10px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+    .btn-secondary {
+      background: var(--surface); color: var(--dark); border: 1.5px solid var(--border);
+      padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 0.86rem; font-weight: 700; font-family: inherit; transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ══════════════════════════════════════ */
+    @media (max-width: 700px) {
+      /* Ocultar tabs del nav, mostrar bottom nav */
+      .nav-tabs-desktop { display: none; }
+      .bottom-nav { display: flex; }
+
+      main { padding: 14px 12px calc(var(--bottom-h) + 20px); }
+      #status-bar { bottom: calc(var(--bottom-h) + 12px); }
+
+      /* Welcome */
+      .welcome-card { padding: 18px 16px 14px; border-radius: 20px; }
+      .welcome-card h1 { font-size: 1.35rem; }
+      .welcome-icon { font-size: 2.2rem; }
+
+      /* Forms */
+      .form-row { flex-direction: column; }
+      .form-row input, .form-row select { min-width: unset; width: 100%; }
+
+      /* DnD: stack vertical en móvil */
+      .culto-dnd-layout { grid-template-columns: 1fr; gap: 10px; }
+
+      /* Culto repe row */
+      .culto-repe-row { flex-direction: column; }
+      .culto-repe-row select { min-width: unset; width: 100%; }
+      .btn-save-culto { width: 100%; }
+
+      /* Song card */
+      .song-thumb, .song-thumb-placeholder { width: 60px; height: 42px; }
+
+      /* Cards */
+      .card-title { font-size: 0.88rem; }
+      .card-sub { font-size: 0.74rem; }
+
+      /* Culto summary */
+      .culto-summary { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .culto-summary-count { font-size: 1.8rem; }
+
+      /* Modal */
+      .modal-box { border-radius: 20px 20px 0 0; padding: 20px 16px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+    }
+
+    @media (max-width: 420px) {
+      .welcome-card h1 { font-size: 1.2rem; }
+      .culto-summary { grid-template-columns: 1fr 1fr; }
+      .culto-days-grid { grid-template-columns: 1fr 1fr; }
+      h2 { font-size: 1rem; }
+    }
+
+    /* Tablet: 2 cols DnD */
+    @media (min-width: 701px) and (max-width: 860px) {
+      .culto-dnd-layout { grid-template-columns: 1fr 1fr; }
+      .dnd-col.pool { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">
+    <i class="fas fa-guitar"></i>
+    <span>TRINIDAD</span>
+    <div class="nav-logo-dot"></div>
+  </div>
+  <div class="nav-carousel-wrap">
+    <div class="nav-carousel-track" id="nav-carousel-track"></div>
+  </div>
+  <div class="nav-tabs-desktop">
+    <button class="active" onclick="showSection('inicio',this)"><i class="fas fa-home"></i> Inicio</button>
+    <button onclick="showSection('culto',this)"><i class="fas fa-microphone-alt"></i> Culto</button>
+    <button onclick="showSection('canciones',this)"><i class="fas fa-music"></i> Canciones</button>
+    <button onclick="showSection('repes',this)"><i class="fas fa-clipboard-list"></i> Repes</button>
+    <button onclick="showSection('integrantes',this)"><i class="fas fa-users"></i> Integrantes</button>
+    <button onclick="showSection('eventos',this)"><i class="fas fa-calendar-days"></i> Eventos</button>
+  </div>
+</nav>
+
+<!-- BOTTOM NAV (móvil) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" onclick="showSection('inicio',this)">
+      <span class="bnav-icon"><i class="fas fa-home"></i></span><span class="bnav-label">Inicio</span>
+    </button>
+    <button class="bnav-btn" onclick="showSection('culto',this)">
+      <span class="bnav-icon"><i class="fas fa-microphone-alt"></i></span><span class="bnav-label">Culto</span>
+    </button>
+    <button class="bnav-btn" onclick="showSection('canciones',this)">
+      <span class="bnav-icon"><i class="fas fa-music"></i></span><span class="bnav-label">Songs</span>
+    </button>
+    <button class="bnav-btn" onclick="showSection('repes',this)">
+      <span class="bnav-icon"><i class="fas fa-clipboard-list"></i></span><span class="bnav-label">Repes</span>
+    </button>
+    <button class="bnav-btn" onclick="showSection('integrantes',this)">
+      <span class="bnav-icon"><i class="fas fa-users"></i></span><span class="bnav-label">Equipo</span>
+    </button>
+    <button class="bnav-btn" onclick="showSection('eventos',this)">
+      <span class="bnav-icon"><i class="fas fa-calendar-days"></i></span><span class="bnav-label">Eventos</span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ══ INICIO ══ -->
+  <div id="inicio" class="section active">
+    <div class="welcome-card">
+      <div class="welcome-top">
+        <div>
+          <p class="welcome-label">Iglesia Metodista CQ</p>
+          <h1><i class="fas fa-guitar"></i> Banda Trinidad</h1>
+          <p>Todo listo para servir con excelencia.</p>
+        </div>
+        <div class="welcome-icon"><i class="fas fa-music"></i></div>
+      </div>
+      <div class="hero-carousel-wrap">
+        <div class="hero-carousel-track" id="hero-carousel-track"></div>
+      </div>
+    </div>
+    <h2><i class="fas fa-calendar-check"></i> Próximos eventos</h2>
+    <div id="home-events-list"></div>
+  </div>
+
+  <!-- ══ CULTO ══ -->
+  <div id="culto" class="section">
+    <div class="culto-top">
+      <div class="culto-top-title"><i class="fas fa-microphone-alt"></i> Planificación de Culto</div>
+      <div class="culto-top-sub">Asigna integrantes por día arrastrando desde el pool</div>
+      <div class="culto-repe-row">
+        <select id="culto-repe-select" onchange="onCultoRepeChange()">
+          <option value="">— Selecciona un repe —</option>
+        </select>
+        <button class="btn-save-culto" onclick="saveCulto()"><i class="fas fa-save"></i> Guardar</button>
+      </div>
+    </div>
+
+    <div class="culto-repe-banner" id="culto-repe-banner">
+      <div class="culto-repe-banner-title" id="culto-repe-banner-title"></div>
+      <div class="culto-repe-banner-meta" id="culto-repe-banner-meta"></div>
+      <div class="culto-repe-banner-songs" id="culto-repe-banner-songs"></div>
+    </div>
+
+    <div class="culto-summary">
+      <div class="culto-summary-card sab">
+        <div class="culto-summary-label"><i class="fas fa-church"></i> Sábado</div>
+        <div class="culto-summary-count" id="sum-sab-count">0</div>
+        <div class="culto-summary-sub">integrantes</div>
+        <div class="culto-summary-chips" id="sum-sab-chips"></div>
+      </div>
+      <div class="culto-summary-card dom">
+        <div class="culto-summary-label"><i class="fas fa-sun"></i> Domingo</div>
+        <div class="culto-summary-count" id="sum-dom-count">0</div>
+        <div class="culto-summary-sub">integrantes</div>
+        <div class="culto-summary-chips" id="sum-dom-chips"></div>
+      </div>
+    </div>
+
+    <div class="culto-dnd-layout">
+      <div class="dnd-col pool">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title"><i class="fas fa-microphone"></i> Disponibles</span>
+          <span class="dnd-col-count" id="pool-count">0</span>
+        </div>
+        <div class="drop-zone" id="pool-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'pool')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="pool-empty"><span><i class="fas fa-user"></i></span>Sin integrantes</div>
+        </div>
+      </div>
+      <div class="dnd-col sab">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title"><i class="fas fa-church"></i> Sábado</span>
+          <span class="dnd-col-count" id="sab-count">0</span>
+          <span class="dnd-col-saved" id="sab-tag"><i class="fas fa-check"></i> guardado</span>
+        </div>
+        <div class="drop-zone" id="sabado-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'sabado')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="sab-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
+        </div>
+      </div>
+      <div class="dnd-col dom">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title"><i class="fas fa-sun"></i> Domingo</span>
+          <span class="dnd-col-count" id="dom-count">0</span>
+          <span class="dnd-col-saved" id="dom-tag"><i class="fas fa-check"></i> guardado</span>
+        </div>
+        <div class="drop-zone" id="domingo-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'domingo')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="dom-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CANCIONES ══ -->
+  <div id="canciones" class="section">
+    <h2><i class="fas fa-music"></i> Canciones</h2>
+    <div class="form-box">
+      <h3><i class="fas fa-plus-circle"></i> Agregar canción</h3>
+      <div class="form-row">
+        <input id="song-title" placeholder="Nombre de la canción" />
+        <input id="song-artist" placeholder="Artista / Autor" />
+      </div>
+      <div class="form-row">
+        <input id="song-key" placeholder="Tono (ej: Do, Sol, La)" />
+        <select id="song-genre">
+          <option value="">Género</option>
+          <option>Rapida</option><option>Lenta</option><option>Corito</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="song-youtube" placeholder="🔗 Link de YouTube (opcional)" />
+      </div>
+      <button class="btn-primary" onclick="addSong()"><i class="fas fa-plus"></i> Agregar canción</button>
+    </div>
+    <div id="songs-list"></div>
+  </div>
+
+  <!-- ══ REPES ══ -->
+  <div id="repes" class="section">
+    <h2><i class="fas fa-clipboard-list"></i> Ensayos / Repes</h2>
+    <div class="form-box">
+      <h3><i class="fas fa-plus-circle"></i> Crear repe</h3>
+      <div class="form-row">
+        <input id="repe-name" placeholder="Nombre del repe" />
+        <div class="date-field" id="repe-date-field">
+          <i class="fas fa-calendar-alt"></i>
+          <span class="date-placeholder">Selecciona fecha</span>
+          <input id="repe-date" type="date" />
+        </div>
+      </div>
+      <div class="form-row">
+        <select id="repe-event-select"><option value="">Evento relacionado (opcional)</option></select>
+      </div>
+      <div class="form-row">
+        <select id="repe-song-select"><option value="">Seleccionar canción...</option></select>
+        <button class="btn-primary" style="flex:0;white-space:nowrap" onclick="addSongToRepe()"><i class="fas fa-plus"></i> Canción</button>
+      </div>
+      <div id="repe-selected-songs" class="repe-songs"></div>
+      <br/>
+      <button class="btn-primary" onclick="saveRepe()"><i class="fas fa-save"></i> Guardar Repe</button>
+    </div>
+    <div id="repes-list"></div>
+  </div>
+
+  <!-- ══ INTEGRANTES ══ -->
+  <div id="integrantes" class="section">
+    <h2><i class="fas fa-users"></i> Integrantes</h2>
+    <div class="form-box">
+      <h3><i class="fas fa-plus-circle"></i> Agregar integrante</h3>
+      <div class="form-row">
+        <input id="member-name" placeholder="Nombre completo" />
+        <select id="member-instrument">
+          <option value="">Instrumento / Rol</option>
+          <option value="VOICE"><i class="fas fa-microphone"></i> VOICE (Voz)</option>
+          <option value="GA"><i class="fas fa-guitar"></i> GA (Guitarra Acústica)</option>
+          <option value="GE"><i class="fas fa-bolt"></i> GE (Guitarra Eléctrica)</option>
+          <option value="BASS"><i class="fas fa-guitar"></i> BASS (Bajo)</option>
+          <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option>
+          <option value="DRUM"><i class="fas fa-drum"></i> DRUM (Batería)</option>
+          <option value="Otro"><i class="fas fa-music"></i> Otro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="member-phone" placeholder="Teléfono (opcional)" />
+        <select id="member-status">
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input id="member-photo" placeholder="🖼️ URL de foto (opcional)" />
+      </div>
+      <button class="btn-primary" onclick="addMember()"><i class="fas fa-plus"></i> Agregar</button>
+    </div>
+    <div id="members-list"></div>
+  </div>
+
+  <!-- ══ EVENTOS ══ -->
+  <div id="eventos" class="section">
+    <h2><i class="fas fa-calendar-days"></i> Eventos</h2>
+    <div class="form-box">
+      <h3><i class="fas fa-plus-circle"></i> Agregar evento</h3>
+      <div class="form-row">
+        <input id="event-name" placeholder="Nombre del evento" />
+        <div class="date-field" id="event-date-field">
+          <i class="fas fa-calendar-alt"></i>
+          <span class="date-placeholder">Selecciona fecha</span>
+          <input id="event-date" type="date" />
+
+        </div>
+        
+      </div>
+      <div class="form-row">
+        <input id="event-place" placeholder="Lugar" />
+        <select id="event-type">
+          <option value="">Tipo</option>
+          <option>Culto</option><option>Concierto</option>
+          <option>Ensayo especial</option><option>Actividad</option><option>Otro</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="addEvent()"><i class="fas fa-plus"></i> Agregar</button>
+    </div>
+    <div id="events-list"></div>
+  </div>
+
+</main>
+
+<div id="status-bar"></div>
+
+<!-- MODALES -->
+<div class="modal-overlay" id="modal-song">
+  <div class="modal-box">
+    <h3><i class="fas fa-edit"></i> Editar canción</h3>
+    <input type="hidden" id="edit-song-id" />
+    <div class="form-row"><input id="edit-song-title" placeholder="Nombre" /></div>
+    <div class="form-row"><input id="edit-song-artist" placeholder="Artista" /></div>
+    <div class="form-row">
+      <input id="edit-song-key" placeholder="Tono" />
+      <select id="edit-song-genre"><option value="">Género</option><option>Rapida</option><option>Lenta</option><option>Corito</option></select>
+    </div>
+    <div class="form-row"><input id="edit-song-youtube" placeholder="Link YouTube" /></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-song')">Cancelar</button>
+      <button class="btn-primary" onclick="saveSongEdit()"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-repe">
+  <div class="modal-box">
+    <h3><i class="fas fa-edit"></i> Editar repe</h3>
+    <input type="hidden" id="edit-repe-id" />
+    <div class="form-row"><input id="edit-repe-name" placeholder="Nombre del repe" /></div>
+    <div class="form-row"><input id="edit-repe-date" type="date" /></div>
+    <div class="form-row"><select id="edit-repe-event"><option value="">Evento relacionado (opcional)</option></select></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-repe')">Cancelar</button>
+      <button class="btn-primary" onclick="saveRepeEdit()"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-member">
+  <div class="modal-box">
+    <h3><i class="fas fa-edit"></i> Editar integrante</h3>
+    <input type="hidden" id="edit-member-id" />
+    <div class="form-row"><input id="edit-member-name" placeholder="Nombre completo" /></div>
+    <div class="form-row">
+      <select id="edit-member-instrument">
+        <option value="">Instrumento / Rol</option>
+        <option value="VOICE"><i class="fas fa-microphone"></i> VOICE</option><option value="AG"><i class="fas fa-guitar"></i> GA</option>
+        <option value="EG"><i class="fas fa-bolt"></i> GE</option><option value="BASS"><i class="fas fa-guitar"></i> BASS</option>
+        <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option><option value="DRUM"><i class="fas fa-drum"></i> DRUM</option>
+        <option value="Otro"><i class="fas fa-music"></i> Otro</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <input id="edit-member-phone" placeholder="Teléfono" />
+      <select id="edit-member-status"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
+    </div>
+    <div class="form-row"><input id="edit-member-photo" placeholder="🖼️ URL de foto" /></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-member')">Cancelar</button>
+      <button class="btn-primary" onclick="saveMemberEdit()"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-event">
+  <div class="modal-box">
+    <h3><i class="fas fa-edit"></i> Editar evento</h3>
+    <input type="hidden" id="edit-event-id" />
+    <div class="form-row"><input id="edit-event-name" placeholder="Nombre del evento" /></div>
+    <div class="form-row"><input id="edit-event-date" type="date" /></div>
+    <div class="form-row"><input id="edit-event-place" placeholder="Lugar" /></div>
+    <div class="form-row">
+      <select id="edit-event-type">
+        <option value="">Tipo</option><option>Culto</option><option>Concierto</option>
+        <option>Ensayo especial</option><option>Actividad</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-event')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEventEdit()"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, updateDoc,
+    doc, onSnapshot, setDoc, getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD1swPIz1cra63Ih4QQTk9wVOZnQJj_eYc",
+    authDomain: "projectp-8681f.firebaseapp.com",
+    projectId: "projectp-8681f",
+    storageBucket: "projectp-8681f.firebasestorage.app",
+    messagingSenderId: "590728614696",
+    appId: "1:590728614696:web:14397604795d39b9d4361d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let currentRepeSongs = [];
+  let allEvents = [], allRepes = [], allMembers = [], allSongs = [], allCultos = {};
+
+  const ROLE_CONFIG = {
+    VOICE: { label: '<i class="fas fa-microphone"></i> VOICE', cls: 'role-VOICE' },
+    GA:    { label: '<i class="fas fa-guitar"></i> AG',    cls: 'role-GA' },
+    GE:    { label: '<i class="fas fa-bolt"></i> EG',    cls: 'role-GE' },
+    BASS:  { label: '<i class="fas fa-guitar"></i> BASS',  cls: 'role-BASS' },
+    PIANO: { label: '<i class="fas fa-piano-keyboard"></i> PIANO', cls: 'role-PIANO' },
+    DRUM:  { label: '<i class="fas fa-drum"></i> DRUM',  cls: 'role-DRUM' },
+    Otro:  { label: '<i class="fas fa-music"></i> Otro',  cls: 'role-OTHER' },
+  };
+  function getRoleConfig(role) { return ROLE_CONFIG[role] || { label: role || 'Sin rol', cls: 'role-OTHER' }; }
+
+  let cultoState = { pool: [], sabado: [], domingo: [] };
+  let draggedMemberId = null, draggedFromZone = null;
+
+  // ── AVATAR HELPER ──
+  function makeAv(member, size, cls) {
+    const hasPhoto = member.photo && member.photo.trim();
+    if (hasPhoto) {
+      return `<div class="${cls}" style="width:${size}px;height:${size}px"><img src="${member.photo}" alt="${member.name}" onerror="this.parentNode.innerHTML='<i class=\'fas fa-user\'></i>'" /></div>`;
+    }
+    return `<div class="${cls}" style="width:${size}px;height:${size}px"><i class="fas fa-user"></i></div>`;
+  }
+
+  // ── CARRUSELES ──
+  function buildCarousels() {
+    const active = allMembers.filter(m => m.status === 'Activo');
+    if (!active.length) return;
+    const doubled = [...active, ...active];
+
+    const navTrack = document.getElementById('nav-carousel-track');
+    navTrack.innerHTML = doubled.map(m => {
+      const rc = getRoleConfig(m.instrument);
+      const hasPhoto = m.photo && m.photo.trim();
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+      return `<div class="nav-pill">
+        <div class="nav-pill-av">${avInner}</div>
+        <div>
+          <div class="nav-pill-name">${m.name.split(' ')[0]}</div>
+          <div class="nav-pill-role">${rc.label}</div>
+        </div>
+      </div>`;
+    }).join('');
+    navTrack.style.animationDuration = Math.max(14, active.length * 3) + 's';
+
+    const heroTrack = document.getElementById('hero-carousel-track');
+    heroTrack.innerHTML = doubled.map(m => {
+      const rc = getRoleConfig(m.instrument);
+      const hasPhoto = m.photo && m.photo.trim();
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+      return `<div class="hero-member-card">
+        <div class="hero-av">${avInner}</div>
+        <div class="hero-member-name">${m.name.split(' ')[0]}</div>
+        <div class="hero-member-role">${rc.label}</div>
+      </div>`;
+    }).join('');
+    heroTrack.style.animationDuration = Math.max(18, active.length * 4) + 's';
+  }
+
+  // ── NAV ──
+  window.showSection = (id, btn) => {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    // Desktop tabs
+    document.querySelectorAll('.nav-tabs-desktop button').forEach(b => b.classList.remove('active'));
+    // Bottom nav
+    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    // Sync the other nav
+    const sectionIndex = ['inicio','culto','canciones','repes','integrantes','eventos'].indexOf(id);
+    document.querySelectorAll('.nav-tabs-desktop button')[sectionIndex]?.classList.add('active');
+    document.querySelectorAll('.bnav-btn')[sectionIndex]?.classList.add('active');
+    if (id === 'culto') updateCultoRepeSelect();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  function showStatus(msg) {
+    const bar = document.getElementById('status-bar');
+    bar.textContent = msg; bar.style.display = 'block';
+    setTimeout(() => bar.style.display = 'none', 2500);
+  }
+  function emptyState(msg) { return `<div class="empty"><span><i class="fas fa-music"></i></span>${msg}</div>`; }
+  window.openModal = id => document.getElementById(id).classList.add('open');
+  window.closeModal = id => document.getElementById(id).classList.remove('open');
+
+  function getYoutubeId(url) {
+    if (!url) return null;
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+
+  // ══ CULTO ══
+   function updateCultoRepeSelect() {
+    const sel = document.getElementById('culto-repe-select');
+    const prev = sel.value;
+    sel.innerHTML = '<option value="">— Selecciona un repe —</option>';
+    allRepes.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r.id;
+      // Quitamos los <i>, dejamos solo el texto limpio
+      opt.textContent = `${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
+      sel.appendChild(opt);
+    });
+    if (prev && allRepes.find(r => r.id === prev)) sel.value = prev;
+  }
+
+  window.onCultoRepeChange = () => {
+    const repeId = document.getElementById('culto-repe-select').value;
+    if (!repeId) {
+      document.getElementById('culto-repe-banner').classList.remove('visible');
+      cultoState.sabado = []; cultoState.domingo = [];
+      document.getElementById('sab-tag').style.display = 'none';
+      document.getElementById('dom-tag').style.display = 'none';
+      renderCultoZones(); return;
+    }
+    loadCultoForRepe(repeId);
+  };
+
+  function showCultoBanner(repe) {
+    document.getElementById('culto-repe-banner-title').textContent = '🏷️' + repe.name;
+    const parts = [];
+    if (repe.date) parts.push('📅' + repe.date);
+    if (repe.eventName) parts.push('🔁' + repe.eventName);
+    if (repe.songs) parts.push(repe.songs.length + ' canciones');
+    document.getElementById('culto-repe-banner-meta').textContent = parts.join(' · ');
+    document.getElementById('culto-repe-banner-songs').innerHTML = repe.songs && repe.songs.length
+      ? repe.songs.map(s => `<span class="culto-repe-banner-song"><i class="fas fa-music"></i> ${s.name}</span>`).join('') : '';
+    document.getElementById('culto-repe-banner').classList.add('visible');
+  }
+
+  async function loadCultoForRepe(repeId) {
+    const repe = allRepes.find(r => r.id === repeId);
+    if (repe) showCultoBanner(repe);
+    try {
+      const snap = await getDoc(doc(db, 'cultos', 'culto_repe_' + repeId));
+      if (snap.exists()) {
+        const data = snap.data();
+        cultoState.sabado = data.sabado || [];
+        cultoState.domingo = data.domingo || [];
+        document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
+        document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
+      } else {
+        cultoState.sabado = []; cultoState.domingo = [];
+        document.getElementById('sab-tag').style.display = 'none';
+        document.getElementById('dom-tag').style.display = 'none';
+      }
+    } catch(e) { cultoState.sabado = []; cultoState.domingo = []; }
+    renderCultoZones();
+  }
+
+  window.saveCulto = async () => {
+    const repeId = document.getElementById('culto-repe-select').value;
+    if (!repeId) return alert('Selecciona un repe primero');
+    const repe = allRepes.find(r => r.id === repeId);
+    try {
+      await setDoc(doc(db, 'cultos', 'culto_repe_' + repeId), {
+        repeId, repeName: repe?.name || '', repeDate: repe?.date || '',
+        eventId: repe?.eventId || '', eventName: repe?.eventName || '',
+        sabado: cultoState.sabado, domingo: cultoState.domingo, updatedAt: Date.now()
+      });
+      document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
+      document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
+      allCultos['culto_repe_' + repeId] = { sabado: cultoState.sabado, domingo: cultoState.domingo };
+      renderHomeEvents();
+      showStatus('<i class="fas fa-check-circle"></i> Planificación guardada');
+    } catch(e) { alert('Error al guardar: ' + e.message); }
+  };
+
+  function getActiveMembers() { return allMembers.filter(m => m.status === 'Activo'); }
+
+  function buildVoiceChip(member, zone) {
+    const rc = getRoleConfig(member.instrument);
+    const hasPhoto = member.photo && member.photo.trim();
+    const avInner = hasPhoto ? `<img src="${member.photo}" alt="${member.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+    let dayBadges = '';
+    if (zone === 'pool') {
+      const inSab = cultoState.sabado.includes(member.id);
+      const inDom = cultoState.domingo.includes(member.id);
+      if (inSab || inDom) {
+        dayBadges = `<div class="voice-chip-badges">
+          ${inSab ? '<span class="day-badge day-badge-sab"><i class="fas fa-church"></i> Sáb</span>' : ''}
+          ${inDom ? '<span class="day-badge day-badge-dom"><i class="fas fa-sun"></i> Dom</span>' : ''}
+        </div>`;
+      }
+    }
+    return `<div class="voice-chip" id="chip-${zone}-${member.id}"
+        draggable="true"
+        ondragstart="onDragStart(event,'${member.id}','${zone}')"
+        ondragend="onDragEnd(event)">
+        <div class="voice-chip-av">${avInner}</div>
+        <div class="voice-chip-info">
+          <div class="voice-chip-name">${member.name}</div>
+          <div class="voice-chip-role"><span class="role-badge ${rc.cls}">${rc.label}</span></div>
+          ${dayBadges}
+        </div>
+        ${zone !== 'pool' ? `<button class="voice-chip-remove" onclick="returnToPool('${member.id}','${zone}')"><i class="fas fa-times"></i></button>` : ''}
+      </div>`;
+  }
+
+  function renderCultoSummary() {
+    const activeMembers = getActiveMembers();
+    ['sabado','domingo'].forEach(zone => {
+      const key = zone === 'sabado' ? 'sab' : 'dom';
+      const ids = cultoState[zone];
+      const mems = ids.map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
+      document.getElementById(`sum-${key}-count`).textContent = mems.length;
+      const chipsEl = document.getElementById(`sum-${key}-chips`);
+      if (!mems.length) {
+        chipsEl.innerHTML = `<div class="culto-summary-empty">Sin asignaciones aún</div>`;
+      } else {
+        chipsEl.innerHTML = mems.map(m => {
+          const hasPhoto = m.photo && m.photo.trim();
+          const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+          return `<div class="culto-summary-chip"><div class="chip-av">${avInner}</div>${m.name.split(' ')[0]}</div>`;
+        }).join('');
+      }
+    });
+  }
+
+  function renderCultoZones() {
+    const activeMembers = getActiveMembers();
+    document.getElementById('pool-count').textContent = activeMembers.length;
+    document.getElementById('sab-count').textContent = cultoState.sabado.length;
+    document.getElementById('dom-count').textContent = cultoState.domingo.length;
+
+    const poolZone = document.getElementById('pool-zone');
+    poolZone.querySelectorAll('.voice-chip, .role-group').forEach(c => c.remove());
+    const poolEmpty = document.getElementById('pool-empty');
+    if (!activeMembers.length) {
+      poolEmpty.style.display = 'block';
+    } else {
+      poolEmpty.style.display = 'none';
+      const roleOrder = ['VOICE','GA','GE','BASS','PIANO','DRUM','Otro'];
+      const grouped = {};
+      activeMembers.forEach(m => {
+        const role = m.instrument || 'Otro';
+        if (!grouped[role]) grouped[role] = [];
+        grouped[role].push(m);
+      });
+      roleOrder.forEach(role => {
+        if (!grouped[role]?.length) return;
+        const rc = getRoleConfig(role);
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'role-group';
+        groupDiv.innerHTML = `<div class="role-group-label">${rc.label}</div>` +
+          grouped[role].map(m => buildVoiceChip(m, 'pool')).join('');
+        poolZone.appendChild(groupDiv);
+      });
+    }
+
+    ['sabado','domingo'].forEach(zone => {
+      const zoneEl = document.getElementById(zone + '-zone');
+      const emptyEl = document.getElementById(zone === 'sabado' ? 'sab-empty' : 'dom-empty');
+      const mems = cultoState[zone].map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
+      zoneEl.querySelectorAll('.voice-chip').forEach(c => c.remove());
+      if (!mems.length) { emptyEl.style.display = 'block'; }
+      else { emptyEl.style.display = 'none'; mems.forEach(m => zoneEl.insertAdjacentHTML('beforeend', buildVoiceChip(m, zone))); }
+    });
+    renderCultoSummary();
+  }
+
+  window.onDragStart = (e, memberId, fromZone) => {
+    draggedMemberId = memberId; draggedFromZone = fromZone;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => document.querySelectorAll(`[id^="chip-"][id$="-${memberId}"]`).forEach(c => c.classList.add('dragging')), 0);
+  };
+  window.onDragEnd = () => document.querySelectorAll('.voice-chip').forEach(c => c.classList.remove('dragging'));
+  window.onDragOver = e => { e.preventDefault(); e.currentTarget.classList.add('drag-over'); };
+  window.onDragLeave = e => e.currentTarget.classList.remove('drag-over');
+  window.onDrop = (e, toZone) => {
+    e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+    if (!draggedMemberId) return;
+    if (draggedFromZone !== 'pool') cultoState[draggedFromZone] = cultoState[draggedFromZone].filter(id => id !== draggedMemberId);
+    if (toZone !== 'pool' && !cultoState[toZone].includes(draggedMemberId)) cultoState[toZone].push(draggedMemberId);
+    draggedMemberId = null; draggedFromZone = null;
+    renderCultoZones();
+  };
+  window.returnToPool = (memberId, fromZone) => {
+    cultoState[fromZone] = cultoState[fromZone].filter(id => id !== memberId);
+    renderCultoZones();
+  };
+
+  // ══ CANCIONES ══
+  window.addSong = async () => {
+    const title = document.getElementById('song-title').value.trim();
+    const artist = document.getElementById('song-artist').value.trim();
+    const key = document.getElementById('song-key').value.trim();
+    const genre = document.getElementById('song-genre').value;
+    const youtube = document.getElementById('song-youtube').value.trim();
+    if (!title) return alert('Escribe el nombre de la canción');
+    try {
+      await addDoc(collection(db, 'songs'), { title, artist, key, genre, youtube, createdAt: Date.now() });
+      ['song-title','song-artist','song-key','song-youtube'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('song-genre').value = '';
+      showStatus('<i class="fas fa-check-circle"></i> Canción guardada');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditSong = (id, title, artist, key, genre, youtube) => {
+    document.getElementById('edit-song-id').value = id;
+    document.getElementById('edit-song-title').value = title;
+    document.getElementById('edit-song-artist').value = artist;
+    document.getElementById('edit-song-key').value = key;
+    document.getElementById('edit-song-genre').value = genre;
+    document.getElementById('edit-song-youtube').value = youtube;
+    openModal('modal-song');
+  };
+  window.saveSongEdit = async () => {
+    const id = document.getElementById('edit-song-id').value;
+    const title = document.getElementById('edit-song-title').value.trim();
+    const artist = document.getElementById('edit-song-artist').value.trim();
+    const key = document.getElementById('edit-song-key').value.trim();
+    const genre = document.getElementById('edit-song-genre').value;
+    const youtube = document.getElementById('edit-song-youtube').value.trim();
+    if (!title) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'songs', id), { title, artist, key, genre, youtube });
+      closeModal('modal-song'); showStatus('<i class="fas fa-edit"></i> Canción actualizada');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteSong = async id => {
+    if (!confirm('¿Eliminar esta canción?')) return;
+    await deleteDoc(doc(db, 'songs', id)); showStatus('<i class="fas fa-trash-alt"></i> Canción eliminada');
+  };
+
+  onSnapshot(collection(db, 'songs'), snap => {
+    allSongs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const list = document.getElementById('songs-list');
+    const sel = document.getElementById('repe-song-select');
+    sel.innerHTML = '<option value="">Seleccionar canción...</option>';
+    allSongs.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id; opt.textContent = s.title + (s.artist ? ` — ${s.artist}` : '');
+      sel.appendChild(opt);
+    });
+    if (!allSongs.length) { list.innerHTML = emptyState('Aún no hay canciones'); return; }
+    list.innerHTML = allSongs.map(s => {
+      const ytId = getYoutubeId(s.youtube);
+      const thumb = ytId
+        ? `<a href="${s.youtube}" target="_blank"><img class="song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
+        : `<div class="song-thumb-placeholder"><i class="fas fa-music"></i></div>`;
+      const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>` : '';
+      return `<div class="song-card">
+          ${thumb}
+          <div class="song-info">
+            <div class="card-title">${s.title}${s.genre ? ` <span class="badge badge-orange">${s.genre}</span>` : ''}${s.key ? ` <span class="badge badge-green">${s.key}</span>` : ''}</div>
+            <div class="card-sub">${s.artist || 'Sin artista'}</div>
+            ${ytBtn}
+          </div>
+          <div class="card-actions">
+            <button class="btn-icon" onclick="openEditSong('${s.id}',${JSON.stringify(s.title)},${JSON.stringify(s.artist||'')},${JSON.stringify(s.key||'')},${JSON.stringify(s.genre||'')},${JSON.stringify(s.youtube||'')})"><i class="fas fa-edit"></i></button>
+            <button class="btn-icon" onclick="deleteSong('${s.id}')"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </div>`;
+    }).join('');
+  });
+
+  // ══ REPES ══
+  function updateEventSelects() {
+    ['repe-event-select','edit-repe-event'].forEach(selId => {
+      const sel = document.getElementById(selId);
+      if (!sel) return;
+      const prev = sel.value;
+      sel.innerHTML = '<option value="">Evento relacionado (opcional)</option>';
+      allEvents.forEach(ev => {
+        const opt = document.createElement('option');
+        opt.value = ev.id; opt.textContent = ev.name + (ev.date ? ' — ' + ev.date : '');
+        sel.appendChild(opt);
+      });
+      sel.value = prev;
+    });
+  }
+  window.addSongToRepe = () => {
+    const sel = document.getElementById('repe-song-select');
+    const id = sel.value; const name = sel.options[sel.selectedIndex].text;
+    if (!id) return showStatus('Selecciona una canción primero');
+    if (currentRepeSongs.find(s => s.id === id)) return showStatus('Ya está en el repe');
+    currentRepeSongs.push({ id, name }); renderRepeSongs();
+  };
+  function renderRepeSongs() {
+    const container = document.getElementById('repe-selected-songs');
+    if (!currentRepeSongs.length) { container.innerHTML = ''; return; }
+    container.innerHTML = currentRepeSongs.map((s, i) => `
+      <div class="repe-song-item">
+        <div class="song-num">${i + 1}</div>
+        <span style="flex:1">${s.name}</span>
+        <button class="btn-icon" onclick="removeRepeSong(${i})"><i class="fas fa-times"></i></button>
+      </div>`).join('');
+  }
+  window.removeRepeSong = i => { currentRepeSongs.splice(i, 1); renderRepeSongs(); };
+  window.saveRepe = async () => {
+    const name = document.getElementById('repe-name').value.trim();
+    const date = document.getElementById('repe-date').value;
+    const evSel = document.getElementById('repe-event-select');
+    const eventId = evSel.value;
+    const eventName = eventId ? evSel.options[evSel.selectedIndex].textContent : '';
+    if (!name) return alert('Ponle nombre al repe');
+    if (!currentRepeSongs.length) return alert('Agrega al menos una canción');
+    try {
+      await addDoc(collection(db, 'repes'), { name, date, eventId, eventName, songs: currentRepeSongs, createdAt: Date.now() });
+      document.getElementById('repe-name').value = '';
+      document.getElementById('repe-date').value = '';
+      document.getElementById('repe-event-select').value = '';
+      currentRepeSongs = []; renderRepeSongs();
+      showStatus('<i class="fas fa-check-circle"></i> Repe guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditRepe = (id, name, date, eventId) => {
+    document.getElementById('edit-repe-id').value = id;
+    document.getElementById('edit-repe-name').value = name;
+    document.getElementById('edit-repe-date').value = date || '';
+    updateEventSelects();
+    document.getElementById('edit-repe-event').value = eventId || '';
+    openModal('modal-repe');
+  };
+  window.saveRepeEdit = async () => {
+    const id = document.getElementById('edit-repe-id').value;
+    const name = document.getElementById('edit-repe-name').value.trim();
+    const date = document.getElementById('edit-repe-date').value;
+    const evSel = document.getElementById('edit-repe-event');
+    const eventId = evSel.value;
+    const eventName = eventId ? evSel.options[evSel.selectedIndex].textContent : '';
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'repes', id), { name, date, eventId, eventName });
+      closeModal('modal-repe'); showStatus('<i class="fas fa-edit"></i> Repe actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteRepe = async id => {
+    if (!confirm('¿Eliminar este repe?')) return;
+    await deleteDoc(doc(db, 'repes', id)); showStatus('<i class="fas fa-trash-alt"></i> Repe eliminado');
+  };
+
+  onSnapshot(collection(db, 'repes'), snap => {
+    allRepes = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+    const list = document.getElementById('repes-list');
+    if (!allRepes.length) { list.innerHTML = emptyState('Aún no hay repes'); renderHomeEvents(); updateCultoRepeSelect(); return; }
+    list.innerHTML = allRepes.map(r => `
+      <div class="card" style="flex-direction:column;align-items:flex-start;">
+        <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+          <div class="card-info">
+            <div class="card-title"><i class="fas fa-clipboard-list"></i> ${r.name}</div>
+            <div class="card-sub">${r.date || 'Sin fecha'} · ${r.songs.length} canciones${r.eventName ? ' · <i class="fas fa-calendar-day"></i> ' + r.eventName : ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-icon" onclick="openEditRepe('${r.id}',${JSON.stringify(r.name)},${JSON.stringify(r.date||'')},${JSON.stringify(r.eventId||'')})"><i class="fas fa-edit"></i></button>
+            <button class="btn-icon" onclick="deleteRepe('${r.id}')"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </div>
+        <div class="repe-songs" style="width:100%;margin-top:8px;">
+          ${r.songs.map((s,i) => `<div class="repe-song-item"><div class="song-num">${i+1}</div><span>${s.name}</span></div>`).join('')}
+        </div>
+      </div>`).join('');
+    updateCultoRepeSelect();
+    renderHomeEvents();
+  });
+
+  // ══ INTEGRANTES ══
+  window.addMember = async () => {
+    const name = document.getElementById('member-name').value.trim();
+    const instrument = document.getElementById('member-instrument').value;
+    const phone = document.getElementById('member-phone').value.trim();
+    const status = document.getElementById('member-status').value;
+    const photo = document.getElementById('member-photo').value.trim();
+    if (!name) return alert('Escribe el nombre del integrante');
+    if (!instrument) return alert('Selecciona un instrumento / rol');
+    try {
+      await addDoc(collection(db, 'members'), { name, instrument, phone, status, photo, createdAt: Date.now() });
+      ['member-name','member-phone','member-photo'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('member-instrument').value = '';
+      showStatus('<i class="fas fa-check-circle"></i> Integrante guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditMember = (id, name, instrument, phone, status, photo) => {
+    document.getElementById('edit-member-id').value = id;
+    document.getElementById('edit-member-name').value = name;
+    document.getElementById('edit-member-instrument').value = instrument;
+    document.getElementById('edit-member-phone').value = phone;
+    document.getElementById('edit-member-status').value = status;
+    document.getElementById('edit-member-photo').value = photo || '';
+    openModal('modal-member');
+  };
+  window.saveMemberEdit = async () => {
+    const id = document.getElementById('edit-member-id').value;
+    const name = document.getElementById('edit-member-name').value.trim();
+    const instrument = document.getElementById('edit-member-instrument').value;
+    const phone = document.getElementById('edit-member-phone').value.trim();
+    const status = document.getElementById('edit-member-status').value;
+    const photo = document.getElementById('edit-member-photo').value.trim();
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'members', id), { name, instrument, phone, status, photo });
+      closeModal('modal-member'); showStatus('<i class="fas fa-edit"></i> Integrante actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteMember = async id => {
+    if (!confirm('¿Eliminar este integrante?')) return;
+    await deleteDoc(doc(db, 'members', id)); showStatus('<i class="fas fa-trash-alt"></i> Integrante eliminado');
+  };
+
+  onSnapshot(collection(db, 'members'), snap => {
+    allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const list = document.getElementById('members-list');
+    if (!allMembers.length) { list.innerHTML = emptyState('Aún no hay integrantes'); buildCarousels(); return; }
+    const roleOrder = ['VOICE','GA','GE','BASS','PIANO','DRUM','Otro'];
+    const grouped = {};
+    allMembers.forEach(m => { const role = m.instrument || 'Otro'; if (!grouped[role]) grouped[role] = []; grouped[role].push(m); });
+    let html = '';
+    roleOrder.forEach(role => {
+      if (!grouped[role]?.length) return;
+      const rc = getRoleConfig(role);
+      html += `<div style="margin:14px 0 4px;font-size:0.7rem;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;">${rc.label}</div>`;
+      grouped[role].forEach(m => {
+        const hasPhoto = m.photo && m.photo.trim();
+        const avatar = hasPhoto
+          ? `<img class="member-avatar-big" src="${m.photo}" alt="${m.name}" onerror="this.outerHTML='<div class=member-avatar-placeholder><i class=fas fa-user></i></div>'" />`
+          : `<div class="member-avatar-placeholder"><i class="fas fa-user"></i></div>`;
+        html += `<div class="member-card">
+            ${avatar}
+            <div class="card-info">
+              <div class="card-title">${m.name}
+                <span class="badge ${m.status === 'Activo' ? 'badge-green' : 'badge-orange'}">${m.status}</span>
+                <span class="role-badge ${rc.cls}">${rc.label}</span>
+              </div>
+              <div class="card-sub">${m.phone ? '<i class="fas fa-phone"></i> ' + m.phone : 'Sin teléfono'}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn-icon" onclick="openEditMember('${m.id}',${JSON.stringify(m.name)},${JSON.stringify(m.instrument||'')},${JSON.stringify(m.phone||'')},${JSON.stringify(m.status||'Activo')},${JSON.stringify(m.photo||'')})"><i class="fas fa-edit"></i></button>
+              <button class="btn-icon" onclick="deleteMember('${m.id}')"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>`;
+      });
+    });
+    list.innerHTML = html;
+    buildCarousels();
+    if (document.getElementById('culto').classList.contains('active')) renderCultoZones();
+  });
+
+  // ══ EVENTOS ══
+  window.addEvent = async () => {
+    const name = document.getElementById('event-name').value.trim();
+    const date = document.getElementById('event-date').value;
+    const place = document.getElementById('event-place').value.trim();
+    const type = document.getElementById('event-type').value;
+    if (!name) return alert('Escribe el nombre del evento');
+    try {
+      await addDoc(collection(db, 'events'), { name, date, place, type, createdAt: Date.now() });
+      ['event-name','event-date','event-place'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('event-type').value = '';
+      showStatus('<i class="fas fa-check-circle"></i> Evento guardado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.openEditEvent = (id, name, date, place, type) => {
+    document.getElementById('edit-event-id').value = id;
+    document.getElementById('edit-event-name').value = name;
+    document.getElementById('edit-event-date').value = date || '';
+    document.getElementById('edit-event-place').value = place || '';
+    document.getElementById('edit-event-type').value = type || '';
+    openModal('modal-event');
+  };
+  window.saveEventEdit = async () => {
+    const id = document.getElementById('edit-event-id').value;
+    const name = document.getElementById('edit-event-name').value.trim();
+    const date = document.getElementById('edit-event-date').value;
+    const place = document.getElementById('edit-event-place').value.trim();
+    const type = document.getElementById('edit-event-type').value;
+    if (!name) return alert('El nombre no puede estar vacío');
+    try {
+      await updateDoc(doc(db, 'events', id), { name, date, place, type });
+      closeModal('modal-event'); showStatus('<i class="fas fa-edit"></i> Evento actualizado');
+    } catch(e) { alert('Error: ' + e.message); }
+  };
+  window.deleteEvent = async id => {
+    if (!confirm('¿Eliminar este evento?')) return;
+    await deleteDoc(doc(db, 'events', id)); showStatus('<i class="fas fa-trash-alt"></i> Evento eliminado');
+  };
+
+  // ══ HOME EVENTS ══
+  async function loadAllCultos() {
+    const promises = allRepes.map(async r => {
+      try {
+        const snap = await getDoc(doc(db, 'cultos', 'culto_repe_' + r.id));
+        if (snap.exists()) allCultos['culto_repe_' + r.id] = snap.data();
+      } catch(e) {}
+    });
+    await Promise.all(promises);
+    renderHomeEvents();
+  }
+
+  function buildDaySection(repeId) {
+    const cultoData = allCultos['culto_repe_' + repeId];
+    if (!cultoData) return '';
+    const sabIds = cultoData.sabado || [], domIds = cultoData.domingo || [];
+    if (!sabIds.length && !domIds.length) return '';
+
+    function memberRow(id) {
+      const m = allMembers.find(x => x.id === id);
+      if (!m) return '';
+      const rc = getRoleConfig(m.instrument);
+      const hasPhoto = m.photo && m.photo.trim();
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+      return `<div class="culto-day-member">
+        <div class="day-av">${avInner}</div>
+        <div class="culto-day-member-info">
+          <div class="culto-day-member-name">${m.name}</div>
+          <div class="culto-day-member-role">${rc.label}</div>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="culto-days-section">
+      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién canta cada día</div>
+      <div class="culto-days-grid">
+        <div class="culto-day-card sab">
+          <div class="culto-day-title"><i class="fas fa-church"></i> Sábado</div>
+          <div class="culto-day-members">${sabIds.length ? sabIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
+        </div>
+        <div class="culto-day-card dom">
+          <div class="culto-day-title"><i class="fas fa-sun"></i> Domingo</div>
+          <div class="culto-day-members">${domIds.length ? domIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderHomeEvents() {
+    const homeList = document.getElementById('home-events-list');
+    if (!homeList) return;
+    if (!allEvents.length) { homeList.innerHTML = emptyState('Aún no hay eventos programados'); return; }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const upcomingEvents = allEvents.filter(ev => {
+      if (!ev.date) return true;
+      const evDate = new Date(ev.date);
+      evDate.setHours(0, 0, 0, 0);
+      return evDate >= today;
+    });
+
+    if (!upcomingEvents.length) { homeList.innerHTML = emptyState('No hay eventos futuros'); return; }
+
+    homeList.innerHTML = upcomingEvents.map(ev => {
+      const relatedRepes = allRepes.filter(r => r.eventId === ev.id);
+      const repesHtml = relatedRepes.length
+        ? relatedRepes.map(r => {
+            const songsHtml = r.songs?.length
+              ? `<div class="home-repe-songs">
+                  <div style="font-size:0.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;"><i class="fas fa-music"></i> Canciones</div>
+                  ${r.songs.map((s,i) => {
+                    const songData = allSongs.find(sg => sg.id === s.id);
+                    const ytId = songData ? getYoutubeId(songData.youtube) : null;
+                    const thumb = ytId ? `<a href="${songData.youtube}" target="_blank"><img class="home-repe-song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>` : '';
+                    const nameEl = ytId && songData ? `<a href="${songData.youtube}" target="_blank" style="color:var(--dark);text-decoration:none;font-weight:600;">${s.name}${songData.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</a>` : `<span>${s.name}${songData?.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</span>`;
+                    return `<div class="home-repe-song"><div class="home-repe-song-num">${i+1}</div>${thumb}${nameEl}</div>`;
+                  }).join('')}
+                </div>` : '';
+            return `<div class="home-repe">
+              <div class="home-repe-title"><i class="fas fa-clipboard-list"></i> ${r.name}</div>
+              <div class="home-repe-meta">${r.songs?.length || 0} canciones${r.date ? ' · ' + r.date : ''}</div>
+              ${songsHtml}${buildDaySection(r.id)}
+            </div>`;
+          }).join('')
+        : `<div class="home-repe" style="color:#aaa;font-size:0.8rem"><i class="fas fa-star"></i> Sin repes asociados aún.</div>`;
+      return `<div class="event-home-card">
+        <div class="event-home-head">
+          <div>
+            <div class="event-home-title"><i class="fas fa-calendar-day"></i> ${ev.name}</div>
+            <div class="event-home-date">${ev.date || 'Fecha por definir'}${ev.place ? ' · <i class="fas fa-map-marker-alt"></i> ' + ev.place : ''}</div>
+          </div>
+          ${ev.type ? `<span class="badge badge-orange">${ev.type}</span>` : ''}
+        </div>
+        <div class="event-repes-title"><i class="fas fa-clipboard-list"></i> Repes para este evento</div>
+        ${repesHtml}
+      </div>`;
+    }).join('');
+  }
+
+  onSnapshot(collection(db, 'events'), snap => {
+    allEvents = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+    const list = document.getElementById('events-list');
+    if (!allEvents.length) { list.innerHTML = emptyState('Aún no hay eventos'); updateEventSelects(); renderHomeEvents(); return; }
+    list.innerHTML = allEvents.map(ev => `
+      <div class="card">
+        <div class="card-info">
+          <div class="card-title">${ev.name}${ev.type ? ` <span class="badge badge-orange">${ev.type}</span>` : ''}</div>
+          <div class="card-sub">${ev.date || 'Sin fecha'}${ev.place ? ' · <i class="fas fa-map-marker-alt"></i> ' + ev.place : ''}</div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon" onclick="openEditEvent('${ev.id}',${JSON.stringify(ev.name)},${JSON.stringify(ev.date||'')},${JSON.stringify(ev.place||'')},${JSON.stringify(ev.type||'')})"><i class="fas fa-edit"></i></button>
+          <button class="btn-icon" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>`).join('');
+    updateEventSelects();
+    loadAllCultos();
+  });
+
+  onSnapshot(collection(db, 'cultos'), snap => {
+    snap.docs.forEach(d => { allCultos[d.id] = d.data(); });
+    renderHomeEvents();
+  });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
+      const input = document.getElementById(inputId);
+      const field = document.getElementById(fieldId);
+      if (!input || !field) return;
+      const placeholder = field.querySelector('.date-placeholder');
+
+      function update() {
+        const v = input.value;
+        if (!v) {
+          placeholder.textContent = defaultText;
+        } else {
+          const d = new Date(v + 'T00:00:00');
+          placeholder.textContent = d.toLocaleDateString();
+        }
+      }
+
+      input.addEventListener('change', update);
+      field.addEventListener('click', (e) => {
+        e.preventDefault();
+        input.focus();
+        if (typeof input.showPicker === 'function') input.showPicker();
+      });
+      field.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
+      });
+      update();
+    }
+
+    // Inicializa los campos que necesites:
+    initDateField('event-date', 'event-date-field', 'Selecciona fecha');
+    initDateField('repe-date', 'repe-date-field', 'Selecciona fecha');
+  });
+
+</script>
+</body>
+</html>
