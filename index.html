@@ -498,8 +498,7 @@
     }
 
 
-    
-  .date-field {
+      .date-field {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -530,6 +529,8 @@
     cursor: pointer;
     border-radius: 10px;
   }
+
+
     /* ══════════════════════════════════════
        MODALES
     ══════════════════════════════════════ */
@@ -692,7 +693,6 @@
         <button class="btn-save-culto" onclick="saveCulto()"><i class="fas fa-save"></i> Guardar</button>
       </div>
     </div>
-  </div>
 
     <div class="culto-repe-banner" id="culto-repe-banner">
       <div class="culto-repe-banner-title" id="culto-repe-banner-title"></div>
@@ -843,10 +843,12 @@
       <div class="form-row">
         <input id="event-name" placeholder="Nombre del evento" />
         <div class="date-field" id="event-date-field">
-        <i class="fas fa-calendar-alt"></i>
-        <span class="date-placeholder">Selecciona fecha</span>
-        <input id="event-date" type="date" />
-      </div>
+          <i class="fas fa-calendar-alt"></i>
+          <span class="date-placeholder">Selecciona fecha</span>
+          <input id="event-date" type="date" />
+
+        </div>
+        
       </div>
       <div class="form-row">
         <input id="event-place" placeholder="Lugar" />
@@ -990,44 +992,6 @@
   }
 
   // ── CARRUSELES ──
-
-  document.addEventListener('DOMContentLoaded', () => {
-    function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
-      const input = document.getElementById(inputId);
-      const field = document.getElementById(fieldId);
-      if (!input || !field) return;
-      const placeholder = field.querySelector('.date-placeholder');
-
-      function update() {
-        const v = input.value;
-        if (!v) {
-          placeholder.textContent = defaultText;
-        } else {
-          const d = new Date(v + 'T00:00:00');
-          placeholder.textContent = d.toLocaleDateString();
-        }
-      }
-
-      input.addEventListener('change', update);
-      field.addEventListener('click', (e) => {
-        e.preventDefault();
-        input.focus();
-        if (typeof input.showPicker === 'function') input.showPicker();
-      });
-      field.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
-      });
-      update();
-    }
-
-    // Inicializa los campos que necesites:
-    initDateField('event-date', 'event-date-field', 'Selecciona fecha');
-    initDateField('repe-date', 'repe-date-field', 'Selecciona fecha');
-  });
-
-
-
-
   function buildCarousels() {
     const active = allMembers.filter(m => m.status === 'Activo');
     if (!active.length) return;
@@ -1095,7 +1059,7 @@
   }
 
   // ══ CULTO ══
-  function updateCultoRepeSelect() {
+   function updateCultoRepeSelect() {
     const sel = document.getElementById('culto-repe-select');
     const prev = sel.value;
     sel.innerHTML = '<option value="">— Selecciona un repe —</option>';
@@ -1110,29 +1074,22 @@
   }
 
   window.onCultoRepeChange = () => {
-    const sel = document.getElementById('culto-repe-select');
-    const repeId = sel.value;
-    const banner = document.getElementById('culto-repe-banner');
-
+    const repeId = document.getElementById('culto-repe-select').value;
     if (!repeId) {
-      banner.classList.remove('visible');
-      // ... resto de tu lógica de limpiar ...
-      return;
+      document.getElementById('culto-repe-banner').classList.remove('visible');
+      cultoState.sabado = []; cultoState.domingo = [];
+      document.getElementById('sab-tag').style.display = 'none';
+      document.getElementById('dom-tag').style.display = 'none';
+      renderCultoZones(); return;
     }
-
-    // AQUÍ está el truco: Ponemos el icono en el banner, NO en la opción.
-    const textoSeleccionado = sel.options[sel.selectedIndex].text;
-    banner.innerHTML = `<i class="fas fa-clipboard-list"></i> ${textoSeleccionado}`;
-    banner.classList.add('visible');
-
     loadCultoForRepe(repeId);
   };
 
   function showCultoBanner(repe) {
-    document.getElementById('culto-repe-banner-title').textContent = '<i class="fas fa-clipboard-list"></i> ' + repe.name;
+    document.getElementById('culto-repe-banner-title').textContent = '🏷️' + repe.name;
     const parts = [];
-    if (repe.date) parts.push('<i class="fas fa-calendar-day"></i> ' + repe.date);
-    if (repe.eventName) parts.push('<i class="fas fa-circus"></i> ' + repe.eventName);
+    if (repe.date) parts.push('📅' + repe.date);
+    if (repe.eventName) parts.push('🔁' + repe.eventName);
     if (repe.songs) parts.push(repe.songs.length + ' canciones');
     document.getElementById('culto-repe-banner-meta').textContent = parts.join(' · ');
     document.getElementById('culto-repe-banner-songs').innerHTML = repe.songs && repe.songs.length
@@ -1620,7 +1577,7 @@
     }
 
     return `<div class="culto-days-section">
-      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién está cada día</div>
+      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién canta cada día</div>
       <div class="culto-days-grid">
         <div class="culto-day-card sab">
           <div class="culto-day-title"><i class="fas fa-church"></i> Sábado</div>
@@ -1686,9 +1643,6 @@
     }).join('');
   }
 
-
-  
-
   onSnapshot(collection(db, 'events'), snap => {
     allEvents = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
     const list = document.getElementById('events-list');
@@ -1712,6 +1666,42 @@
     snap.docs.forEach(d => { allCultos[d.id] = d.data(); });
     renderHomeEvents();
   });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
+      const input = document.getElementById(inputId);
+      const field = document.getElementById(fieldId);
+      if (!input || !field) return;
+      const placeholder = field.querySelector('.date-placeholder');
+
+      function update() {
+        const v = input.value;
+        if (!v) {
+          placeholder.textContent = defaultText;
+        } else {
+          const d = new Date(v + 'T00:00:00');
+          placeholder.textContent = d.toLocaleDateString();
+        }
+      }
+
+      input.addEventListener('change', update);
+      field.addEventListener('click', (e) => {
+        e.preventDefault();
+        input.focus();
+        if (typeof input.showPicker === 'function') input.showPicker();
+      });
+      field.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
+      });
+      update();
+    }
+
+    // Inicializa los campos que necesites:
+    initDateField('event-date', 'event-date-field', 'Selecciona fecha');
+    initDateField('repe-date', 'repe-date-field', 'Selecciona fecha');
+  });
+
 </script>
 </body>
 </html>
