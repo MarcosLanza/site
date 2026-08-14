@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>Banda Trinidad</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -343,8 +344,9 @@
       box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
     }
     .culto-top::after {
-      content: '🎤'; position: absolute; right: 18px; top: 50%;
+      content: '\f3a4'; position: absolute; right: 18px; top: 50%;
       transform: translateY(-50%); font-size: 3.5rem; opacity: 0.1; pointer-events: none;
+      font-family: "Font Awesome 6 Free"; font-weight: 900; color: white;
     }
     .culto-top-title { color: var(--orange); font-size: 1.15rem; font-weight: 900; }
     .culto-top-sub { color: rgba(255,255,255,0.55); font-size: 0.78rem; margin-top: 4px; }
@@ -495,6 +497,40 @@
       font-size: 1.2rem; color: white; font-weight: 800;
     }
 
+
+      .date-field {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e8e4dc);
+    cursor: pointer;
+    min-width: 200px;
+    box-shadow: var(--shadow-xs, 0 1px 4px rgba(0,0,0,0.06));
+  }
+  .date-field i { color: var(--orange, #F7941D); font-size: 1.05rem; }
+  .date-placeholder {
+    color: var(--text-muted, #8a8a8a);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  /* Input transparente encima para mantener accesibilidad y permitir clicks */
+  .date-field input[type="date"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+
     /* ══════════════════════════════════════
        MODALES
     ══════════════════════════════════════ */
@@ -583,19 +619,20 @@
 <!-- TOP NAV -->
 <nav class="top-nav">
   <div class="nav-logo">
-    <span>🎺 TRINIDAD</span>
+    <i class="fas fa-guitar"></i>
+    <span>TRINIDAD</span>
     <div class="nav-logo-dot"></div>
   </div>
   <div class="nav-carousel-wrap">
     <div class="nav-carousel-track" id="nav-carousel-track"></div>
   </div>
   <div class="nav-tabs-desktop">
-    <button class="active" onclick="showSection('inicio',this)">🏠 Inicio</button>
-    <button onclick="showSection('culto',this)">🎤 Culto</button>
-    <button onclick="showSection('canciones',this)">🎵 Canciones</button>
-    <button onclick="showSection('repes',this)">📋 Repes</button>
-    <button onclick="showSection('integrantes',this)">👥 Integrantes</button>
-    <button onclick="showSection('eventos',this)">📅 Eventos</button>
+    <button class="active" onclick="showSection('inicio',this)"><i class="fas fa-home"></i> Inicio</button>
+    <button onclick="showSection('culto',this)"><i class="fas fa-microphone-alt"></i> Culto</button>
+    <button onclick="showSection('canciones',this)"><i class="fas fa-music"></i> Canciones</button>
+    <button onclick="showSection('repes',this)"><i class="fas fa-clipboard-list"></i> Repes</button>
+    <button onclick="showSection('integrantes',this)"><i class="fas fa-users"></i> Integrantes</button>
+    <button onclick="showSection('eventos',this)"><i class="fas fa-calendar-days"></i> Eventos</button>
   </div>
 </nav>
 
@@ -603,22 +640,22 @@
 <nav class="bottom-nav">
   <div class="bottom-nav-inner">
     <button class="bnav-btn active" onclick="showSection('inicio',this)">
-      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+      <span class="bnav-icon"><i class="fas fa-home"></i></span><span class="bnav-label">Inicio</span>
     </button>
     <button class="bnav-btn" onclick="showSection('culto',this)">
-      <span class="bnav-icon">🎤</span><span class="bnav-label">Culto</span>
+      <span class="bnav-icon"><i class="fas fa-microphone-alt"></i></span><span class="bnav-label">Culto</span>
     </button>
     <button class="bnav-btn" onclick="showSection('canciones',this)">
-      <span class="bnav-icon">🎵</span><span class="bnav-label">Songs</span>
+      <span class="bnav-icon"><i class="fas fa-music"></i></span><span class="bnav-label">Songs</span>
     </button>
     <button class="bnav-btn" onclick="showSection('repes',this)">
-      <span class="bnav-icon">📋</span><span class="bnav-label">Repes</span>
+      <span class="bnav-icon"><i class="fas fa-clipboard-list"></i></span><span class="bnav-label">Repes</span>
     </button>
     <button class="bnav-btn" onclick="showSection('integrantes',this)">
-      <span class="bnav-icon">👥</span><span class="bnav-label">Equipo</span>
+      <span class="bnav-icon"><i class="fas fa-users"></i></span><span class="bnav-label">Equipo</span>
     </button>
     <button class="bnav-btn" onclick="showSection('eventos',this)">
-      <span class="bnav-icon">📅</span><span class="bnav-label">Eventos</span>
+      <span class="bnav-icon"><i class="fas fa-calendar-days"></i></span><span class="bnav-label">Eventos</span>
     </button>
   </div>
 </nav>
@@ -630,30 +667,30 @@
     <div class="welcome-card">
       <div class="welcome-top">
         <div>
-          <p class="welcome-label">Red de Jóvenes · Iglesia Metodista CQ</p>
-          <h1>🎺 Banda Trinidad</h1>
+          <p class="welcome-label">Iglesia Metodista CQ</p>
+          <h1><i class="fas fa-guitar"></i> Banda Trinidad</h1>
           <p>Todo listo para servir con excelencia.</p>
         </div>
-        <div class="welcome-icon">🎶</div>
+        <div class="welcome-icon"><i class="fas fa-music"></i></div>
       </div>
       <div class="hero-carousel-wrap">
         <div class="hero-carousel-track" id="hero-carousel-track"></div>
       </div>
     </div>
-    <h2>📅 Próximos eventos</h2>
+    <h2><i class="fas fa-calendar-check"></i> Próximos eventos</h2>
     <div id="home-events-list"></div>
   </div>
 
   <!-- ══ CULTO ══ -->
   <div id="culto" class="section">
     <div class="culto-top">
-      <div class="culto-top-title">🎤 Planificación de Culto</div>
+      <div class="culto-top-title"><i class="fas fa-microphone-alt"></i> Planificación de Culto</div>
       <div class="culto-top-sub">Asigna integrantes por día arrastrando desde el pool</div>
       <div class="culto-repe-row">
         <select id="culto-repe-select" onchange="onCultoRepeChange()">
           <option value="">— Selecciona un repe —</option>
         </select>
-        <button class="btn-save-culto" onclick="saveCulto()">💾 Guardar</button>
+        <button class="btn-save-culto" onclick="saveCulto()"><i class="fas fa-save"></i> Guardar</button>
       </div>
     </div>
 
@@ -665,13 +702,13 @@
 
     <div class="culto-summary">
       <div class="culto-summary-card sab">
-        <div class="culto-summary-label">⛪ Sábado</div>
+        <div class="culto-summary-label"><i class="fas fa-church"></i> Sábado</div>
         <div class="culto-summary-count" id="sum-sab-count">0</div>
         <div class="culto-summary-sub">integrantes</div>
         <div class="culto-summary-chips" id="sum-sab-chips"></div>
       </div>
       <div class="culto-summary-card dom">
-        <div class="culto-summary-label">☀️ Domingo</div>
+        <div class="culto-summary-label"><i class="fas fa-sun"></i> Domingo</div>
         <div class="culto-summary-count" id="sum-dom-count">0</div>
         <div class="culto-summary-sub">integrantes</div>
         <div class="culto-summary-chips" id="sum-dom-chips"></div>
@@ -681,34 +718,34 @@
     <div class="culto-dnd-layout">
       <div class="dnd-col pool">
         <div class="dnd-col-header">
-          <span class="dnd-col-title">🎙️ Disponibles</span>
+          <span class="dnd-col-title"><i class="fas fa-microphone"></i> Disponibles</span>
           <span class="dnd-col-count" id="pool-count">0</span>
         </div>
         <div class="drop-zone" id="pool-zone"
           ondragover="onDragOver(event)" ondrop="onDrop(event,'pool')" ondragleave="onDragLeave(event)">
-          <div class="dnd-empty" id="pool-empty"><span>👤</span>Sin integrantes</div>
+          <div class="dnd-empty" id="pool-empty"><span><i class="fas fa-user"></i></span>Sin integrantes</div>
         </div>
       </div>
       <div class="dnd-col sab">
         <div class="dnd-col-header">
-          <span class="dnd-col-title">⛪ Sábado</span>
+          <span class="dnd-col-title"><i class="fas fa-church"></i> Sábado</span>
           <span class="dnd-col-count" id="sab-count">0</span>
-          <span class="dnd-col-saved" id="sab-tag">✓ guardado</span>
+          <span class="dnd-col-saved" id="sab-tag"><i class="fas fa-check"></i> guardado</span>
         </div>
         <div class="drop-zone" id="sabado-zone"
           ondragover="onDragOver(event)" ondrop="onDrop(event,'sabado')" ondragleave="onDragLeave(event)">
-          <div class="dnd-empty" id="sab-empty"><span>🎤</span>Arrastra aquí</div>
+          <div class="dnd-empty" id="sab-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
         </div>
       </div>
       <div class="dnd-col dom">
         <div class="dnd-col-header">
-          <span class="dnd-col-title">☀️ Domingo</span>
+          <span class="dnd-col-title"><i class="fas fa-sun"></i> Domingo</span>
           <span class="dnd-col-count" id="dom-count">0</span>
-          <span class="dnd-col-saved" id="dom-tag">✓ guardado</span>
+          <span class="dnd-col-saved" id="dom-tag"><i class="fas fa-check"></i> guardado</span>
         </div>
         <div class="drop-zone" id="domingo-zone"
           ondragover="onDragOver(event)" ondrop="onDrop(event,'domingo')" ondragleave="onDragLeave(event)">
-          <div class="dnd-empty" id="dom-empty"><span>🎤</span>Arrastra aquí</div>
+          <div class="dnd-empty" id="dom-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
         </div>
       </div>
     </div>
@@ -716,9 +753,9 @@
 
   <!-- ══ CANCIONES ══ -->
   <div id="canciones" class="section">
-    <h2>🎵 Canciones</h2>
+    <h2><i class="fas fa-music"></i> Canciones</h2>
     <div class="form-box">
-      <h3>➕ Agregar canción</h3>
+      <h3><i class="fas fa-plus-circle"></i> Agregar canción</h3>
       <div class="form-row">
         <input id="song-title" placeholder="Nombre de la canción" />
         <input id="song-artist" placeholder="Artista / Autor" />
@@ -733,50 +770,54 @@
       <div class="form-row">
         <input id="song-youtube" placeholder="🔗 Link de YouTube (opcional)" />
       </div>
-      <button class="btn-primary" onclick="addSong()">+ Agregar canción</button>
+      <button class="btn-primary" onclick="addSong()"><i class="fas fa-plus"></i> Agregar canción</button>
     </div>
     <div id="songs-list"></div>
   </div>
 
   <!-- ══ REPES ══ -->
   <div id="repes" class="section">
-    <h2>📋 Ensayos / Repes</h2>
+    <h2><i class="fas fa-clipboard-list"></i> Ensayos / Repes</h2>
     <div class="form-box">
-      <h3>➕ Crear repe</h3>
+      <h3><i class="fas fa-plus-circle"></i> Crear repe</h3>
       <div class="form-row">
         <input id="repe-name" placeholder="Nombre del repe" />
-        <input id="repe-date" type="date" />
+        <div class="date-field" id="repe-date-field">
+          <i class="fas fa-calendar-alt"></i>
+          <span class="date-placeholder">Selecciona fecha</span>
+          <input id="repe-date" type="date" />
+        </div>
       </div>
       <div class="form-row">
         <select id="repe-event-select"><option value="">Evento relacionado (opcional)</option></select>
       </div>
       <div class="form-row">
         <select id="repe-song-select"><option value="">Seleccionar canción...</option></select>
-        <button class="btn-primary" style="flex:0;white-space:nowrap" onclick="addSongToRepe()">+ Canción</button>
+        <button class="btn-primary" style="flex:0;white-space:nowrap" onclick="addSongToRepe()"><i class="fas fa-plus"></i> Canción</button>
       </div>
       <div id="repe-selected-songs" class="repe-songs"></div>
       <br/>
-      <button class="btn-primary" onclick="saveRepe()">💾 Guardar Repe</button>
+      <button class="btn-primary" onclick="saveRepe()"><i class="fas fa-save"></i> Guardar Repe</button>
     </div>
     <div id="repes-list"></div>
   </div>
 
   <!-- ══ INTEGRANTES ══ -->
   <div id="integrantes" class="section">
-    <h2>👥 Integrantes</h2>
+    <h2><i class="fas fa-users"></i> Integrantes</h2>
     <div class="form-box">
-      <h3>➕ Agregar integrante</h3>
+      <h3><i class="fas fa-plus-circle"></i> Agregar integrante</h3>
       <div class="form-row">
         <input id="member-name" placeholder="Nombre completo" />
         <select id="member-instrument">
           <option value="">Instrumento / Rol</option>
-          <option value="VOICE">🎤 VOICE (Voz)</option>
-          <option value="GA">🎸 GA (Guitarra Acústica)</option>
-          <option value="GE">⚡ GE (Guitarra Eléctrica)</option>
-          <option value="BASS">🎸 BASS (Bajo)</option>
-          <option value="PIANO">🎹 PIANO</option>
-          <option value="DRUM">🥁 DRUM (Batería)</option>
-          <option value="Otro">🎵 Otro</option>
+          <option value="VOICE"><i class="fas fa-microphone"></i> VOICE (Voz)</option>
+          <option value="GA"><i class="fas fa-guitar"></i> GA (Guitarra Acústica)</option>
+          <option value="GE"><i class="fas fa-bolt"></i> GE (Guitarra Eléctrica)</option>
+          <option value="BASS"><i class="fas fa-guitar"></i> BASS (Bajo)</option>
+          <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option>
+          <option value="DRUM"><i class="fas fa-drum"></i> DRUM (Batería)</option>
+          <option value="Otro"><i class="fas fa-music"></i> Otro</option>
         </select>
       </div>
       <div class="form-row">
@@ -789,19 +830,25 @@
       <div class="form-row">
         <input id="member-photo" placeholder="🖼️ URL de foto (opcional)" />
       </div>
-      <button class="btn-primary" onclick="addMember()">+ Agregar</button>
+      <button class="btn-primary" onclick="addMember()"><i class="fas fa-plus"></i> Agregar</button>
     </div>
     <div id="members-list"></div>
   </div>
 
   <!-- ══ EVENTOS ══ -->
   <div id="eventos" class="section">
-    <h2>📅 Eventos</h2>
+    <h2><i class="fas fa-calendar-days"></i> Eventos</h2>
     <div class="form-box">
-      <h3>➕ Agregar evento</h3>
+      <h3><i class="fas fa-plus-circle"></i> Agregar evento</h3>
       <div class="form-row">
         <input id="event-name" placeholder="Nombre del evento" />
-        <input id="event-date" type="date" />
+        <div class="date-field" id="event-date-field">
+          <i class="fas fa-calendar-alt"></i>
+          <span class="date-placeholder">Selecciona fecha</span>
+          <input id="event-date" type="date" />
+
+        </div>
+        
       </div>
       <div class="form-row">
         <input id="event-place" placeholder="Lugar" />
@@ -811,7 +858,7 @@
           <option>Ensayo especial</option><option>Actividad</option><option>Otro</option>
         </select>
       </div>
-      <button class="btn-primary" onclick="addEvent()">+ Agregar</button>
+      <button class="btn-primary" onclick="addEvent()"><i class="fas fa-plus"></i> Agregar</button>
     </div>
     <div id="events-list"></div>
   </div>
@@ -823,7 +870,7 @@
 <!-- MODALES -->
 <div class="modal-overlay" id="modal-song">
   <div class="modal-box">
-    <h3>✏️ Editar canción</h3>
+    <h3><i class="fas fa-edit"></i> Editar canción</h3>
     <input type="hidden" id="edit-song-id" />
     <div class="form-row"><input id="edit-song-title" placeholder="Nombre" /></div>
     <div class="form-row"><input id="edit-song-artist" placeholder="Artista" /></div>
@@ -834,37 +881,37 @@
     <div class="form-row"><input id="edit-song-youtube" placeholder="Link YouTube" /></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-song')">Cancelar</button>
-      <button class="btn-primary" onclick="saveSongEdit()">💾 Guardar</button>
+      <button class="btn-primary" onclick="saveSongEdit()"><i class="fas fa-save"></i> Guardar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-repe">
   <div class="modal-box">
-    <h3>✏️ Editar repe</h3>
+    <h3><i class="fas fa-edit"></i> Editar repe</h3>
     <input type="hidden" id="edit-repe-id" />
     <div class="form-row"><input id="edit-repe-name" placeholder="Nombre del repe" /></div>
     <div class="form-row"><input id="edit-repe-date" type="date" /></div>
     <div class="form-row"><select id="edit-repe-event"><option value="">Evento relacionado (opcional)</option></select></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-repe')">Cancelar</button>
-      <button class="btn-primary" onclick="saveRepeEdit()">💾 Guardar</button>
+      <button class="btn-primary" onclick="saveRepeEdit()"><i class="fas fa-save"></i> Guardar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-member">
   <div class="modal-box">
-    <h3>✏️ Editar integrante</h3>
+    <h3><i class="fas fa-edit"></i> Editar integrante</h3>
     <input type="hidden" id="edit-member-id" />
     <div class="form-row"><input id="edit-member-name" placeholder="Nombre completo" /></div>
     <div class="form-row">
       <select id="edit-member-instrument">
         <option value="">Instrumento / Rol</option>
-        <option value="VOICE">🎤 VOICE</option><option value="GA">🎸 GA</option>
-        <option value="GE">⚡ GE</option><option value="BASS">🎸 BASS</option>
-        <option value="PIANO">🎹 PIANO</option><option value="DRUM">🥁 DRUM</option>
-        <option value="Otro">🎵 Otro</option>
+        <option value="VOICE"><i class="fas fa-microphone"></i> VOICE</option><option value="AG"><i class="fas fa-guitar"></i> GA</option>
+        <option value="EG"><i class="fas fa-bolt"></i> GE</option><option value="BASS"><i class="fas fa-guitar"></i> BASS</option>
+        <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option><option value="DRUM"><i class="fas fa-drum"></i> DRUM</option>
+        <option value="Otro"><i class="fas fa-music"></i> Otro</option>
       </select>
     </div>
     <div class="form-row">
@@ -874,14 +921,14 @@
     <div class="form-row"><input id="edit-member-photo" placeholder="🖼️ URL de foto" /></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-member')">Cancelar</button>
-      <button class="btn-primary" onclick="saveMemberEdit()">💾 Guardar</button>
+      <button class="btn-primary" onclick="saveMemberEdit()"><i class="fas fa-save"></i> Guardar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-event">
   <div class="modal-box">
-    <h3>✏️ Editar evento</h3>
+    <h3><i class="fas fa-edit"></i> Editar evento</h3>
     <input type="hidden" id="edit-event-id" />
     <div class="form-row"><input id="edit-event-name" placeholder="Nombre del evento" /></div>
     <div class="form-row"><input id="edit-event-date" type="date" /></div>
@@ -894,7 +941,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-event')">Cancelar</button>
-      <button class="btn-primary" onclick="saveEventEdit()">💾 Guardar</button>
+      <button class="btn-primary" onclick="saveEventEdit()"><i class="fas fa-save"></i> Guardar</button>
     </div>
   </div>
 </div>
@@ -922,13 +969,13 @@
   let allEvents = [], allRepes = [], allMembers = [], allSongs = [], allCultos = {};
 
   const ROLE_CONFIG = {
-    VOICE: { label: '🎤 VOICE', cls: 'role-VOICE' },
-    GA:    { label: '🎸 GA',    cls: 'role-GA' },
-    GE:    { label: '⚡ GE',    cls: 'role-GE' },
-    BASS:  { label: '🎸 BASS',  cls: 'role-BASS' },
-    PIANO: { label: '🎹 PIANO', cls: 'role-PIANO' },
-    DRUM:  { label: '🥁 DRUM',  cls: 'role-DRUM' },
-    Otro:  { label: '🎵 Otro',  cls: 'role-OTHER' },
+    VOICE: { label: '<i class="fas fa-microphone"></i> VOICE', cls: 'role-VOICE' },
+    GA:    { label: '<i class="fas fa-guitar"></i> AG',    cls: 'role-GA' },
+    GE:    { label: '<i class="fas fa-bolt"></i> EG',    cls: 'role-GE' },
+    BASS:  { label: '<i class="fas fa-guitar"></i> BASS',  cls: 'role-BASS' },
+    PIANO: { label: '<i class="fas fa-piano-keyboard"></i> PIANO', cls: 'role-PIANO' },
+    DRUM:  { label: '<i class="fas fa-drum"></i> DRUM',  cls: 'role-DRUM' },
+    Otro:  { label: '<i class="fas fa-music"></i> Otro',  cls: 'role-OTHER' },
   };
   function getRoleConfig(role) { return ROLE_CONFIG[role] || { label: role || 'Sin rol', cls: 'role-OTHER' }; }
 
@@ -939,9 +986,9 @@
   function makeAv(member, size, cls) {
     const hasPhoto = member.photo && member.photo.trim();
     if (hasPhoto) {
-      return `<div class="${cls}" style="width:${size}px;height:${size}px"><img src="${member.photo}" alt="${member.name}" onerror="this.parentNode.innerHTML='${member.name.charAt(0)}'" /></div>`;
+      return `<div class="${cls}" style="width:${size}px;height:${size}px"><img src="${member.photo}" alt="${member.name}" onerror="this.parentNode.innerHTML='<i class=\'fas fa-user\'></i>'" /></div>`;
     }
-    return `<div class="${cls}" style="width:${size}px;height:${size}px">${member.name.charAt(0)}</div>`;
+    return `<div class="${cls}" style="width:${size}px;height:${size}px"><i class="fas fa-user"></i></div>`;
   }
 
   // ── CARRUSELES ──
@@ -954,7 +1001,7 @@
     navTrack.innerHTML = doubled.map(m => {
       const rc = getRoleConfig(m.instrument);
       const hasPhoto = m.photo && m.photo.trim();
-      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : m.name.charAt(0);
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
       return `<div class="nav-pill">
         <div class="nav-pill-av">${avInner}</div>
         <div>
@@ -969,7 +1016,7 @@
     heroTrack.innerHTML = doubled.map(m => {
       const rc = getRoleConfig(m.instrument);
       const hasPhoto = m.photo && m.photo.trim();
-      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : m.name.charAt(0);
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
       return `<div class="hero-member-card">
         <div class="hero-av">${avInner}</div>
         <div class="hero-member-name">${m.name.split(' ')[0]}</div>
@@ -1001,7 +1048,7 @@
     bar.textContent = msg; bar.style.display = 'block';
     setTimeout(() => bar.style.display = 'none', 2500);
   }
-  function emptyState(msg) { return `<div class="empty"><span>🎶</span>${msg}</div>`; }
+  function emptyState(msg) { return `<div class="empty"><span><i class="fas fa-music"></i></span>${msg}</div>`; }
   window.openModal = id => document.getElementById(id).classList.add('open');
   window.closeModal = id => document.getElementById(id).classList.remove('open');
 
@@ -1012,14 +1059,15 @@
   }
 
   // ══ CULTO ══
-  function updateCultoRepeSelect() {
+   function updateCultoRepeSelect() {
     const sel = document.getElementById('culto-repe-select');
     const prev = sel.value;
     sel.innerHTML = '<option value="">— Selecciona un repe —</option>';
     allRepes.forEach(r => {
       const opt = document.createElement('option');
       opt.value = r.id;
-      opt.textContent = `📋 ${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
+      // Quitamos los <i>, dejamos solo el texto limpio
+      opt.textContent = `${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
       sel.appendChild(opt);
     });
     if (prev && allRepes.find(r => r.id === prev)) sel.value = prev;
@@ -1038,14 +1086,14 @@
   };
 
   function showCultoBanner(repe) {
-    document.getElementById('culto-repe-banner-title').textContent = '📋 ' + repe.name;
+    document.getElementById('culto-repe-banner-title').textContent = '🏷️' + repe.name;
     const parts = [];
-    if (repe.date) parts.push('📅 ' + repe.date);
-    if (repe.eventName) parts.push('🎪 ' + repe.eventName);
+    if (repe.date) parts.push('📅' + repe.date);
+    if (repe.eventName) parts.push('🔁' + repe.eventName);
     if (repe.songs) parts.push(repe.songs.length + ' canciones');
     document.getElementById('culto-repe-banner-meta').textContent = parts.join(' · ');
     document.getElementById('culto-repe-banner-songs').innerHTML = repe.songs && repe.songs.length
-      ? repe.songs.map(s => `<span class="culto-repe-banner-song">🎵 ${s.name}</span>`).join('') : '';
+      ? repe.songs.map(s => `<span class="culto-repe-banner-song"><i class="fas fa-music"></i> ${s.name}</span>`).join('') : '';
     document.getElementById('culto-repe-banner').classList.add('visible');
   }
 
@@ -1083,7 +1131,7 @@
       document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
       allCultos['culto_repe_' + repeId] = { sabado: cultoState.sabado, domingo: cultoState.domingo };
       renderHomeEvents();
-      showStatus('✅ Planificación guardada');
+      showStatus('<i class="fas fa-check-circle"></i> Planificación guardada');
     } catch(e) { alert('Error al guardar: ' + e.message); }
   };
 
@@ -1092,15 +1140,15 @@
   function buildVoiceChip(member, zone) {
     const rc = getRoleConfig(member.instrument);
     const hasPhoto = member.photo && member.photo.trim();
-    const avInner = hasPhoto ? `<img src="${member.photo}" alt="${member.name}" onerror="this.style.display='none'" />` : member.name.charAt(0);
+    const avInner = hasPhoto ? `<img src="${member.photo}" alt="${member.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
     let dayBadges = '';
     if (zone === 'pool') {
       const inSab = cultoState.sabado.includes(member.id);
       const inDom = cultoState.domingo.includes(member.id);
       if (inSab || inDom) {
         dayBadges = `<div class="voice-chip-badges">
-          ${inSab ? '<span class="day-badge day-badge-sab">⛪ Sáb</span>' : ''}
-          ${inDom ? '<span class="day-badge day-badge-dom">☀️ Dom</span>' : ''}
+          ${inSab ? '<span class="day-badge day-badge-sab"><i class="fas fa-church"></i> Sáb</span>' : ''}
+          ${inDom ? '<span class="day-badge day-badge-dom"><i class="fas fa-sun"></i> Dom</span>' : ''}
         </div>`;
       }
     }
@@ -1114,7 +1162,7 @@
           <div class="voice-chip-role"><span class="role-badge ${rc.cls}">${rc.label}</span></div>
           ${dayBadges}
         </div>
-        ${zone !== 'pool' ? `<button class="voice-chip-remove" onclick="returnToPool('${member.id}','${zone}')">✕</button>` : ''}
+        ${zone !== 'pool' ? `<button class="voice-chip-remove" onclick="returnToPool('${member.id}','${zone}')"><i class="fas fa-times"></i></button>` : ''}
       </div>`;
   }
 
@@ -1131,7 +1179,7 @@
       } else {
         chipsEl.innerHTML = mems.map(m => {
           const hasPhoto = m.photo && m.photo.trim();
-          const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : m.name.charAt(0);
+          const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
           return `<div class="culto-summary-chip"><div class="chip-av">${avInner}</div>${m.name.split(' ')[0]}</div>`;
         }).join('');
       }
@@ -1213,7 +1261,7 @@
       await addDoc(collection(db, 'songs'), { title, artist, key, genre, youtube, createdAt: Date.now() });
       ['song-title','song-artist','song-key','song-youtube'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('song-genre').value = '';
-      showStatus('✅ Canción guardada');
+      showStatus('<i class="fas fa-check-circle"></i> Canción guardada');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.openEditSong = (id, title, artist, key, genre, youtube) => {
@@ -1235,12 +1283,12 @@
     if (!title) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'songs', id), { title, artist, key, genre, youtube });
-      closeModal('modal-song'); showStatus('✏️ Canción actualizada');
+      closeModal('modal-song'); showStatus('<i class="fas fa-edit"></i> Canción actualizada');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteSong = async id => {
     if (!confirm('¿Eliminar esta canción?')) return;
-    await deleteDoc(doc(db, 'songs', id)); showStatus('🗑️ Canción eliminada');
+    await deleteDoc(doc(db, 'songs', id)); showStatus('<i class="fas fa-trash-alt"></i> Canción eliminada');
   };
 
   onSnapshot(collection(db, 'songs'), snap => {
@@ -1258,18 +1306,18 @@
       const ytId = getYoutubeId(s.youtube);
       const thumb = ytId
         ? `<a href="${s.youtube}" target="_blank"><img class="song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
-        : `<div class="song-thumb-placeholder">🎵</div>`;
-      const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank">▶ YouTube</a>` : '';
+        : `<div class="song-thumb-placeholder"><i class="fas fa-music"></i></div>`;
+      const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>` : '';
       return `<div class="song-card">
           ${thumb}
           <div class="song-info">
-            <div class="card-title">${s.title}${s.genre ? ` <span class="badge badge-orange">${s.genre}</span>` : ''}</div>
-            <div class="card-sub">${s.artist || 'Sin artista'}${s.key ? ' · ' + s.key : ''}</div>
+            <div class="card-title">${s.title}${s.genre ? ` <span class="badge badge-orange">${s.genre}</span>` : ''}${s.key ? ` <span class="badge badge-green">${s.key}</span>` : ''}</div>
+            <div class="card-sub">${s.artist || 'Sin artista'}</div>
             ${ytBtn}
           </div>
           <div class="card-actions">
-            <button class="btn-icon" onclick="openEditSong('${s.id}',${JSON.stringify(s.title)},${JSON.stringify(s.artist||'')},${JSON.stringify(s.key||'')},${JSON.stringify(s.genre||'')},${JSON.stringify(s.youtube||'')})">✏️</button>
-            <button class="btn-icon" onclick="deleteSong('${s.id}')">🗑️</button>
+            <button class="btn-icon" onclick="openEditSong('${s.id}',${JSON.stringify(s.title)},${JSON.stringify(s.artist||'')},${JSON.stringify(s.key||'')},${JSON.stringify(s.genre||'')},${JSON.stringify(s.youtube||'')})"><i class="fas fa-edit"></i></button>
+            <button class="btn-icon" onclick="deleteSong('${s.id}')"><i class="fas fa-trash-alt"></i></button>
           </div>
         </div>`;
     }).join('');
@@ -1304,7 +1352,7 @@
       <div class="repe-song-item">
         <div class="song-num">${i + 1}</div>
         <span style="flex:1">${s.name}</span>
-        <button class="btn-icon" onclick="removeRepeSong(${i})">✕</button>
+        <button class="btn-icon" onclick="removeRepeSong(${i})"><i class="fas fa-times"></i></button>
       </div>`).join('');
   }
   window.removeRepeSong = i => { currentRepeSongs.splice(i, 1); renderRepeSongs(); };
@@ -1322,7 +1370,7 @@
       document.getElementById('repe-date').value = '';
       document.getElementById('repe-event-select').value = '';
       currentRepeSongs = []; renderRepeSongs();
-      showStatus('✅ Repe guardado');
+      showStatus('<i class="fas fa-check-circle"></i> Repe guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.openEditRepe = (id, name, date, eventId) => {
@@ -1343,12 +1391,12 @@
     if (!name) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'repes', id), { name, date, eventId, eventName });
-      closeModal('modal-repe'); showStatus('✏️ Repe actualizado');
+      closeModal('modal-repe'); showStatus('<i class="fas fa-edit"></i> Repe actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteRepe = async id => {
     if (!confirm('¿Eliminar este repe?')) return;
-    await deleteDoc(doc(db, 'repes', id)); showStatus('🗑️ Repe eliminado');
+    await deleteDoc(doc(db, 'repes', id)); showStatus('<i class="fas fa-trash-alt"></i> Repe eliminado');
   };
 
   onSnapshot(collection(db, 'repes'), snap => {
@@ -1359,12 +1407,12 @@
       <div class="card" style="flex-direction:column;align-items:flex-start;">
         <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
           <div class="card-info">
-            <div class="card-title">📋 ${r.name}</div>
-            <div class="card-sub">${r.date || 'Sin fecha'} · ${r.songs.length} canciones${r.eventName ? ' · 📅 ' + r.eventName : ''}</div>
+            <div class="card-title"><i class="fas fa-clipboard-list"></i> ${r.name}</div>
+            <div class="card-sub">${r.date || 'Sin fecha'} · ${r.songs.length} canciones${r.eventName ? ' · <i class="fas fa-calendar-day"></i> ' + r.eventName : ''}</div>
           </div>
           <div class="card-actions">
-            <button class="btn-icon" onclick="openEditRepe('${r.id}',${JSON.stringify(r.name)},${JSON.stringify(r.date||'')},${JSON.stringify(r.eventId||'')})">✏️</button>
-            <button class="btn-icon" onclick="deleteRepe('${r.id}')">🗑️</button>
+            <button class="btn-icon" onclick="openEditRepe('${r.id}',${JSON.stringify(r.name)},${JSON.stringify(r.date||'')},${JSON.stringify(r.eventId||'')})"><i class="fas fa-edit"></i></button>
+            <button class="btn-icon" onclick="deleteRepe('${r.id}')"><i class="fas fa-trash-alt"></i></button>
           </div>
         </div>
         <div class="repe-songs" style="width:100%;margin-top:8px;">
@@ -1388,7 +1436,7 @@
       await addDoc(collection(db, 'members'), { name, instrument, phone, status, photo, createdAt: Date.now() });
       ['member-name','member-phone','member-photo'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('member-instrument').value = '';
-      showStatus('✅ Integrante guardado');
+      showStatus('<i class="fas fa-check-circle"></i> Integrante guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.openEditMember = (id, name, instrument, phone, status, photo) => {
@@ -1410,12 +1458,12 @@
     if (!name) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'members', id), { name, instrument, phone, status, photo });
-      closeModal('modal-member'); showStatus('✏️ Integrante actualizado');
+      closeModal('modal-member'); showStatus('<i class="fas fa-edit"></i> Integrante actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteMember = async id => {
     if (!confirm('¿Eliminar este integrante?')) return;
-    await deleteDoc(doc(db, 'members', id)); showStatus('🗑️ Integrante eliminado');
+    await deleteDoc(doc(db, 'members', id)); showStatus('<i class="fas fa-trash-alt"></i> Integrante eliminado');
   };
 
   onSnapshot(collection(db, 'members'), snap => {
@@ -1433,8 +1481,8 @@
       grouped[role].forEach(m => {
         const hasPhoto = m.photo && m.photo.trim();
         const avatar = hasPhoto
-          ? `<img class="member-avatar-big" src="${m.photo}" alt="${m.name}" onerror="this.outerHTML='<div class=member-avatar-placeholder>${m.name.charAt(0)}</div>'" />`
-          : `<div class="member-avatar-placeholder">${m.name.charAt(0)}</div>`;
+          ? `<img class="member-avatar-big" src="${m.photo}" alt="${m.name}" onerror="this.outerHTML='<div class=member-avatar-placeholder><i class=fas fa-user></i></div>'" />`
+          : `<div class="member-avatar-placeholder"><i class="fas fa-user"></i></div>`;
         html += `<div class="member-card">
             ${avatar}
             <div class="card-info">
@@ -1442,11 +1490,11 @@
                 <span class="badge ${m.status === 'Activo' ? 'badge-green' : 'badge-orange'}">${m.status}</span>
                 <span class="role-badge ${rc.cls}">${rc.label}</span>
               </div>
-              <div class="card-sub">${m.phone ? '📞 ' + m.phone : 'Sin teléfono'}</div>
+              <div class="card-sub">${m.phone ? '<i class="fas fa-phone"></i> ' + m.phone : 'Sin teléfono'}</div>
             </div>
             <div class="card-actions">
-              <button class="btn-icon" onclick="openEditMember('${m.id}',${JSON.stringify(m.name)},${JSON.stringify(m.instrument||'')},${JSON.stringify(m.phone||'')},${JSON.stringify(m.status||'Activo')},${JSON.stringify(m.photo||'')})">✏️</button>
-              <button class="btn-icon" onclick="deleteMember('${m.id}')">🗑️</button>
+              <button class="btn-icon" onclick="openEditMember('${m.id}',${JSON.stringify(m.name)},${JSON.stringify(m.instrument||'')},${JSON.stringify(m.phone||'')},${JSON.stringify(m.status||'Activo')},${JSON.stringify(m.photo||'')})"><i class="fas fa-edit"></i></button>
+              <button class="btn-icon" onclick="deleteMember('${m.id}')"><i class="fas fa-trash-alt"></i></button>
             </div>
           </div>`;
       });
@@ -1467,7 +1515,7 @@
       await addDoc(collection(db, 'events'), { name, date, place, type, createdAt: Date.now() });
       ['event-name','event-date','event-place'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('event-type').value = '';
-      showStatus('✅ Evento guardado');
+      showStatus('<i class="fas fa-check-circle"></i> Evento guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.openEditEvent = (id, name, date, place, type) => {
@@ -1487,12 +1535,12 @@
     if (!name) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'events', id), { name, date, place, type });
-      closeModal('modal-event'); showStatus('✏️ Evento actualizado');
+      closeModal('modal-event'); showStatus('<i class="fas fa-edit"></i> Evento actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteEvent = async id => {
     if (!confirm('¿Eliminar este evento?')) return;
-    await deleteDoc(doc(db, 'events', id)); showStatus('🗑️ Evento eliminado');
+    await deleteDoc(doc(db, 'events', id)); showStatus('<i class="fas fa-trash-alt"></i> Evento eliminado');
   };
 
   // ══ HOME EVENTS ══
@@ -1518,7 +1566,7 @@
       if (!m) return '';
       const rc = getRoleConfig(m.instrument);
       const hasPhoto = m.photo && m.photo.trim();
-      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : m.name.charAt(0);
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
       return `<div class="culto-day-member">
         <div class="day-av">${avInner}</div>
         <div class="culto-day-member-info">
@@ -1529,14 +1577,14 @@
     }
 
     return `<div class="culto-days-section">
-      <div class="culto-days-label">🎤 Quién canta cada día</div>
+      <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién canta cada día</div>
       <div class="culto-days-grid">
         <div class="culto-day-card sab">
-          <div class="culto-day-title">⛪ Sábado</div>
+          <div class="culto-day-title"><i class="fas fa-church"></i> Sábado</div>
           <div class="culto-day-members">${sabIds.length ? sabIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
         </div>
         <div class="culto-day-card dom">
-          <div class="culto-day-title">☀️ Domingo</div>
+          <div class="culto-day-title"><i class="fas fa-sun"></i> Domingo</div>
           <div class="culto-day-members">${domIds.length ? domIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
         </div>
       </div>
@@ -1547,37 +1595,55 @@
     const homeList = document.getElementById('home-events-list');
     if (!homeList) return;
     if (!allEvents.length) { homeList.innerHTML = emptyState('Aún no hay eventos programados'); return; }
-    homeList.innerHTML = allEvents.map(ev => {
+
+    const today = new Date();
+
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(today.getDate() - 3);
+    threeDaysAgo.setHours(0, 0, 0, 0);
+
+ const upcomingEvents = allEvents.filter(ev => {
+    if (!ev.date) return true;
+    const evDate = new Date(ev.date);
+    evDate.setHours(0, 0, 0, 0);
+    // Mostrar eventos desde hace 3 días hasta eventos futuros
+    return evDate >= threeDaysAgo;
+  });
+
+    //if (!upcomingEvents.length) { homeList.innerHTML = emptyState('No hay eventos futuros'); return; }
+    if (!upcomingEvents.length) { homeList.innerHTML = emptyState('No hay eventos recientes ni futuros'); return;}
+
+    homeList.innerHTML = upcomingEvents.map(ev => {
       const relatedRepes = allRepes.filter(r => r.eventId === ev.id);
       const repesHtml = relatedRepes.length
         ? relatedRepes.map(r => {
             const songsHtml = r.songs?.length
               ? `<div class="home-repe-songs">
-                  <div style="font-size:0.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">🎵 Canciones</div>
+                  <div style="font-size:0.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;"><i class="fas fa-music"></i> Canciones</div>
                   ${r.songs.map((s,i) => {
                     const songData = allSongs.find(sg => sg.id === s.id);
                     const ytId = songData ? getYoutubeId(songData.youtube) : null;
                     const thumb = ytId ? `<a href="${songData.youtube}" target="_blank"><img class="home-repe-song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>` : '';
-                    const nameEl = ytId && songData ? `<a href="${songData.youtube}" target="_blank" style="color:var(--dark);text-decoration:none;font-weight:600;">${s.name}</a>` : `<span>${s.name}</span>`;
+                    const nameEl = ytId && songData ? `<a href="${songData.youtube}" target="_blank" style="color:var(--dark);text-decoration:none;font-weight:600;">${s.name}${songData.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</a>` : `<span>${s.name}${songData?.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</span>`;
                     return `<div class="home-repe-song"><div class="home-repe-song-num">${i+1}</div>${thumb}${nameEl}</div>`;
                   }).join('')}
                 </div>` : '';
             return `<div class="home-repe">
-              <div class="home-repe-title">📋 ${r.name}</div>
+              <div class="home-repe-title"><i class="fas fa-clipboard-list"></i> ${r.name}</div>
               <div class="home-repe-meta">${r.songs?.length || 0} canciones${r.date ? ' · ' + r.date : ''}</div>
               ${songsHtml}${buildDaySection(r.id)}
             </div>`;
           }).join('')
-        : `<div class="home-repe" style="color:#aaa;font-size:0.8rem">✨ Sin repes asociados aún.</div>`;
+        : `<div class="home-repe" style="color:#aaa;font-size:0.8rem"><i class="fas fa-star"></i> Sin repes asociados aún.</div>`;
       return `<div class="event-home-card">
         <div class="event-home-head">
           <div>
-            <div class="event-home-title">📅 ${ev.name}</div>
-            <div class="event-home-date">${ev.date || 'Fecha por definir'}${ev.place ? ' · 📍 ' + ev.place : ''}</div>
+            <div class="event-home-title"><i class="fas fa-calendar-day"></i> ${ev.name}</div>
+            <div class="event-home-date">${ev.date || 'Fecha por definir'}${ev.place ? ' · <i class="fas fa-map-marker-alt"></i> ' + ev.place : ''}</div>
           </div>
           ${ev.type ? `<span class="badge badge-orange">${ev.type}</span>` : ''}
         </div>
-        <div class="event-repes-title">📋 Repes para este evento</div>
+        <div class="event-repes-title"><i class="fas fa-clipboard-list"></i> Repes para este evento</div>
         ${repesHtml}
       </div>`;
     }).join('');
@@ -1591,11 +1657,11 @@
       <div class="card">
         <div class="card-info">
           <div class="card-title">${ev.name}${ev.type ? ` <span class="badge badge-orange">${ev.type}</span>` : ''}</div>
-          <div class="card-sub">${ev.date || 'Sin fecha'}${ev.place ? ' · 📍 ' + ev.place : ''}</div>
+          <div class="card-sub">${ev.date || 'Sin fecha'}${ev.place ? ' · <i class="fas fa-map-marker-alt"></i> ' + ev.place : ''}</div>
         </div>
         <div class="card-actions">
-          <button class="btn-icon" onclick="openEditEvent('${ev.id}',${JSON.stringify(ev.name)},${JSON.stringify(ev.date||'')},${JSON.stringify(ev.place||'')},${JSON.stringify(ev.type||'')})">✏️</button>
-          <button class="btn-icon" onclick="deleteEvent('${ev.id}')">🗑️</button>
+          <button class="btn-icon" onclick="openEditEvent('${ev.id}',${JSON.stringify(ev.name)},${JSON.stringify(ev.date||'')},${JSON.stringify(ev.place||'')},${JSON.stringify(ev.type||'')})"><i class="fas fa-edit"></i></button>
+          <button class="btn-icon" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash-alt"></i></button>
         </div>
       </div>`).join('');
     updateEventSelects();
@@ -1606,6 +1672,42 @@
     snap.docs.forEach(d => { allCultos[d.id] = d.data(); });
     renderHomeEvents();
   });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
+      const input = document.getElementById(inputId);
+      const field = document.getElementById(fieldId);
+      if (!input || !field) return;
+      const placeholder = field.querySelector('.date-placeholder');
+
+      function update() {
+        const v = input.value;
+        if (!v) {
+          placeholder.textContent = defaultText;
+        } else {
+          const d = new Date(v + 'T00:00:00');
+          placeholder.textContent = d.toLocaleDateString();
+        }
+      }
+
+      input.addEventListener('change', update);
+      field.addEventListener('click', (e) => {
+        e.preventDefault();
+        input.focus();
+        if (typeof input.showPicker === 'function') input.showPicker();
+      });
+      field.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
+      });
+      update();
+    }
+
+    // Inicializa los campos que necesites:
+    initDateField('event-date', 'event-date-field', 'Selecciona fecha');
+    initDateField('repe-date', 'repe-date-field', 'Selecciona fecha');
+  });
+
 </script>
 </body>
 </html>
