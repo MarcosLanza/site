@@ -4,56 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>Banda Trinidad</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1B2420">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Trinidad">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --green: #4A5D45; --green-light: #6b8c64; --green-dark: #2d3d2a;
-      --orange: #F7941D; --orange-light: #fbb04e; --orange-dark: #c96a00;
-      --cream: #F2EFE9; --dark: #1e2b1c; --dark2: #2c3a29;
-      --card-bg: #ffffff; --surface: #f7f5f0; --border: #e8e4dc;
-      --text-muted: #8a8a8a; --text-light: rgba(255,255,255,0.7);
-      --shadow-xs: 0 1px 4px rgba(44,58,41,0.06);
-      --shadow-sm: 0 2px 10px rgba(44,58,41,0.09);
-      --shadow-md: 0 6px 24px rgba(44,58,41,0.14);
-      --shadow-lg: 0 16px 48px rgba(44,58,41,0.2);
-      --shadow-glow: 0 0 0 3px rgba(247,148,29,0.18);
+      --ink: #1B2420;
+      --ink-soft: #2A362E;
+      --forest: #2F4A3C;
+      --forest-deep: #1E3229;
+      --moss: #7C9473;
+      --moss-light: #A9BF9F;
+      --gold: #F7941D;
+      --gold-light: #FBB04E;
+      --gold-deep: #C96A00;
+      --ember: #B5502F;
+      --ember-light: #D97C57;
+      --paper: #F5F0E4;
+      --paper-dim: #EEE7D6;
+      --card-bg: #FFFFFF;
+      --surface: #FAF7EF;
+      --border: #E4DCC8;
+      --text-muted: #7A7669;
+      --text-light: rgba(255,255,255,0.7);
+      --shadow-xs: 0 1px 3px rgba(27,36,32,0.06);
+      --shadow-sm: 0 3px 14px rgba(27,36,32,0.08);
+      --shadow-md: 0 8px 28px rgba(27,36,32,0.13);
+      --shadow-lg: 0 20px 52px rgba(27,36,32,0.22);
+      --shadow-glow: 0 0 0 3px rgba(201,147,46,0.2);
       --radius: 18px; --radius-sm: 12px; --radius-xs: 8px;
-      --nav-h: 56px; --bottom-h: 64px;
+      --nav-h: 58px; --bottom-h: 66px;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--cream); color: var(--dark);
+      font-family: var(--font-body);
+      background: var(--paper); color: var(--ink);
       min-height: 100vh; min-height: 100dvh;
       -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 100% 0%, rgba(124,148,115,0.08) 0%, transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(201,147,46,0.06) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    ::selection { background: var(--gold-light); color: var(--forest-deep); }
+
+    /* Focus visibility */
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .date-field:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     }
 
     /* ══════════════════════════════════════
-       TOP NAV (solo logo + carrusel en desktop)
+       TOP NAV
     ══════════════════════════════════════ */
     .top-nav {
-      background: var(--dark);
+      background: var(--ink);
       height: var(--nav-h);
       display: flex; align-items: center;
-      padding: 0 16px; gap: 12px;
+      padding: 0 18px; gap: 14px;
       position: sticky; top: 0; z-index: 200;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.35);
+      border-bottom: 1px solid rgba(201,147,46,0.15);
     }
     .nav-logo {
-      color: var(--orange); font-size: 1rem; font-weight: 900;
-      letter-spacing: 1.5px; white-space: nowrap; flex-shrink: 0;
-      display: flex; align-items: center; gap: 6px;
+      color: var(--gold-light); font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+      letter-spacing: 0.3px; white-space: nowrap; flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px;
     }
+    .nav-logo i { font-size: 0.95rem; opacity: 0.85; }
     .nav-logo-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--orange); animation: pulse 2s infinite;
+      background: var(--gold); animation: pulse 2.4s infinite;
     }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.45;transform:scale(1.5)} }
 
-    /* Carrusel nav */
     .nav-carousel-wrap {
       flex: 1; overflow: hidden; min-width: 0;
       mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
@@ -61,238 +101,381 @@
     }
     .nav-carousel-track {
       display: flex; gap: 8px; align-items: center;
-      animation: navScroll 22s linear infinite; width: max-content;
+      animation: navScroll 24s linear infinite; width: max-content;
     }
     .nav-carousel-track:hover { animation-play-state: paused; }
     @keyframes navScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
     .nav-pill {
       display: flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 30px; padding: 4px 10px 4px 4px; white-space: nowrap; flex-shrink: 0;
-      transition: all 0.2s; cursor: default;
+      transition: background 0.2s, border-color 0.2s; cursor: default;
     }
-    .nav-pill:hover { background: rgba(247,148,29,0.15); border-color: rgba(247,148,29,0.4); }
+    .nav-pill:hover { background: rgba(201,147,46,0.14); border-color: rgba(201,147,46,0.35); }
     .nav-pill-av {
       width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--green), var(--orange));
+      background: linear-gradient(135deg, var(--forest), var(--gold));
       display: flex; align-items: center; justify-content: center;
       font-size: 0.6rem; color: white; font-weight: 800; overflow: hidden;
     }
     .nav-pill-av img { width: 100%; height: 100%; object-fit: cover; }
-    .nav-pill-name { font-size: 0.7rem; color: rgba(255,255,255,0.88); font-weight: 700; }
+    .nav-pill-name { font-size: 0.7rem; color: rgba(255,255,255,0.9); font-weight: 700; }
     .nav-pill-role { font-size: 0.56rem; color: rgba(255,255,255,0.38); }
 
-    /* Tabs desktop en nav */
-    .nav-tabs-desktop {
-      display: flex; gap: 2px; flex-shrink: 0;
-    }
+    .nav-tabs-desktop { display: flex; gap: 2px; flex-shrink: 0; }
     .nav-tabs-desktop button {
       background: transparent; border: none;
-      color: rgba(255,255,255,0.5); padding: 7px 12px; border-radius: 10px;
-      cursor: pointer; font-size: 0.73rem; font-weight: 700; white-space: nowrap;
-      transition: all 0.2s; font-family: inherit;
+      color: rgba(255,255,255,0.48); padding: 8px 13px; border-radius: 10px;
+      cursor: pointer; font-size: 0.76rem; font-weight: 600; white-space: nowrap;
+      transition: background 0.2s, color 0.2s; font-family: var(--font-body);
+      display: flex; align-items: center; gap: 6px;
     }
-    .nav-tabs-desktop button.active { background: var(--orange); color: white; }
+    .nav-tabs-desktop button.active { background: var(--gold); color: var(--ink); font-weight: 700; }
     .nav-tabs-desktop button:hover:not(.active) { background: rgba(255,255,255,0.08); color: white; }
 
     /* ══════════════════════════════════════
-       BOTTOM NAV (móvil)
+       BOTTOM NAV
     ══════════════════════════════════════ */
     .bottom-nav {
       display: none;
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-      background: var(--dark);
+      background: var(--ink);
       height: var(--bottom-h);
       padding: 0 4px;
       padding-bottom: env(safe-area-inset-bottom);
-      box-shadow: 0 -2px 20px rgba(0,0,0,0.35);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 -2px 24px rgba(0,0,0,0.35);
+      border-top: 1px solid rgba(201,147,46,0.15);
     }
-    .bottom-nav-inner {
-      display: flex; align-items: center; justify-content: space-around;
-      height: 100%;
-    }
+    .bottom-nav-inner { display: flex; align-items: center; justify-content: space-around; height: 100%; }
     .bnav-btn {
       display: flex; flex-direction: column; align-items: center; gap: 3px;
       background: none; border: none; cursor: pointer; padding: 6px 10px;
-      border-radius: 14px; transition: all 0.2s; flex: 1; max-width: 72px;
-      font-family: inherit;
+      border-radius: 14px; transition: background 0.2s; flex: 1; max-width: 72px;
+      font-family: var(--font-body);
     }
-    .bnav-btn .bnav-icon { font-size: 1.3rem; line-height: 1; transition: transform 0.2s; }
-    .bnav-btn .bnav-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.4); transition: color 0.2s; white-space: nowrap; }
-    .bnav-btn.active .bnav-icon { transform: scale(1.15); }
-    .bnav-btn.active .bnav-label { color: var(--orange); }
-    .bnav-btn.active { background: rgba(247,148,29,0.1); }
+    .bnav-btn .bnav-icon { font-size: 1.25rem; line-height: 1; transition: transform 0.2s; color: rgba(255,255,255,0.42); }
+    .bnav-btn .bnav-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.42); transition: color 0.2s; white-space: nowrap; }
+    .bnav-btn.active .bnav-icon { transform: scale(1.12); color: var(--gold-light); }
+    .bnav-btn.active .bnav-label { color: var(--gold-light); }
+    .bnav-btn.active { background: rgba(201,147,46,0.14); }
 
     /* ══════════════════════════════════════
        MAIN
     ══════════════════════════════════════ */
-    main {
-      max-width: 880px; margin: 0 auto;
-      padding: 20px 16px 100px;
-    }
+    main { max-width: 900px; margin: 0 auto; padding: 24px 18px 100px; }
     .section { display: none; }
-    .section.active { display: block; animation: fadeUp 0.3s ease; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    .section.active { display: block; animation: fadeUp 0.32s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-    h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    h2 {
+      font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--forest-deep);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+    }
 
     /* ══════════════════════════════════════
        WELCOME HERO
     ══════════════════════════════════════ */
     .welcome-card {
-      background: linear-gradient(135deg, var(--dark) 0%, #2d4a2a 55%, var(--green) 100%);
-      border-radius: 24px; padding: 22px 20px 18px;
-      margin-bottom: 22px; position: relative; overflow: hidden;
+      background: linear-gradient(160deg, var(--ink) 0%, var(--forest-deep) 55%, var(--forest) 100%);
+      border-radius: 26px; padding: 30px 26px 22px;
+      margin-bottom: 26px; position: relative; overflow: hidden;
       box-shadow: var(--shadow-lg);
     }
     .welcome-card::before {
-      content: ''; position: absolute; top: -50px; right: -50px;
-      width: 180px; height: 180px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(247,148,29,0.15) 0%, transparent 70%);
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,147,46,0.18) 0%, transparent 70%);
     }
     .welcome-card::after {
-      content: ''; position: absolute; bottom: -30px; left: -30px;
-      width: 120px; height: 120px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      content: ''; position: absolute; bottom: -40px; left: -20px;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,148,115,0.12) 0%, transparent 70%);
     }
-    .welcome-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-    .welcome-label { font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .welcome-card h1 { color: var(--orange); font-size: 1.6rem; font-weight: 900; margin: 6px 0 4px; line-height: 1.1; }
-    .welcome-card p { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
-    .welcome-icon { font-size: 2.8rem; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(247,148,29,0.3)); }
+    .welcome-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; position: relative; }
+    .welcome-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.45); }
+    .welcome-card h1 {
+      font-family: var(--font-display); color: var(--gold-light); font-size: 2.1rem; font-weight: 600;
+      margin: 6px 0 6px; line-height: 1.05; display: flex; align-items: center; gap: 12px;
+    }
+    .welcome-card h1 i { font-size: 1.5rem; opacity: 0.9; }
+    .welcome-card p { font-size: 0.88rem; color: rgba(255,255,255,0.6); font-family: var(--font-body); }
+    .welcome-icon { display: none; }
 
-    /* Hero carousel */
     .hero-carousel-wrap {
-      overflow: hidden; margin-top: 18px; position: relative;
+      overflow: hidden; margin-top: 22px; position: relative;
       mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
     }
-    .hero-carousel-track {
-      display: flex; gap: 10px; animation: heroScroll 26s linear infinite; width: max-content;
-    }
+    .hero-carousel-track { display: flex; gap: 10px; animation: heroScroll 28s linear infinite; width: max-content; }
     .hero-carousel-track:hover { animation-play-state: paused; }
     @keyframes heroScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
     .hero-member-card {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px; padding: 10px 12px; flex-shrink: 0; min-width: 72px;
-      transition: all 0.2s; cursor: default;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px; padding: 11px 13px; flex-shrink: 0; min-width: 74px;
+      transition: background 0.2s, transform 0.2s, border-color 0.2s; cursor: default;
     }
-    .hero-member-card:hover { background: rgba(247,148,29,0.18); transform: translateY(-3px); border-color: rgba(247,148,29,0.4); }
+    .hero-member-card:hover { background: rgba(201,147,46,0.16); transform: translateY(-3px); border-color: rgba(201,147,46,0.35); }
     .hero-av {
       width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
-      border: 2px solid rgba(247,148,29,0.45);
-      background: linear-gradient(135deg, var(--green), var(--orange));
+      border: 2px solid rgba(201,147,46,0.5);
+      background: linear-gradient(135deg, var(--forest), var(--gold));
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; color: white; font-weight: 800; flex-shrink: 0;
     }
     .hero-av img { width: 100%; height: 100%; object-fit: cover; }
-    .hero-member-name { font-size: 0.65rem; color: rgba(255,255,255,0.9); font-weight: 700; text-align: center; max-width: 64px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hero-member-name { font-size: 0.66rem; color: rgba(255,255,255,0.92); font-weight: 700; text-align: center; max-width: 64px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .hero-member-role { font-size: 0.55rem; color: rgba(255,255,255,0.4); text-align: center; }
+
+    .hero-carousel-wrap.is-birthday { mask-image: none; -webkit-mask-image: none; }
+    .hero-birthday-card {
+      display: flex; align-items: center; gap: 14px;
+      background: linear-gradient(120deg, rgba(247,148,29,0.22), rgba(247,148,29,0.08));
+      border: 1px solid rgba(247,148,29,0.4); border-radius: 20px;
+      padding: 14px 20px; flex-shrink: 0;
+    }
+    .hero-birthday-av {
+      width: 58px; height: 58px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2.5px solid var(--gold-light);
+      background: linear-gradient(135deg, var(--forest), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: white; font-weight: 800;
+    }
+    .hero-birthday-av img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-birthday-label { font-size: 0.7rem; color: var(--gold-light); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .hero-birthday-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: white; margin-top: 2px; }
 
     /* ══════════════════════════════════════
        CARDS
     ══════════════════════════════════════ */
     .card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 16px;
-      margin-bottom: 10px; box-shadow: var(--shadow-xs);
+      background: var(--card-bg); border-radius: var(--radius); padding: 17px 18px;
+      margin-bottom: 11px; box-shadow: var(--shadow-xs);
       display: flex; justify-content: space-between; align-items: center;
-      border: 1px solid var(--border); transition: box-shadow 0.2s, transform 0.15s;
+      border: 1px solid var(--border); transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .card:hover { box-shadow: var(--shadow-sm); }
+    .card:hover { box-shadow: var(--shadow-sm); border-color: #D9CDAE; }
     .card-info { flex: 1; min-width: 0; }
-    .card-title { font-weight: 700; font-size: 0.92rem; }
-    .card-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+    .card-title { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+    .card-sub { font-size: 0.79rem; color: var(--text-muted); margin-top: 3px; }
     .card-actions { display: flex; gap: 4px; flex-shrink: 0; }
     .btn-icon {
-      background: none; border: none; cursor: pointer; font-size: 1rem;
-      padding: 7px 9px; border-radius: 10px; transition: background 0.2s;
+      background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--ink-soft);
+      padding: 8px 10px; border-radius: 10px; transition: background 0.2s, color 0.2s;
       line-height: 1;
     }
-    .btn-icon:hover { background: var(--surface); }
+    .btn-icon:hover { background: var(--surface); color: var(--forest); }
 
     /* ══════════════════════════════════════
        FORMS
     ══════════════════════════════════════ */
     .form-box {
-      background: var(--card-bg); border-radius: var(--radius); padding: 18px;
-      margin-bottom: 20px; box-shadow: var(--shadow-xs); border: 1px solid var(--border);
+      background: var(--card-bg); border-radius: var(--radius); padding: 20px;
+      margin-bottom: 22px; box-shadow: var(--shadow-xs); border: 1px solid var(--border);
     }
     .form-box h3 {
-      color: var(--green); margin-bottom: 14px; font-size: 0.78rem;
-      font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-      display: flex; align-items: center; gap: 6px;
+      color: var(--forest); margin-bottom: 15px; font-size: 0.78rem;
+      font-weight: 700; letter-spacing: 0.2px;
+      display: flex; align-items: center; gap: 9px;
     }
-    .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .form-row { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 10px; }
     .form-row input, .form-row select, .form-row textarea {
-      flex: 1; min-width: 140px; padding: 11px 14px;
+      flex: 1; min-width: 140px; padding: 12px 14px;
       border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-      font-size: 0.86rem; outline: none; transition: all 0.2s; font-family: inherit;
-      background: var(--surface); color: var(--dark); -webkit-appearance: none;
+      font-size: 0.87rem; outline: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; font-family: inherit;
+      background: var(--surface); color: var(--ink); -webkit-appearance: none;
     }
+    .form-row input::placeholder { color: #A9A290; }
     .form-row input:focus, .form-row select:focus {
-      border-color: var(--orange); background: white; box-shadow: var(--shadow-glow);
+      border-color: var(--gold); background: white; box-shadow: var(--shadow-glow);
     }
     .btn-primary {
-      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-      color: white; border: none; padding: 11px 22px; border-radius: var(--radius-sm);
-      cursor: pointer; font-size: 0.86rem; font-weight: 800; transition: all 0.2s;
-      font-family: inherit; box-shadow: 0 4px 14px rgba(247,148,29,0.3);
+      background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+      color: white; border: none; padding: 12px 24px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 0.87rem; font-weight: 700; transition: transform 0.15s, box-shadow 0.2s;
+      font-family: inherit; box-shadow: 0 4px 14px rgba(47,74,60,0.3);
+      display: inline-flex; align-items: center; gap: 7px;
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(247,148,29,0.4); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(47,74,60,0.38); }
     .btn-primary:active { transform: translateY(0); }
 
     /* ══════════════════════════════════════
        BADGES & ROLES
     ══════════════════════════════════════ */
-    .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; margin-left: 5px; }
-    .badge-green { background: #d4edda; color: #155724; }
-    .badge-orange { background: #fff3cd; color: #856404; }
-    .role-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.66rem; font-weight: 800; margin-left: 4px; }
-    .role-VOICE { background: #fce4ec; color: #880e4f; }
-    .role-GA { background: #e8f5e9; color: #1b5e20; }
-    .role-GE { background: #e3f2fd; color: #0d47a1; }
-    .role-BASS { background: #ede7f6; color: #4527a0; }
-    .role-PIANO { background: #fff8e1; color: #f57f17; }
-    .role-DRUM { background: #fbe9e7; color: #bf360c; }
-    .role-OTHER { background: #f5f5f5; color: #555; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; margin-left: 5px; }
+    .badge-green { background: #E1EADA; color: var(--forest-deep); }
+    .badge-orange { background: #F6E7C9; color: var(--gold-deep); }
+    .badge-blue { background: #DEE8F2; color: #23507A; }
+    .role-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; margin-left: 4px; }
+    .role-VOICE { background: #F4E3E9; color: #8A2E52; }
+    .role-GA { background: #E1EADA; color: #2F4A3C; }
+    .role-GE { background: #DEE8F2; color: #23507A; }
+    .role-BASS { background: #E9E1F2; color: #4A3080; }
+    .role-PIANO { background: #F7EBCF; color: #9C6E1C; }
+    .role-DRUM { background: #F3E1DA; color: #A0431F; }
+    .role-OTHER { background: #EEEAE0; color: #6E6A5C; }
 
     /* ══════════════════════════════════════
        SONGS
     ══════════════════════════════════════ */
     .song-card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 12px;
-      margin-bottom: 10px; box-shadow: var(--shadow-xs);
+      background: var(--card-bg); border-radius: var(--radius); padding: 13px;
+      margin-bottom: 11px; box-shadow: var(--shadow-xs);
       display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .song-card:hover { box-shadow: var(--shadow-sm); }
-    .song-thumb { width: 72px; height: 50px; border-radius: 10px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+    .song-card:hover { box-shadow: var(--shadow-sm); border-color: #D9CDAE; }
+    .song-card .song-num { flex-shrink: 0; }
+    .song-thumb { width: 74px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
     .song-thumb-placeholder {
-      width: 72px; height: 50px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--green), var(--orange));
-      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+      width: 74px; height: 52px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--forest), var(--gold));
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: white;
     }
     .song-info { flex: 1; min-width: 0; }
     .btn-yt {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: #FF0000; color: white; border: none;
-      padding: 4px 10px; border-radius: 6px; font-size: 0.7rem;
-      font-weight: 700; cursor: pointer; text-decoration: none; margin-top: 5px;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--ember); color: white; border: none;
+      padding: 5px 11px; border-radius: 7px; font-size: 0.7rem;
+      font-weight: 700; cursor: pointer; text-decoration: none; margin-top: 6px;
+      transition: background 0.2s;
     }
+    .btn-yt:hover { background: #9c4326; }
+
+    .song-usage {
+      font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .song-usage i { color: var(--gold); font-size: 0.68rem; }
+    .song-usage-new { color: #B3AA92; font-style: italic; }
+    .song-usage-new i { color: #B3AA92; }
+
+    /* ══════════════════════════════════════
+       ICON BADGES (estilo duotono simulado)
+    ══════════════════════════════════════ */
+    .icon-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 12px; flex-shrink: 0;
+    }
+    .icon-badge.sz-sm { width: 30px; height: 30px; font-size: 0.85rem; }
+    .icon-badge.sz-md { width: 42px; height: 42px; font-size: 1.15rem; border-radius: 14px; }
+    .icon-badge.sz-lg { width: 54px; height: 54px; font-size: 1.5rem; border-radius: 16px; }
+    .icon-badge.tint-gold { background: rgba(247,148,29,0.14); color: var(--gold-deep); }
+    .icon-badge.tint-forest { background: rgba(47,74,60,0.1); color: var(--forest); }
+    .icon-badge.tint-light { background: rgba(255,255,255,0.12); color: var(--gold-light); }
+    .icon-badge.tint-muted { background: rgba(122,118,105,0.12); color: #A9A290; }
+
+    /* ══════════════════════════════════════
+       CUMPLEAÑOS
+    ══════════════════════════════════════ */
+    .birthdays-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 17px 18px;
+      margin-bottom: 22px; border: 1px solid var(--border); box-shadow: var(--shadow-xs);
+      border-left: 4px solid var(--gold);
+    }
+    .birthdays-title {
+      font-size: 0.78rem; font-weight: 700; color: var(--forest); letter-spacing: 0.2px;
+      display: flex; align-items: center; gap: 9px; margin-bottom: 13px;
+    }
+    .birthday-row { display: flex; align-items: center; gap: 11px; padding: 7px 0; }
+    .birthday-row + .birthday-row { border-top: 1px solid var(--border); }
+    .birthday-row-icon {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
+      background: linear-gradient(135deg, var(--forest), var(--gold));
+      display: flex; align-items: center; justify-content: center; color: white;
+      font-size: 0.85rem; font-weight: 800;
+    }
+    .birthday-row-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .birthday-row-info { flex: 1; min-width: 0; }
+    .birthday-row-name { font-weight: 700; font-size: 0.86rem; }
+    .birthday-row-date { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+    .birthday-row-when { font-size: 0.68rem; font-weight: 800; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+    .birthday-row-when.today { background: #FDE6C8; color: var(--gold-deep); }
+    .birthday-row-when.soon { background: #E1EADA; color: var(--forest-deep); }
+
+    /* ══════════════════════════════════════
+       COMPARTIR (flyer / poster)
+    ══════════════════════════════════════ */
+    .btn-share {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--surface); border: 1.5px solid var(--border); color: var(--forest);
+      padding: 8px 15px; border-radius: 30px; font-size: 0.76rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background 0.2s, border-color 0.2s;
+      margin-top: 12px;
+    }
+    .btn-share:hover { background: white; border-color: var(--gold); }
+    .btn-share:disabled { opacity: 0.6; cursor: default; }
+
+    #share-poster-offscreen { position: fixed; left: -9999px; top: 0; pointer-events: none; }
+    .poster {
+      width: 1000px; padding: 56px; background: linear-gradient(165deg, #1B2420 0%, #1E3229 45%, #2F4A3C 100%);
+      font-family: 'Inter', sans-serif; color: white; position: relative; overflow: hidden;
+    }
+    .poster::before {
+      content: ''; position: absolute; top: -100px; right: -100px; width: 380px; height: 380px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(247,148,29,0.22) 0%, transparent 70%);
+    }
+    .poster-header { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; position: relative; }
+    .poster-logo {
+      width: 64px; height: 64px; border-radius: 18px; flex-shrink: 0;
+      background: rgba(247,148,29,0.16); border: 1.5px solid rgba(247,148,29,0.4);
+      display: flex; align-items: center; justify-content: center; font-size: 30px;
+    }
+    .poster-brand { font-size: 20px; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 0.3px; }
+    .poster-title { font-family: 'Fraunces', serif; font-size: 46px; font-weight: 600; color: #FBB04E; line-height: 1.08; margin-top: 3px; }
+    .poster-meta { font-size: 21px; color: rgba(255,255,255,0.6); margin-top: 10px; position: relative; }
+    .poster-section-label {
+      font-size: 18px; font-weight: 700; color: #FBB04E; letter-spacing: 0.4px;
+      margin: 34px 0 16px; display: flex; align-items: center; gap: 10px; position: relative;
+    }
+    .poster-repe-block { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 24px 26px; margin-bottom: 18px; position: relative; }
+    .poster-repe-name { font-size: 24px; font-weight: 700; color: white; }
+    .poster-song-row { display: flex; align-items: center; gap: 14px; font-size: 21px; color: rgba(255,255,255,0.85); padding: 8px 0; }
+    .poster-song-num {
+      width: 30px; height: 30px; border-radius: 50%; background: #F7941D; color: #1B2420;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; flex-shrink: 0;
+    }
+    .poster-days { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; }
+    .poster-day-card { border-radius: 20px; padding: 24px; }
+    .poster-day-card.sab { background: linear-gradient(150deg, #1E3229 0%, #2F4A3C 100%); }
+    .poster-day-card.dom { background: linear-gradient(150deg, #9C6E1C 0%, #C9932E 100%); }
+    .poster-day-card.esp { background: linear-gradient(150deg, #7a3626 0%, #B5502F 100%); }
+    .poster-day-title { font-size: 19px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+    .poster-member-row { display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: 20px; color: white; font-weight: 600; }
+    .poster-member-role { font-size: 15px; color: rgba(255,255,255,0.55); font-weight: 500; }
+    .poster-empty-day { font-size: 18px; color: rgba(255,255,255,0.35); font-style: italic; }
+    .poster-footer { text-align: center; font-size: 16px; color: rgba(255,255,255,0.3); margin-top: 40px; position: relative; }
+
+    /* ══════════════════════════════════════
+       BUSCADOR DE CANCIONES
+    ══════════════════════════════════════ */
+    .song-search-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card-bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 11px 15px; margin-bottom: 18px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .song-search-wrap:focus-within { border-color: var(--gold); box-shadow: var(--shadow-glow); }
+    .song-search-wrap i { color: var(--text-muted); font-size: 0.9rem; }
+    .song-search-wrap input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-size: 0.87rem; font-family: inherit; color: var(--ink);
+    }
+    .song-search-wrap input::placeholder { color: #A9A290; }
+
+
 
     /* ══════════════════════════════════════
        REPE SONGS
     ══════════════════════════════════════ */
     .repe-songs { margin-top: 10px; }
     .repe-song-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.86rem;
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.87rem;
     }
     .repe-song-item:last-child { border-bottom: none; }
     .song-num {
-      background: var(--orange); color: white; width: 22px; height: 22px;
+      background: var(--gold); color: var(--ink); width: 22px; height: 22px;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 0.66rem; font-weight: 800; flex-shrink: 0;
     }
@@ -300,100 +483,101 @@
     /* ══════════════════════════════════════
        EMPTY STATE
     ══════════════════════════════════════ */
-    .empty { text-align: center; color: #ccc; padding: 48px 0; font-size: 0.88rem; }
-    .empty span { font-size: 2.8rem; display: block; margin-bottom: 10px; }
+    .empty { text-align: center; color: #C7BFA8; padding: 52px 0; font-size: 0.89rem; }
+    .empty span { font-size: 2.6rem; display: block; margin-bottom: 12px; color: #D9CDAE; }
 
     /* ══════════════════════════════════════
        STATUS BAR
     ══════════════════════════════════════ */
     #status-bar {
       position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-      background: var(--dark); color: white; padding: 10px 22px;
-      border-radius: 30px; font-size: 0.8rem; display: none;
+      background: var(--ink); color: white; padding: 11px 24px;
+      border-radius: 30px; font-size: 0.81rem; display: none;
       box-shadow: var(--shadow-lg); z-index: 999; font-weight: 600;
-      white-space: nowrap;
+      white-space: nowrap; border: 1px solid rgba(201,147,46,0.3);
     }
 
     /* ══════════════════════════════════════
        EVENT HOME CARD
     ══════════════════════════════════════ */
     .event-home-card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 18px;
-      margin-bottom: 14px; border-left: 4px solid var(--orange);
+      background: var(--card-bg); border-radius: var(--radius); padding: 19px;
+      margin-bottom: 15px; border-left: 4px solid var(--gold);
       box-shadow: var(--shadow-xs); border-top: 1px solid var(--border);
       border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
     }
     .event-home-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    .event-home-title { font-size: 1rem; font-weight: 800; }
-    .event-home-date { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
-    .event-repes-title { font-size: 0.68rem; color: var(--green); font-weight: 800; margin-top: 14px; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-    .home-repe { background: var(--surface); border-radius: 14px; padding: 12px; margin-top: 8px; }
-    .home-repe-title { font-weight: 700; font-size: 0.86rem; }
+    .event-home-title { font-family: var(--font-display); font-size: 1.08rem; font-weight: 600; color: var(--forest-deep); }
+    .event-home-date { font-size: 0.79rem; color: var(--text-muted); margin-top: 4px; }
+    .event-repes-title { font-size: 0.68rem; color: var(--forest); font-weight: 700; margin-top: 15px; margin-bottom: 9px; letter-spacing: 0.3px; }
+    .home-repe { background: var(--surface); border-radius: 14px; padding: 13px; margin-top: 9px; border: 1px solid var(--border); }
+    .home-repe-title { font-weight: 700; font-size: 0.87rem; }
     .home-repe-meta { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
     .home-repe-songs { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
     .home-repe-song { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; padding: 4px 0; }
-    .home-repe-song-num { background: var(--orange); color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; flex-shrink: 0; }
+    .home-repe-song-num { background: var(--gold); color: var(--ink); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; flex-shrink: 0; }
     .home-repe-song-thumb { width: 38px; height: 26px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
 
     /* ══════════════════════════════════════
        CULTO SECTION
     ══════════════════════════════════════ */
     .culto-top {
-      background: linear-gradient(135deg, var(--dark) 0%, #2d4a2a 100%);
-      border-radius: 22px; padding: 20px; margin-bottom: 18px;
+      background: linear-gradient(160deg, var(--ink) 0%, var(--forest-deep) 100%);
+      border-radius: 24px; padding: 22px; margin-bottom: 20px;
       box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
     }
     .culto-top::after {
-      content: '\f3a4'; position: absolute; right: 18px; top: 50%;
-      transform: translateY(-50%); font-size: 3.5rem; opacity: 0.1; pointer-events: none;
-      font-family: "Font Awesome 6 Free"; font-weight: 900; color: white;
+      content: '\f3a4'; position: absolute; right: 20px; top: 50%;
+      transform: translateY(-50%); font-size: 3.6rem; opacity: 0.09; pointer-events: none;
+      font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--gold-light);
     }
-    .culto-top-title { color: var(--orange); font-size: 1.15rem; font-weight: 900; }
-    .culto-top-sub { color: rgba(255,255,255,0.55); font-size: 0.78rem; margin-top: 4px; }
-    .culto-repe-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .culto-top-title { color: var(--gold-light); font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 9px; }
+    .culto-top-sub { color: rgba(255,255,255,0.5); font-size: 0.79rem; margin-top: 5px; }
+    .culto-repe-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
     .culto-repe-row select {
-      flex: 1; min-width: 180px; padding: 10px 14px;
-      border: 1.5px solid rgba(255,255,255,0.18); border-radius: 12px;
-      font-size: 0.86rem; outline: none; font-family: inherit;
-      background: rgba(255,255,255,0.1); color: white; cursor: pointer; -webkit-appearance: none;
+      flex: 1; min-width: 180px; padding: 11px 14px;
+      border: 1.5px solid rgba(255,255,255,0.16); border-radius: 12px;
+      font-size: 0.87rem; outline: none; font-family: inherit;
+      background: rgba(255,255,255,0.08); color: white; cursor: pointer; -webkit-appearance: none;
     }
-    .culto-repe-row select option { background: var(--dark); color: white; }
-    .culto-repe-row select:focus { border-color: var(--orange); }
+    .culto-repe-row select option { background: var(--ink); color: white; }
+    .culto-repe-row select:focus { border-color: var(--gold); }
     .btn-save-culto {
-      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-      color: white; border: none; padding: 10px 20px; border-radius: 12px;
-      cursor: pointer; font-size: 0.86rem; font-weight: 800; transition: all 0.2s;
-      white-space: nowrap; font-family: inherit; box-shadow: 0 4px 14px rgba(247,148,29,0.3);
+      background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+      color: var(--ink); border: none; padding: 11px 22px; border-radius: 12px;
+      cursor: pointer; font-size: 0.87rem; font-weight: 800; transition: transform 0.15s, box-shadow 0.2s;
+      white-space: nowrap; font-family: inherit; box-shadow: 0 4px 14px rgba(201,147,46,0.35);
+      display: inline-flex; align-items: center; gap: 7px;
     }
-    .btn-save-culto:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(247,148,29,0.4); }
+    .btn-save-culto:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,147,46,0.42); }
 
     .culto-repe-banner {
-      background: var(--card-bg); border-radius: var(--radius); padding: 14px 16px;
-      margin-bottom: 16px; border: 1.5px solid var(--border); box-shadow: var(--shadow-xs); display: none;
+      background: var(--card-bg); border-radius: var(--radius); padding: 15px 17px;
+      margin-bottom: 18px; border: 1.5px solid var(--border); box-shadow: var(--shadow-xs); display: none;
     }
     .culto-repe-banner.visible { display: block; }
-    .culto-repe-banner-title { font-weight: 800; font-size: 0.92rem; }
+    .culto-repe-banner-title { font-weight: 700; font-size: 0.93rem; }
     .culto-repe-banner-meta { font-size: 0.76rem; color: var(--text-muted); margin-top: 3px; }
-    .culto-repe-banner-songs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .culto-repe-banner-songs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
     .culto-repe-banner-song {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 3px 12px; font-size: 0.73rem; font-weight: 600;
+      border-radius: 20px; padding: 4px 12px; font-size: 0.73rem; font-weight: 600;
     }
 
-    /* Summary cards */
-    .culto-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
-    .culto-summary-card { border-radius: var(--radius); padding: 16px; position: relative; overflow: hidden; }
-    .culto-summary-card.sab { background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%); }
-    .culto-summary-card.dom { background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%); }
-    .culto-summary-card::before { content: ''; position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.07); }
-    .culto-summary-label { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
-    .culto-summary-count { font-size: 2.2rem; font-weight: 900; color: white; line-height: 1; }
+    .culto-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .culto-summary-card { border-radius: var(--radius); padding: 17px; position: relative; overflow: hidden; }
+    .culto-summary-card.sab { background: linear-gradient(150deg, var(--forest-deep) 0%, var(--forest) 100%); }
+    .culto-summary-card.dom { background: linear-gradient(150deg, var(--gold-deep) 0%, var(--gold) 100%); }
+    .culto-summary-card.esp { background: linear-gradient(150deg, #7a3626 0%, var(--ember) 100%); }
+    .culto-summary-card::before { content: ''; position: absolute; bottom: -22px; right: -22px; width: 84px; height: 84px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+    .culto-summary-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.4px; color: rgba(255,255,255,0.65); margin-bottom: 7px; display: flex; align-items: center; gap: 5px; }
+    .culto-summary-count { font-family: var(--font-display); font-size: 2.3rem; font-weight: 600; color: white; line-height: 1; }
     .culto-summary-sub { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
-    .culto-summary-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .culto-summary-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 11px; }
     .culto-summary-chip {
       display: flex; align-items: center; gap: 4px;
-      background: rgba(255,255,255,0.15); border-radius: 20px;
-      padding: 3px 8px 3px 4px; font-size: 0.68rem; color: white; font-weight: 600;
+      background: rgba(255,255,255,0.16); border-radius: 20px;
+      padding: 3px 9px 3px 4px; font-size: 0.68rem; color: white; font-weight: 600;
     }
     .culto-summary-chip .chip-av {
       width: 18px; height: 18px; border-radius: 50%; overflow: hidden;
@@ -401,70 +585,84 @@
       justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;
     }
     .culto-summary-chip .chip-av img { width: 100%; height: 100%; object-fit: cover; }
-    .culto-summary-empty { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 8px; font-style: italic; }
+    .culto-summary-empty { font-size: 0.72rem; color: rgba(255,255,255,0.38); margin-top: 9px; font-style: italic; }
 
-    /* DnD layout */
-    .culto-dnd-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: start; }
+    .culto-dnd-layout { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 13px; align-items: start; }
     .dnd-col { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-xs); border: 1.5px solid var(--border); }
-    .dnd-col-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .dnd-col-header { padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
     .dnd-col.pool .dnd-col-header { background: var(--surface); border-bottom: 1.5px solid var(--border); }
-    .dnd-col.sab .dnd-col-header { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
-    .dnd-col.dom .dnd-col-header { background: linear-gradient(90deg, var(--orange-dark), var(--orange)); }
-    .dnd-col-title { font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
-    .dnd-col.pool .dnd-col-title { color: var(--dark); }
-    .dnd-col.sab .dnd-col-title, .dnd-col.dom .dnd-col-title { color: white; }
-    .dnd-col-count { font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .dnd-col.sab .dnd-col-header { background: linear-gradient(90deg, var(--forest-deep), var(--forest)); }
+    .dnd-col.dom .dnd-col-header { background: linear-gradient(90deg, var(--gold-deep), var(--gold)); }
+    .dnd-col.esp .dnd-col-header { background: linear-gradient(90deg, #7a3626, var(--ember)); }
+    .dnd-col-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 6px; }
+    .dnd-col.pool .dnd-col-title { color: var(--ink); }
+    .dnd-col.sab .dnd-col-title, .dnd-col.dom .dnd-col-title, .dnd-col.esp .dnd-col-title { color: white; }
+    .dnd-col-count { font-size: 0.68rem; font-weight: 800; padding: 2px 9px; border-radius: 20px; }
     .dnd-col.pool .dnd-col-count { background: var(--border); color: var(--text-muted); }
-    .dnd-col.sab .dnd-col-count, .dnd-col.dom .dnd-col-count { background: rgba(255,255,255,0.22); color: white; }
-    .dnd-col-saved { font-size: 0.62rem; font-weight: 800; padding: 2px 7px; border-radius: 20px; background: rgba(255,255,255,0.9); color: var(--green); display: none; }
+    .dnd-col.sab .dnd-col-count, .dnd-col.dom .dnd-col-count, .dnd-col.esp .dnd-col-count { background: rgba(255,255,255,0.22); color: white; }
+    .dnd-col-saved { font-size: 0.62rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; background: rgba(255,255,255,0.92); color: var(--forest); display: none; }
 
-    .drop-zone { min-height: 130px; padding: 10px; transition: background 0.2s; }
-    .drop-zone.drag-over { background: rgba(247,148,29,0.07); outline: 2px dashed var(--orange); outline-offset: -4px; border-radius: 10px; }
+    .drop-zone { min-height: 140px; padding: 11px; transition: background 0.2s; }
+    .drop-zone.drag-over { background: rgba(201,147,46,0.08); outline: 2px dashed var(--gold); outline-offset: -4px; border-radius: 10px; }
 
-    .role-group { margin-bottom: 8px; }
-    .role-group-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; padding-left: 4px; }
+    .role-group { margin-bottom: 9px; }
+    .role-group-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 5px; padding-left: 4px; }
 
     .voice-chip {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface); border-radius: 12px; padding: 8px 10px;
+      display: flex; align-items: center; gap: 9px;
+      background: var(--surface); border-radius: 12px; padding: 9px 11px;
       margin-bottom: 6px; cursor: grab; user-select: none;
-      transition: all 0.15s; border: 1.5px solid transparent;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; border: 1.5px solid transparent;
     }
-    .voice-chip:hover { border-color: var(--orange); background: white; box-shadow: var(--shadow-sm); }
+    .voice-chip:hover { border-color: var(--gold); background: white; box-shadow: var(--shadow-sm); }
     .voice-chip:active { cursor: grabbing; }
     .voice-chip.dragging { opacity: 0.3; transform: scale(0.96); }
     .voice-chip-av {
       width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--green), var(--orange));
+      background: linear-gradient(135deg, var(--forest), var(--gold));
       display: flex; align-items: center; justify-content: center;
       font-size: 0.85rem; color: white; font-weight: 800;
     }
     .voice-chip-av img { width: 100%; height: 100%; object-fit: cover; }
     .voice-chip-info { flex: 1; min-width: 0; }
-    .voice-chip-name { font-weight: 700; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .voice-chip-role { font-size: 0.65rem; color: var(--text-muted); margin-top: 1px; }
-    .voice-chip-badges { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+    .voice-chip-name { font-weight: 700; font-size: 0.79rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+    .voice-chip-role { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 3px; }
+    .voice-chip-badges { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
     .day-badge { font-size: 0.58rem; font-weight: 800; padding: 1px 6px; border-radius: 10px; }
-    .day-badge-sab { background: #d4edda; color: #155724; }
-    .day-badge-dom { background: #fff3cd; color: #856404; }
-    .voice-chip-remove { background: none; border: none; cursor: pointer; font-size: 0.82rem; color: #ccc; padding: 4px; border-radius: 6px; transition: all 0.2s; flex-shrink: 0; }
-    .voice-chip-remove:hover { color: #e74c3c; background: #ffeaea; }
+    .day-badge-sab { background: #E1EADA; color: var(--forest-deep); }
+    .day-badge-dom { background: #F6E7C9; color: var(--gold-deep); }
+    .day-badge-esp { background: #F6E1DA; color: #8a3a24; }
+    .voice-chip-remove { background: none; border: none; cursor: pointer; font-size: 0.82rem; color: #C7BFA8; padding: 5px; border-radius: 6px; transition: color 0.2s, background 0.2s; flex-shrink: 0; }
+    .voice-chip-remove:hover { color: var(--ember); background: #F6E4DC; }
 
-    .dnd-empty { text-align: center; color: #ccc; font-size: 0.76rem; padding: 22px 10px; pointer-events: none; }
-    .dnd-empty span { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+    .voice-chip-quick { display: none; gap: 4px; flex-shrink: 0; }
+    .voice-chip-quick button {
+      width: 28px; height: 28px; border-radius: 8px; border: none; cursor: pointer;
+      font-size: 0.74rem; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .voice-chip-quick button:active { transform: scale(0.9); }
+    .voice-chip-quick button.q-sab { background: #E1EADA; color: var(--forest-deep); }
+    .voice-chip-quick button.q-dom { background: #FDE6C8; color: var(--gold-deep); }
+    .voice-chip-quick button.q-esp { background: #F6E1DA; color: #8a3a24; }
+    .voice-chip-quick button:disabled { opacity: 0.35; }
+
+    .dnd-empty { text-align: center; color: #D9CDAE; font-size: 0.76rem; padding: 24px 10px; pointer-events: none; }
+    .dnd-empty span { font-size: 1.6rem; display: block; margin-bottom: 5px; }
 
     /* ══════════════════════════════════════
        QUIÉN CANTA CADA DÍA
     ══════════════════════════════════════ */
-    .culto-days-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-    .culto-days-label { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 10px; }
-    .culto-days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .culto-day-card { border-radius: 14px; padding: 12px; overflow: hidden; position: relative; }
-    .culto-day-card.sab { background: linear-gradient(135deg, #2d4a2a 0%, var(--green) 100%); }
-    .culto-day-card.dom { background: linear-gradient(135deg, #7a3d00 0%, var(--orange) 100%); }
+    .culto-days-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
+    .culto-days-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.3px; color: var(--forest); margin-bottom: 11px; }
+    .culto-days-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .culto-day-card { border-radius: 14px; padding: 13px; overflow: hidden; position: relative; }
+    .culto-day-card.sab { background: linear-gradient(150deg, var(--forest-deep) 0%, var(--forest) 100%); }
+    .culto-day-card.dom { background: linear-gradient(150deg, var(--gold-deep) 0%, var(--gold) 100%); }
+    .culto-day-card.esp { background: linear-gradient(150deg, #7a3626 0%, var(--ember) 100%); }
     .culto-day-card::before { content: ''; position: absolute; bottom: -16px; right: -16px; width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.06); }
-    .culto-day-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.65); margin-bottom: 8px; }
-    .culto-day-members { display: flex; flex-direction: column; gap: 6px; }
+    .culto-day-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3px; color: rgba(255,255,255,0.65); margin-bottom: 9px; }
+    .culto-day-members { display: flex; flex-direction: column; gap: 7px; }
     .culto-day-member { display: flex; align-items: center; gap: 7px; }
     .day-av {
       width: 26px; height: 26px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
@@ -476,84 +674,81 @@
     .day-av img { width: 100%; height: 100%; object-fit: cover; }
     .culto-day-member-info { flex: 1; min-width: 0; }
     .culto-day-member-name { font-size: 0.7rem; color: white; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .culto-day-member-role { font-size: 0.56rem; color: rgba(255,255,255,0.45); }
-    .culto-day-empty { font-size: 0.7rem; color: rgba(255,255,255,0.3); font-style: italic; }
+    .culto-day-member-role { font-size: 0.56rem; color: rgba(255,255,255,0.48); }
+    .culto-day-empty { font-size: 0.7rem; color: rgba(255,255,255,0.32); font-style: italic; }
 
     /* ══════════════════════════════════════
        MEMBER CARD
     ══════════════════════════════════════ */
     .member-card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
-      margin-bottom: 10px; box-shadow: var(--shadow-xs);
-      display: flex; gap: 12px; align-items: center; border: 1px solid var(--border);
-      transition: box-shadow 0.2s;
+      background: var(--card-bg); border-radius: var(--radius); padding: 15px;
+      margin-bottom: 11px; box-shadow: var(--shadow-xs);
+      display: flex; gap: 13px; align-items: center; border: 1px solid var(--border);
+      transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .member-card:hover { box-shadow: var(--shadow-sm); }
+    .member-card:hover { box-shadow: var(--shadow-sm); border-color: #D9CDAE; }
     .member-avatar-big { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
     .member-avatar-placeholder {
       width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--green), var(--orange));
+      background: linear-gradient(135deg, var(--forest), var(--gold));
       display: flex; align-items: center; justify-content: center;
       font-size: 1.2rem; color: white; font-weight: 800;
     }
 
+    .role-section-label {
+      margin: 16px 0 6px; font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 0.3px; display: flex; align-items: center; gap: 6px;
+    }
+    .role-section-label i { color: var(--gold); }
 
-      .date-field {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border, #e8e4dc);
-    cursor: pointer;
-    min-width: 200px;
-    box-shadow: var(--shadow-xs, 0 1px 4px rgba(0,0,0,0.06));
-  }
-  .date-field i { color: var(--orange, #F7941D); font-size: 1.05rem; }
-  .date-placeholder {
-    color: var(--text-muted, #8a8a8a);
-    font-size: 0.95rem;
-    pointer-events: none;
-  }
-  /* Input transparente encima para mantener accesibilidad y permitir clicks */
-  .date-field input[type="date"] {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    border-radius: 10px;
-  }
-
+    .date-field {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      min-width: 200px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .date-field:hover { border-color: var(--gold); }
+    .date-field i { color: var(--gold); font-size: 1.02rem; }
+    .date-placeholder { color: var(--text-muted); font-size: 0.87rem; pointer-events: none; }
+    .date-field input[type="date"] {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      opacity: 0; border: none; background: transparent; cursor: pointer;
+      border-radius: var(--radius-sm);
+    }
 
     /* ══════════════════════════════════════
        MODALES
     ══════════════════════════════════════ */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); z-index: 500;
-      align-items: flex-end; justify-content: center;
+      background: rgba(27,36,32,0.6); backdrop-filter: blur(6px); z-index: 500;
+      align-items: center; justify-content: center; padding: 20px;
     }
     .modal-overlay.open { display: flex; }
     .modal-box {
-      background: white; border-radius: 24px 24px 0 0; padding: 24px;
-      padding-bottom: calc(24px + env(safe-area-inset-bottom));
+      background: white; border-radius: 24px; padding: 26px;
       width: 100%; max-width: 520px; box-shadow: var(--shadow-lg);
-      max-height: 92vh; overflow-y: auto; animation: slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);
+      max-height: 88vh; overflow-y: auto; animation: modalPop 0.24s cubic-bezier(0.34,1.56,0.64,1);
     }
-    @keyframes slideUp { from{transform:translateY(80px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .modal-box h3 { color: var(--green); margin-bottom: 16px; font-size: 1rem; font-weight: 800; }
+    @keyframes modalPop { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
+    .modal-box h3 {
+      color: var(--forest-deep); margin-bottom: 18px; font-family: var(--font-display);
+      font-size: 1.15rem; font-weight: 600; display: flex; align-items: center; gap: 9px;
+    }
+    .modal-box h3 i { color: var(--gold); font-size: 1rem; }
     .modal-box .form-row { margin-bottom: 10px; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
     .btn-secondary {
-      background: var(--surface); color: var(--dark); border: 1.5px solid var(--border);
-      padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer;
-      font-size: 0.86rem; font-weight: 700; font-family: inherit; transition: all 0.2s;
+      background: var(--surface); color: var(--ink); border: 1.5px solid var(--border);
+      padding: 11px 19px; border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 0.86rem; font-weight: 700; font-family: inherit; transition: background 0.2s, border-color 0.2s;
     }
     .btn-secondary:hover { background: var(--border); }
 
@@ -561,54 +756,44 @@
        RESPONSIVE BREAKPOINTS
     ══════════════════════════════════════ */
     @media (max-width: 700px) {
-      /* Ocultar tabs del nav, mostrar bottom nav */
       .nav-tabs-desktop { display: none; }
       .bottom-nav { display: flex; }
 
-      main { padding: 14px 12px calc(var(--bottom-h) + 20px); }
+      main { padding: 16px 13px calc(var(--bottom-h) + 22px); }
       #status-bar { bottom: calc(var(--bottom-h) + 12px); }
 
-      /* Welcome */
-      .welcome-card { padding: 18px 16px 14px; border-radius: 20px; }
-      .welcome-card h1 { font-size: 1.35rem; }
-      .welcome-icon { font-size: 2.2rem; }
+      .welcome-card { padding: 22px 18px 16px; border-radius: 22px; }
+      .welcome-card h1 { font-size: 1.6rem; }
 
-      /* Forms */
       .form-row { flex-direction: column; }
       .form-row input, .form-row select { min-width: unset; width: 100%; }
 
-      /* DnD: stack vertical en móvil */
-      .culto-dnd-layout { grid-template-columns: 1fr; gap: 10px; }
+      .culto-dnd-layout { grid-template-columns: 1fr; gap: 11px; }
+      .voice-chip-quick { display: flex; }
+      .voice-chip { cursor: default; }
+      .voice-chip:active { cursor: default; }
 
-      /* Culto repe row */
       .culto-repe-row { flex-direction: column; }
       .culto-repe-row select { min-width: unset; width: 100%; }
-      .btn-save-culto { width: 100%; }
+      .btn-save-culto { width: 100%; justify-content: center; }
 
-      /* Song card */
       .song-thumb, .song-thumb-placeholder { width: 60px; height: 42px; }
 
-      /* Cards */
-      .card-title { font-size: 0.88rem; }
-      .card-sub { font-size: 0.74rem; }
+      .card-title { font-size: 0.89rem; }
+      .card-sub { font-size: 0.75rem; }
 
-      /* Culto summary */
-      .culto-summary { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .culto-summary-count { font-size: 1.8rem; }
+      .culto-summary { gap: 10px; }
+      .culto-summary-count { font-size: 1.85rem; }
 
-      /* Modal */
-      .modal-box { border-radius: 20px 20px 0 0; padding: 20px 16px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+      .modal-box { border-radius: 20px; padding: 22px 17px; max-height: 85vh; }
     }
 
     @media (max-width: 420px) {
-      .welcome-card h1 { font-size: 1.2rem; }
-      .culto-summary { grid-template-columns: 1fr 1fr; }
-      .culto-days-grid { grid-template-columns: 1fr 1fr; }
-      h2 { font-size: 1rem; }
+      .welcome-card h1 { font-size: 1.35rem; }
+      h2 { font-size: 1.15rem; }
     }
 
-    /* Tablet: 2 cols DnD */
-    @media (min-width: 701px) and (max-width: 860px) {
+    @media (min-width: 701px) and (max-width: 900px) {
       .culto-dnd-layout { grid-template-columns: 1fr 1fr; }
       .dnd-col.pool { grid-column: 1 / -1; }
     }
@@ -620,7 +805,7 @@
 <nav class="top-nav">
   <div class="nav-logo">
     <i class="fas fa-guitar"></i>
-    <span>TRINIDAD</span>
+    <span>Trinidad</span>
     <div class="nav-logo-dot"></div>
   </div>
   <div class="nav-carousel-wrap">
@@ -668,24 +853,23 @@
       <div class="welcome-top">
         <div>
           <p class="welcome-label">Iglesia Metodista CQ</p>
-          <h1><i class="fas fa-guitar"></i> Banda Trinidad</h1>
+          <h1><span class="icon-badge sz-md tint-light"><i class="fas fa-guitar"></i></span> Banda Trinidad</h1>
           <p>Todo listo para servir con excelencia.</p>
         </div>
-        <div class="welcome-icon"><i class="fas fa-music"></i></div>
       </div>
-      <div class="hero-carousel-wrap">
+      <div class="hero-carousel-wrap" id="hero-carousel-wrap">
         <div class="hero-carousel-track" id="hero-carousel-track"></div>
       </div>
     </div>
-    <h2><i class="fas fa-calendar-check"></i> Próximos eventos</h2>
+    <h2><span class="icon-badge sz-sm tint-gold"><i class="fas fa-calendar-check"></i></span> Próximos eventos</h2>
     <div id="home-events-list"></div>
   </div>
 
   <!-- ══ CULTO ══ -->
   <div id="culto" class="section">
     <div class="culto-top">
-      <div class="culto-top-title"><i class="fas fa-microphone-alt"></i> Planificación de Culto</div>
-      <div class="culto-top-sub">Asigna integrantes por día arrastrando desde el pool</div>
+      <div class="culto-top-title"><span class="icon-badge sz-sm tint-light"><i class="fas fa-microphone-alt"></i></span> Planificación de Culto</div>
+      <div class="culto-top-sub">Arrastra en computadora, o toca los íconos <i class="fas fa-church"></i> / <i class="fas fa-sun"></i> / <i class="fas fa-star"></i> en el celular</div>
       <div class="culto-repe-row">
         <select id="culto-repe-select" onchange="onCultoRepeChange()">
           <option value="">— Selecciona un repe —</option>
@@ -712,6 +896,12 @@
         <div class="culto-summary-count" id="sum-dom-count">0</div>
         <div class="culto-summary-sub">integrantes</div>
         <div class="culto-summary-chips" id="sum-dom-chips"></div>
+      </div>
+      <div class="culto-summary-card esp">
+        <div class="culto-summary-label"><i class="fas fa-star"></i> Especial</div>
+        <div class="culto-summary-count" id="sum-esp-count">0</div>
+        <div class="culto-summary-sub">integrantes</div>
+        <div class="culto-summary-chips" id="sum-esp-chips"></div>
       </div>
     </div>
 
@@ -748,14 +938,25 @@
           <div class="dnd-empty" id="dom-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
         </div>
       </div>
+      <div class="dnd-col esp">
+        <div class="dnd-col-header">
+          <span class="dnd-col-title"><i class="fas fa-star"></i> Especial</span>
+          <span class="dnd-col-count" id="esp-count">0</span>
+          <span class="dnd-col-saved" id="esp-tag"><i class="fas fa-check"></i> guardado</span>
+        </div>
+        <div class="drop-zone" id="especial-zone"
+          ondragover="onDragOver(event)" ondrop="onDrop(event,'especial')" ondragleave="onDragLeave(event)">
+          <div class="dnd-empty" id="esp-empty"><span><i class="fas fa-microphone"></i></span>Arrastra aquí</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ══ CANCIONES ══ -->
   <div id="canciones" class="section">
-    <h2><i class="fas fa-music"></i> Canciones</h2>
+    <h2><span class="icon-badge sz-sm tint-gold"><i class="fas fa-music"></i></span> Canciones</h2>
     <div class="form-box">
-      <h3><i class="fas fa-plus-circle"></i> Agregar canción</h3>
+      <h3><span class="icon-badge sz-sm tint-forest"><i class="fas fa-plus"></i></span> Agregar canción</h3>
       <div class="form-row">
         <input id="song-title" placeholder="Nombre de la canción" />
         <input id="song-artist" placeholder="Artista / Autor" />
@@ -772,14 +973,20 @@
       </div>
       <button class="btn-primary" onclick="addSong()"><i class="fas fa-plus"></i> Agregar canción</button>
     </div>
+
+    <div class="song-search-wrap">
+      <i class="fas fa-search"></i>
+      <input id="song-search" placeholder="Buscar canción o artista..." oninput="renderSongsUI()" />
+    </div>
+
     <div id="songs-list"></div>
   </div>
 
   <!-- ══ REPES ══ -->
   <div id="repes" class="section">
-    <h2><i class="fas fa-clipboard-list"></i> Ensayos / Repes</h2>
+    <h2><span class="icon-badge sz-sm tint-gold"><i class="fas fa-clipboard-list"></i></span> Ensayos / Repes</h2>
     <div class="form-box">
-      <h3><i class="fas fa-plus-circle"></i> Crear repe</h3>
+      <h3><span class="icon-badge sz-sm tint-forest"><i class="fas fa-plus"></i></span> Crear repe</h3>
       <div class="form-row">
         <input id="repe-name" placeholder="Nombre del repe" />
         <div class="date-field" id="repe-date-field">
@@ -804,20 +1011,33 @@
 
   <!-- ══ INTEGRANTES ══ -->
   <div id="integrantes" class="section">
-    <h2><i class="fas fa-users"></i> Integrantes</h2>
+    <h2><span class="icon-badge sz-sm tint-gold"><i class="fas fa-users"></i></span> Integrantes</h2>
+    <div id="birthdays-wrap"></div>
     <div class="form-box">
-      <h3><i class="fas fa-plus-circle"></i> Agregar integrante</h3>
+      <h3><span class="icon-badge sz-sm tint-forest"><i class="fas fa-plus"></i></span> Agregar integrante</h3>
       <div class="form-row">
         <input id="member-name" placeholder="Nombre completo" />
         <select id="member-instrument">
-          <option value="">Instrumento / Rol</option>
-          <option value="VOICE"><i class="fas fa-microphone"></i> VOICE (Voz)</option>
-          <option value="GA"><i class="fas fa-guitar"></i> GA (Guitarra Acústica)</option>
-          <option value="GE"><i class="fas fa-bolt"></i> GE (Guitarra Eléctrica)</option>
-          <option value="BASS"><i class="fas fa-guitar"></i> BASS (Bajo)</option>
-          <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option>
-          <option value="DRUM"><i class="fas fa-drum"></i> DRUM (Batería)</option>
-          <option value="Otro"><i class="fas fa-music"></i> Otro</option>
+          <option value="">Instrumento / Rol principal</option>
+          <option value="VOICE">VOICE (Voz)</option>
+          <option value="GA">GA (Guitarra Acústica)</option>
+          <option value="GE">GE (Guitarra Eléctrica)</option>
+          <option value="BASS">BASS (Bajo)</option>
+          <option value="PIANO">PIANO</option>
+          <option value="DRUM">DRUM (Batería)</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <select id="member-instrument-2">
+          <option value="">Segundo rol (opcional)</option>
+          <option value="VOICE">VOICE (Voz)</option>
+          <option value="GA">GA (Guitarra Acústica)</option>
+          <option value="GE">GE (Guitarra Eléctrica)</option>
+          <option value="BASS">BASS (Bajo)</option>
+          <option value="PIANO">PIANO</option>
+          <option value="DRUM">DRUM (Batería)</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
       <div class="form-row">
@@ -825,10 +1045,18 @@
         <select id="member-status">
           <option value="Activo">Activo</option>
           <option value="Inactivo">Inactivo</option>
+          <option value="Invitado">Invitado</option>
         </select>
       </div>
       <div class="form-row">
         <input id="member-photo" placeholder="🖼️ URL de foto (opcional)" />
+      </div>
+      <div class="form-row">
+        <div class="date-field" id="member-birthday-field">
+          <i class="fas fa-cake-candles"></i>
+          <span class="date-placeholder">Fecha de cumpleaños (opcional)</span>
+          <input id="member-birthday" type="date" />
+        </div>
       </div>
       <button class="btn-primary" onclick="addMember()"><i class="fas fa-plus"></i> Agregar</button>
     </div>
@@ -837,9 +1065,9 @@
 
   <!-- ══ EVENTOS ══ -->
   <div id="eventos" class="section">
-    <h2><i class="fas fa-calendar-days"></i> Eventos</h2>
+    <h2><span class="icon-badge sz-sm tint-gold"><i class="fas fa-calendar-days"></i></span> Eventos</h2>
     <div class="form-box">
-      <h3><i class="fas fa-plus-circle"></i> Agregar evento</h3>
+      <h3><span class="icon-badge sz-sm tint-forest"><i class="fas fa-plus"></i></span> Agregar evento</h3>
       <div class="form-row">
         <input id="event-name" placeholder="Nombre del evento" />
         <div class="date-field" id="event-date-field">
@@ -848,7 +1076,7 @@
           <input id="event-date" type="date" />
 
         </div>
-        
+
       </div>
       <div class="form-row">
         <input id="event-place" placeholder="Lugar" />
@@ -867,10 +1095,12 @@
 
 <div id="status-bar"></div>
 
+<div id="share-poster-offscreen"><div class="poster" id="share-poster"></div></div>
+
 <!-- MODALES -->
 <div class="modal-overlay" id="modal-song">
   <div class="modal-box">
-    <h3><i class="fas fa-edit"></i> Editar canción</h3>
+    <h3><span class="icon-badge sz-sm tint-gold"><i class="fas fa-pen"></i></span> Editar canción</h3>
     <input type="hidden" id="edit-song-id" />
     <div class="form-row"><input id="edit-song-title" placeholder="Nombre" /></div>
     <div class="form-row"><input id="edit-song-artist" placeholder="Artista" /></div>
@@ -888,10 +1118,16 @@
 
 <div class="modal-overlay" id="modal-repe">
   <div class="modal-box">
-    <h3><i class="fas fa-edit"></i> Editar repe</h3>
+    <h3><span class="icon-badge sz-sm tint-gold"><i class="fas fa-pen"></i></span> Editar repe</h3>
     <input type="hidden" id="edit-repe-id" />
     <div class="form-row"><input id="edit-repe-name" placeholder="Nombre del repe" /></div>
-    <div class="form-row"><input id="edit-repe-date" type="date" /></div>
+    <div class="form-row">
+      <div class="date-field" id="edit-repe-date-field">
+        <i class="fas fa-calendar-alt"></i>
+        <span class="date-placeholder">Selecciona fecha</span>
+        <input id="edit-repe-date" type="date" />
+      </div>
+    </div>
     <div class="form-row"><select id="edit-repe-event"><option value="">Evento relacionado (opcional)</option></select></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-repe')">Cancelar</button>
@@ -902,23 +1138,37 @@
 
 <div class="modal-overlay" id="modal-member">
   <div class="modal-box">
-    <h3><i class="fas fa-edit"></i> Editar integrante</h3>
+    <h3><span class="icon-badge sz-sm tint-gold"><i class="fas fa-pen"></i></span> Editar integrante</h3>
     <input type="hidden" id="edit-member-id" />
     <div class="form-row"><input id="edit-member-name" placeholder="Nombre completo" /></div>
     <div class="form-row">
       <select id="edit-member-instrument">
-        <option value="">Instrumento / Rol</option>
-        <option value="VOICE"><i class="fas fa-microphone"></i> VOICE</option><option value="AG"><i class="fas fa-guitar"></i> GA</option>
-        <option value="EG"><i class="fas fa-bolt"></i> GE</option><option value="BASS"><i class="fas fa-guitar"></i> BASS</option>
-        <option value="PIANO"><i class="fas fa-piano-keyboard"></i> PIANO</option><option value="DRUM"><i class="fas fa-drum"></i> DRUM</option>
-        <option value="Otro"><i class="fas fa-music"></i> Otro</option>
+        <option value="">Rol principal</option>
+        <option value="VOICE">VOICE</option><option value="GA">GA</option>
+        <option value="GE">GE</option><option value="BASS">BASS</option>
+        <option value="PIANO">PIANO</option><option value="DRUM">DRUM</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <select id="edit-member-instrument-2">
+        <option value="">Segundo rol (opcional)</option>
+        <option value="VOICE">VOICE</option><option value="GA">GA</option>
+        <option value="GE">GE</option><option value="BASS">BASS</option>
+        <option value="PIANO">PIANO</option><option value="DRUM">DRUM</option>
+        <option value="Otro">Otro</option>
       </select>
     </div>
     <div class="form-row">
       <input id="edit-member-phone" placeholder="Teléfono" />
-      <select id="edit-member-status"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
+      <select id="edit-member-status"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option><option value="Invitado">Invitado</option></select>
     </div>
     <div class="form-row"><input id="edit-member-photo" placeholder="🖼️ URL de foto" /></div>
+    <div class="form-row">
+      <div class="date-field" id="edit-member-birthday-field">
+        <i class="fas fa-cake-candles"></i>
+        <span class="date-placeholder">Fecha de cumpleaños</span>
+        <input id="edit-member-birthday" type="date" />
+      </div>
+    </div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-member')">Cancelar</button>
       <button class="btn-primary" onclick="saveMemberEdit()"><i class="fas fa-save"></i> Guardar</button>
@@ -928,10 +1178,16 @@
 
 <div class="modal-overlay" id="modal-event">
   <div class="modal-box">
-    <h3><i class="fas fa-edit"></i> Editar evento</h3>
+    <h3><span class="icon-badge sz-sm tint-gold"><i class="fas fa-pen"></i></span> Editar evento</h3>
     <input type="hidden" id="edit-event-id" />
     <div class="form-row"><input id="edit-event-name" placeholder="Nombre del evento" /></div>
-    <div class="form-row"><input id="edit-event-date" type="date" /></div>
+    <div class="form-row">
+      <div class="date-field" id="edit-event-date-field">
+        <i class="fas fa-calendar-alt"></i>
+        <span class="date-placeholder">Selecciona fecha</span>
+        <input id="edit-event-date" type="date" />
+      </div>
+    </div>
     <div class="form-row"><input id="edit-event-place" placeholder="Lugar" /></div>
     <div class="form-row">
       <select id="edit-event-type">
@@ -970,8 +1226,8 @@
 
   const ROLE_CONFIG = {
     VOICE: { label: '<i class="fas fa-microphone"></i> VOICE', cls: 'role-VOICE' },
-    GA:    { label: '<i class="fas fa-guitar"></i> AG',    cls: 'role-GA' },
-    GE:    { label: '<i class="fas fa-bolt"></i> EG',    cls: 'role-GE' },
+    GA:    { label: '<i class="fas fa-guitar"></i> GA',    cls: 'role-GA' },
+    GE:    { label: '<i class="fas fa-bolt"></i> GE',    cls: 'role-GE' },
     BASS:  { label: '<i class="fas fa-guitar"></i> BASS',  cls: 'role-BASS' },
     PIANO: { label: '<i class="fas fa-piano-keyboard"></i> PIANO', cls: 'role-PIANO' },
     DRUM:  { label: '<i class="fas fa-drum"></i> DRUM',  cls: 'role-DRUM' },
@@ -979,7 +1235,7 @@
   };
   function getRoleConfig(role) { return ROLE_CONFIG[role] || { label: role || 'Sin rol', cls: 'role-OTHER' }; }
 
-  let cultoState = { pool: [], sabado: [], domingo: [] };
+  let cultoState = { pool: [], sabado: [], domingo: [], especial: [] };
   let draggedMemberId = null, draggedFromZone = null;
 
   // ── AVATAR HELPER ──
@@ -1013,6 +1269,31 @@
     navTrack.style.animationDuration = Math.max(14, active.length * 3) + 's';
 
     const heroTrack = document.getElementById('hero-carousel-track');
+    const heroWrap = document.getElementById('hero-carousel-wrap');
+
+    const today = new Date();
+    const todayMD = `${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    const birthdayToday = allMembers.filter(m => m.birthday && m.birthday.slice(5) === todayMD);
+
+    if (birthdayToday.length) {
+      heroWrap.classList.add('is-birthday');
+      heroTrack.style.animation = 'none';
+      heroTrack.innerHTML = birthdayToday.map(m => {
+        const hasPhoto = m.photo && m.photo.trim();
+        const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
+        return `<div class="hero-birthday-card">
+          <div class="hero-birthday-av">${avInner}</div>
+          <div class="hero-birthday-text">
+            <div class="hero-birthday-label"><i class="fas fa-cake-candles"></i> ¡Feliz cumpleaños!</div>
+            <div class="hero-birthday-name">${m.name}</div>
+          </div>
+        </div>`;
+      }).join('');
+      return;
+    }
+
+    heroWrap.classList.remove('is-birthday');
+    heroTrack.style.animation = '';
     heroTrack.innerHTML = doubled.map(m => {
       const rc = getRoleConfig(m.instrument);
       const hasPhoto = m.photo && m.photo.trim();
@@ -1029,13 +1310,10 @@
   // ── NAV ──
   window.showSection = (id, btn) => {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    // Desktop tabs
     document.querySelectorAll('.nav-tabs-desktop button').forEach(b => b.classList.remove('active'));
-    // Bottom nav
     document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
-    // Sync the other nav
     const sectionIndex = ['inicio','culto','canciones','repes','integrantes','eventos'].indexOf(id);
     document.querySelectorAll('.nav-tabs-desktop button')[sectionIndex]?.classList.add('active');
     document.querySelectorAll('.bnav-btn')[sectionIndex]?.classList.add('active');
@@ -1048,7 +1326,7 @@
     bar.textContent = msg; bar.style.display = 'block';
     setTimeout(() => bar.style.display = 'none', 2500);
   }
-  function emptyState(msg) { return `<div class="empty"><span><i class="fas fa-music"></i></span>${msg}</div>`; }
+  function emptyState(msg) { return `<div class="empty"><span class="icon-badge sz-lg tint-muted" style="margin:0 auto 14px;"><i class="fas fa-music"></i></span>${msg}</div>`; }
   window.openModal = id => document.getElementById(id).classList.add('open');
   window.closeModal = id => document.getElementById(id).classList.remove('open');
 
@@ -1063,23 +1341,23 @@
     const sel = document.getElementById('culto-repe-select');
     const prev = sel.value;
     sel.innerHTML = '<option value="">— Selecciona un repe —</option>';
-    allRepes.forEach(r => {
+    allRepes.filter(r => !r.date || r.date >= eventCutoffStr()).forEach(r => {
       const opt = document.createElement('option');
       opt.value = r.id;
-      // Quitamos los <i>, dejamos solo el texto limpio
       opt.textContent = `${r.name}${r.date ? ' (' + r.date + ')' : ''}${r.eventName ? ' · ' + r.eventName : ''}`;
       sel.appendChild(opt);
     });
-    if (prev && allRepes.find(r => r.id === prev)) sel.value = prev;
+    if (prev && allRepes.find(r => r.id === prev && (!r.date || r.date >= eventCutoffStr()))) sel.value = prev;
   }
 
   window.onCultoRepeChange = () => {
     const repeId = document.getElementById('culto-repe-select').value;
     if (!repeId) {
       document.getElementById('culto-repe-banner').classList.remove('visible');
-      cultoState.sabado = []; cultoState.domingo = [];
+      cultoState.sabado = []; cultoState.domingo = []; cultoState.especial = [];
       document.getElementById('sab-tag').style.display = 'none';
       document.getElementById('dom-tag').style.display = 'none';
+      document.getElementById('esp-tag').style.display = 'none';
       renderCultoZones(); return;
     }
     loadCultoForRepe(repeId);
@@ -1106,14 +1384,17 @@
         const data = snap.data();
         cultoState.sabado = data.sabado || [];
         cultoState.domingo = data.domingo || [];
+        cultoState.especial = data.especial || [];
         document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
         document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
+        document.getElementById('esp-tag').style.display = cultoState.especial.length ? 'inline' : 'none';
       } else {
-        cultoState.sabado = []; cultoState.domingo = [];
+        cultoState.sabado = []; cultoState.domingo = []; cultoState.especial = [];
         document.getElementById('sab-tag').style.display = 'none';
         document.getElementById('dom-tag').style.display = 'none';
+        document.getElementById('esp-tag').style.display = 'none';
       }
-    } catch(e) { cultoState.sabado = []; cultoState.domingo = []; }
+    } catch(e) { cultoState.sabado = []; cultoState.domingo = []; cultoState.especial = []; }
     renderCultoZones();
   }
 
@@ -1125,32 +1406,41 @@
       await setDoc(doc(db, 'cultos', 'culto_repe_' + repeId), {
         repeId, repeName: repe?.name || '', repeDate: repe?.date || '',
         eventId: repe?.eventId || '', eventName: repe?.eventName || '',
-        sabado: cultoState.sabado, domingo: cultoState.domingo, updatedAt: Date.now()
+        sabado: cultoState.sabado, domingo: cultoState.domingo, especial: cultoState.especial, updatedAt: Date.now()
       });
       document.getElementById('sab-tag').style.display = cultoState.sabado.length ? 'inline' : 'none';
       document.getElementById('dom-tag').style.display = cultoState.domingo.length ? 'inline' : 'none';
-      allCultos['culto_repe_' + repeId] = { sabado: cultoState.sabado, domingo: cultoState.domingo };
+      document.getElementById('esp-tag').style.display = cultoState.especial.length ? 'inline' : 'none';
+      allCultos['culto_repe_' + repeId] = { sabado: cultoState.sabado, domingo: cultoState.domingo, especial: cultoState.especial };
       renderHomeEvents();
-      showStatus('<i class="fas fa-check-circle"></i> Planificación guardada');
+      showStatus('✅ Planificación guardada');
     } catch(e) { alert('Error al guardar: ' + e.message); }
   };
 
-  function getActiveMembers() { return allMembers.filter(m => m.status === 'Activo'); }
+  function getActiveMembers() { return allMembers.filter(m => m.status === 'Activo' || m.status === 'Invitado'); }
 
   function buildVoiceChip(member, zone) {
     const rc = getRoleConfig(member.instrument);
     const hasPhoto = member.photo && member.photo.trim();
     const avInner = hasPhoto ? `<img src="${member.photo}" alt="${member.name}" onerror="this.style.display='none'" />` : `<i class="fas fa-user"></i>`;
     let dayBadges = '';
+    let quickButtons = '';
     if (zone === 'pool') {
       const inSab = cultoState.sabado.includes(member.id);
       const inDom = cultoState.domingo.includes(member.id);
-      if (inSab || inDom) {
+      const inEsp = cultoState.especial.includes(member.id);
+      if (inSab || inDom || inEsp) {
         dayBadges = `<div class="voice-chip-badges">
           ${inSab ? '<span class="day-badge day-badge-sab"><i class="fas fa-church"></i> Sáb</span>' : ''}
           ${inDom ? '<span class="day-badge day-badge-dom"><i class="fas fa-sun"></i> Dom</span>' : ''}
+          ${inEsp ? '<span class="day-badge day-badge-esp"><i class="fas fa-star"></i> Esp</span>' : ''}
         </div>`;
       }
+      quickButtons = `<div class="voice-chip-quick">
+        <button class="q-sab" ${inSab ? 'disabled' : ''} onclick="assignToZone('${member.id}','sabado')" title="Agregar al sábado"><i class="fas fa-church"></i></button>
+        <button class="q-dom" ${inDom ? 'disabled' : ''} onclick="assignToZone('${member.id}','domingo')" title="Agregar al domingo"><i class="fas fa-sun"></i></button>
+        <button class="q-esp" ${inEsp ? 'disabled' : ''} onclick="assignToZone('${member.id}','especial')" title="Agregar a especial"><i class="fas fa-star"></i></button>
+      </div>`;
     }
     return `<div class="voice-chip" id="chip-${zone}-${member.id}"
         draggable="true"
@@ -1159,17 +1449,18 @@
         <div class="voice-chip-av">${avInner}</div>
         <div class="voice-chip-info">
           <div class="voice-chip-name">${member.name}</div>
-          <div class="voice-chip-role"><span class="role-badge ${rc.cls}">${rc.label}</span></div>
+          <div class="voice-chip-role"><span class="role-badge ${rc.cls}">${rc.label}</span>${member.instrument2 ? ` <span class="role-badge ${getRoleConfig(member.instrument2).cls}">${getRoleConfig(member.instrument2).label}</span>` : ''}</div>
           ${dayBadges}
         </div>
+        ${quickButtons}
         ${zone !== 'pool' ? `<button class="voice-chip-remove" onclick="returnToPool('${member.id}','${zone}')"><i class="fas fa-times"></i></button>` : ''}
       </div>`;
   }
 
   function renderCultoSummary() {
     const activeMembers = getActiveMembers();
-    ['sabado','domingo'].forEach(zone => {
-      const key = zone === 'sabado' ? 'sab' : 'dom';
+    ['sabado','domingo','especial'].forEach(zone => {
+      const key = zone === 'sabado' ? 'sab' : zone === 'domingo' ? 'dom' : 'esp';
       const ids = cultoState[zone];
       const mems = ids.map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
       document.getElementById(`sum-${key}-count`).textContent = mems.length;
@@ -1191,6 +1482,7 @@
     document.getElementById('pool-count').textContent = activeMembers.length;
     document.getElementById('sab-count').textContent = cultoState.sabado.length;
     document.getElementById('dom-count').textContent = cultoState.domingo.length;
+    document.getElementById('esp-count').textContent = cultoState.especial.length;
 
     const poolZone = document.getElementById('pool-zone');
     poolZone.querySelectorAll('.voice-chip, .role-group').forEach(c => c.remove());
@@ -1217,9 +1509,9 @@
       });
     }
 
-    ['sabado','domingo'].forEach(zone => {
+    ['sabado','domingo','especial'].forEach(zone => {
       const zoneEl = document.getElementById(zone + '-zone');
-      const emptyEl = document.getElementById(zone === 'sabado' ? 'sab-empty' : 'dom-empty');
+      const emptyEl = document.getElementById(zone === 'sabado' ? 'sab-empty' : zone === 'domingo' ? 'dom-empty' : 'esp-empty');
       const mems = cultoState[zone].map(id => activeMembers.find(m => m.id === id)).filter(Boolean);
       zoneEl.querySelectorAll('.voice-chip').forEach(c => c.remove());
       if (!mems.length) { emptyEl.style.display = 'block'; }
@@ -1248,6 +1540,10 @@
     cultoState[fromZone] = cultoState[fromZone].filter(id => id !== memberId);
     renderCultoZones();
   };
+  window.assignToZone = (memberId, zone) => {
+    if (!cultoState[zone].includes(memberId)) cultoState[zone].push(memberId);
+    renderCultoZones();
+  };
 
   // ══ CANCIONES ══
   window.addSong = async () => {
@@ -1261,16 +1557,18 @@
       await addDoc(collection(db, 'songs'), { title, artist, key, genre, youtube, createdAt: Date.now() });
       ['song-title','song-artist','song-key','song-youtube'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('song-genre').value = '';
-      showStatus('<i class="fas fa-check-circle"></i> Canción guardada');
+      showStatus('✅ Canción guardada');
     } catch(e) { alert('Error: ' + e.message); }
   };
-  window.openEditSong = (id, title, artist, key, genre, youtube) => {
-    document.getElementById('edit-song-id').value = id;
-    document.getElementById('edit-song-title').value = title;
-    document.getElementById('edit-song-artist').value = artist;
-    document.getElementById('edit-song-key').value = key;
-    document.getElementById('edit-song-genre').value = genre;
-    document.getElementById('edit-song-youtube').value = youtube;
+  window.openEditSong = (id) => {
+    const s = allSongs.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('edit-song-id').value = s.id;
+    document.getElementById('edit-song-title').value = s.title || '';
+    document.getElementById('edit-song-artist').value = s.artist || '';
+    document.getElementById('edit-song-key').value = s.key || '';
+    document.getElementById('edit-song-genre').value = s.genre || '';
+    document.getElementById('edit-song-youtube').value = s.youtube || '';
     openModal('modal-song');
   };
   window.saveSongEdit = async () => {
@@ -1283,45 +1581,93 @@
     if (!title) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'songs', id), { title, artist, key, genre, youtube });
-      closeModal('modal-song'); showStatus('<i class="fas fa-edit"></i> Canción actualizada');
+      closeModal('modal-song'); showStatus('✏️ Canción actualizada');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteSong = async id => {
     if (!confirm('¿Eliminar esta canción?')) return;
-    await deleteDoc(doc(db, 'songs', id)); showStatus('<i class="fas fa-trash-alt"></i> Canción eliminada');
+    await deleteDoc(doc(db, 'songs', id)); showStatus('🗑️ Canción eliminada');
   };
 
   onSnapshot(collection(db, 'songs'), snap => {
     allSongs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const list = document.getElementById('songs-list');
     const sel = document.getElementById('repe-song-select');
     sel.innerHTML = '<option value="">Seleccionar canción...</option>';
-    allSongs.forEach(s => {
+    [...allSongs].sort((a,b) => a.title.localeCompare(b.title, 'es', {sensitivity:'base'})).forEach(s => {
       const opt = document.createElement('option');
       opt.value = s.id; opt.textContent = s.title + (s.artist ? ` — ${s.artist}` : '');
       sel.appendChild(opt);
     });
-    if (!allSongs.length) { list.innerHTML = emptyState('Aún no hay canciones'); return; }
-    list.innerHTML = allSongs.map(s => {
-      const ytId = getYoutubeId(s.youtube);
-      const thumb = ytId
-        ? `<a href="${s.youtube}" target="_blank"><img class="song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
-        : `<div class="song-thumb-placeholder"><i class="fas fa-music"></i></div>`;
-      const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>` : '';
-      return `<div class="song-card">
-          ${thumb}
-          <div class="song-info">
-            <div class="card-title">${s.title}${s.genre ? ` <span class="badge badge-orange">${s.genre}</span>` : ''}${s.key ? ` <span class="badge badge-green">${s.key}</span>` : ''}</div>
-            <div class="card-sub">${s.artist || 'Sin artista'}</div>
-            ${ytBtn}
-          </div>
-          <div class="card-actions">
-            <button class="btn-icon" onclick="openEditSong('${s.id}',${JSON.stringify(s.title)},${JSON.stringify(s.artist||'')},${JSON.stringify(s.key||'')},${JSON.stringify(s.genre||'')},${JSON.stringify(s.youtube||'')})"><i class="fas fa-edit"></i></button>
-            <button class="btn-icon" onclick="deleteSong('${s.id}')"><i class="fas fa-trash-alt"></i></button>
-          </div>
-        </div>`;
-    }).join('');
+    renderSongsUI();
   });
+
+  function getSongUsage(songId) {
+    const uses = allRepes.filter(r => r.songs?.some(s => s.id === songId));
+    const count = uses.length;
+    const lastDate = uses.map(r => r.date).filter(Boolean).sort().pop();
+    return { count, lastDate };
+  }
+
+  function formatEsDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function renderSongCard(s, num) {
+    const ytId = getYoutubeId(s.youtube);
+    const thumb = ytId
+      ? `<a href="${s.youtube}" target="_blank"><img class="song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>`
+      : `<div class="song-thumb-placeholder"><i class="fas fa-music"></i></div>`;
+    const ytBtn = ytId ? `<a class="btn-yt" href="${s.youtube}" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>` : '';
+    const usage = getSongUsage(s.id);
+    const usageHtml = usage.count
+      ? `<div class="song-usage"><i class="fas fa-clock-rotate-left"></i> Tocada ${usage.count} vez${usage.count === 1 ? '' : 'es'}${usage.lastDate ? ' · última: ' + formatEsDate(usage.lastDate) : ''}</div>`
+      : `<div class="song-usage song-usage-new"><i class="fas fa-sparkles"></i> Aún no se ha tocado en un repe</div>`;
+    return `<div class="song-card">
+        <div class="song-num">${num}</div>
+        ${thumb}
+        <div class="song-info">
+          <div class="card-title">${s.title}${s.key ? ` <span class="badge badge-green">${s.key}</span>` : ''}</div>
+          <div class="card-sub">${s.artist || 'Sin artista'}</div>
+          ${usageHtml}
+          ${ytBtn}
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon" onclick="openEditSong('${s.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn-icon" onclick="deleteSong('${s.id}')"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>`;
+  }
+
+  window.renderSongsUI = () => {
+    const list = document.getElementById('songs-list');
+    const searchInput = document.getElementById('song-search');
+    const term = (searchInput?.value || '').trim().toLowerCase();
+
+    let sorted = [...allSongs].sort((a,b) => a.title.localeCompare(b.title, 'es', {sensitivity:'base'}));
+    if (term) {
+      sorted = sorted.filter(s =>
+        s.title.toLowerCase().includes(term) || (s.artist || '').toLowerCase().includes(term)
+      );
+    }
+
+    if (!allSongs.length) { list.innerHTML = emptyState('Aún no hay canciones'); return; }
+    if (!sorted.length) { list.innerHTML = emptyState('No se encontraron canciones'); return; }
+
+    const groups = [
+      { label: 'Rápidas y Coritos', icon: 'fa-bolt', items: sorted.filter(s => s.genre === 'Rapida' || s.genre === 'Corito') },
+      { label: 'Lentas', icon: 'fa-feather', items: sorted.filter(s => s.genre === 'Lenta') },
+      { label: 'Sin género', icon: 'fa-music', items: sorted.filter(s => s.genre !== 'Rapida' && s.genre !== 'Corito' && s.genre !== 'Lenta') },
+    ];
+
+    list.innerHTML = groups
+      .filter(g => g.items.length)
+      .map(g => `
+        <div class="role-section-label"><i class="fas ${g.icon}"></i> ${g.label}</div>
+        ${g.items.map((s,i) => renderSongCard(s, i+1)).join('')}
+      `).join('');
+  };
 
   // ══ REPES ══
   function updateEventSelects() {
@@ -1370,15 +1716,19 @@
       document.getElementById('repe-date').value = '';
       document.getElementById('repe-event-select').value = '';
       currentRepeSongs = []; renderRepeSongs();
-      showStatus('<i class="fas fa-check-circle"></i> Repe guardado');
+      updateDateFieldDisplay('repe-date','repe-date-field','Selecciona fecha');
+      showStatus('✅ Repe guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
-  window.openEditRepe = (id, name, date, eventId) => {
-    document.getElementById('edit-repe-id').value = id;
-    document.getElementById('edit-repe-name').value = name;
-    document.getElementById('edit-repe-date').value = date || '';
+  window.openEditRepe = (id) => {
+    const r = allRepes.find(x => x.id === id);
+    if (!r) return;
+    document.getElementById('edit-repe-id').value = r.id;
+    document.getElementById('edit-repe-name').value = r.name || '';
+    document.getElementById('edit-repe-date').value = r.date || '';
     updateEventSelects();
-    document.getElementById('edit-repe-event').value = eventId || '';
+    document.getElementById('edit-repe-event').value = r.eventId || '';
+    updateDateFieldDisplay('edit-repe-date','edit-repe-date-field','Selecciona fecha');
     openModal('modal-repe');
   };
   window.saveRepeEdit = async () => {
@@ -1391,18 +1741,18 @@
     if (!name) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'repes', id), { name, date, eventId, eventName });
-      closeModal('modal-repe'); showStatus('<i class="fas fa-edit"></i> Repe actualizado');
+      closeModal('modal-repe'); showStatus('✏️ Repe actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteRepe = async id => {
     if (!confirm('¿Eliminar este repe?')) return;
-    await deleteDoc(doc(db, 'repes', id)); showStatus('<i class="fas fa-trash-alt"></i> Repe eliminado');
+    await deleteDoc(doc(db, 'repes', id)); showStatus('🗑️ Repe eliminado');
   };
 
   onSnapshot(collection(db, 'repes'), snap => {
     allRepes = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
     const list = document.getElementById('repes-list');
-    if (!allRepes.length) { list.innerHTML = emptyState('Aún no hay repes'); renderHomeEvents(); updateCultoRepeSelect(); return; }
+    if (!allRepes.length) { list.innerHTML = emptyState('Aún no hay repes'); renderHomeEvents(); updateCultoRepeSelect(); renderSongsUI(); return; }
     list.innerHTML = allRepes.map(r => `
       <div class="card" style="flex-direction:column;align-items:flex-start;">
         <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
@@ -1411,7 +1761,7 @@
             <div class="card-sub">${r.date || 'Sin fecha'} · ${r.songs.length} canciones${r.eventName ? ' · <i class="fas fa-calendar-day"></i> ' + r.eventName : ''}</div>
           </div>
           <div class="card-actions">
-            <button class="btn-icon" onclick="openEditRepe('${r.id}',${JSON.stringify(r.name)},${JSON.stringify(r.date||'')},${JSON.stringify(r.eventId||'')})"><i class="fas fa-edit"></i></button>
+            <button class="btn-icon" onclick="openEditRepe('${r.id}')"><i class="fas fa-edit"></i></button>
             <button class="btn-icon" onclick="deleteRepe('${r.id}')"><i class="fas fa-trash-alt"></i></button>
           </div>
         </div>
@@ -1421,55 +1771,110 @@
       </div>`).join('');
     updateCultoRepeSelect();
     renderHomeEvents();
+    renderSongsUI();
   });
 
   // ══ INTEGRANTES ══
   window.addMember = async () => {
     const name = document.getElementById('member-name').value.trim();
     const instrument = document.getElementById('member-instrument').value;
+    const instrument2Raw = document.getElementById('member-instrument-2').value;
+    const instrument2 = instrument2Raw && instrument2Raw !== instrument ? instrument2Raw : '';
     const phone = document.getElementById('member-phone').value.trim();
     const status = document.getElementById('member-status').value;
     const photo = document.getElementById('member-photo').value.trim();
+    const birthday = document.getElementById('member-birthday').value;
     if (!name) return alert('Escribe el nombre del integrante');
     if (!instrument) return alert('Selecciona un instrumento / rol');
     try {
-      await addDoc(collection(db, 'members'), { name, instrument, phone, status, photo, createdAt: Date.now() });
-      ['member-name','member-phone','member-photo'].forEach(id => document.getElementById(id).value = '');
+      await addDoc(collection(db, 'members'), { name, instrument, instrument2, phone, status, photo, birthday, createdAt: Date.now() });
+      ['member-name','member-phone','member-photo','member-birthday'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('member-instrument').value = '';
-      showStatus('<i class="fas fa-check-circle"></i> Integrante guardado');
+      document.getElementById('member-instrument-2').value = '';
+      updateDateFieldDisplay('member-birthday','member-birthday-field','Fecha de cumpleaños (opcional)');
+      showStatus('✅ Integrante guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
-  window.openEditMember = (id, name, instrument, phone, status, photo) => {
-    document.getElementById('edit-member-id').value = id;
-    document.getElementById('edit-member-name').value = name;
-    document.getElementById('edit-member-instrument').value = instrument;
-    document.getElementById('edit-member-phone').value = phone;
-    document.getElementById('edit-member-status').value = status;
-    document.getElementById('edit-member-photo').value = photo || '';
+  window.openEditMember = (id) => {
+    const m = allMembers.find(x => x.id === id);
+    if (!m) return;
+    document.getElementById('edit-member-id').value = m.id;
+    document.getElementById('edit-member-name').value = m.name || '';
+    document.getElementById('edit-member-instrument').value = m.instrument || '';
+    document.getElementById('edit-member-instrument-2').value = m.instrument2 || '';
+    document.getElementById('edit-member-phone').value = m.phone || '';
+    document.getElementById('edit-member-status').value = m.status || 'Activo';
+    document.getElementById('edit-member-photo').value = m.photo || '';
+    document.getElementById('edit-member-birthday').value = m.birthday || '';
+    updateDateFieldDisplay('edit-member-birthday','edit-member-birthday-field','Fecha de cumpleaños');
     openModal('modal-member');
   };
   window.saveMemberEdit = async () => {
     const id = document.getElementById('edit-member-id').value;
     const name = document.getElementById('edit-member-name').value.trim();
     const instrument = document.getElementById('edit-member-instrument').value;
+    const instrument2Raw = document.getElementById('edit-member-instrument-2').value;
+    const instrument2 = instrument2Raw && instrument2Raw !== instrument ? instrument2Raw : '';
     const phone = document.getElementById('edit-member-phone').value.trim();
     const status = document.getElementById('edit-member-status').value;
     const photo = document.getElementById('edit-member-photo').value.trim();
+    const birthday = document.getElementById('edit-member-birthday').value;
     if (!name) return alert('El nombre no puede estar vacío');
+    if (!instrument) return alert('Selecciona un instrumento / rol');
     try {
-      await updateDoc(doc(db, 'members', id), { name, instrument, phone, status, photo });
-      closeModal('modal-member'); showStatus('<i class="fas fa-edit"></i> Integrante actualizado');
+      await updateDoc(doc(db, 'members', id), { name, instrument, instrument2, phone, status, photo, birthday });
+      closeModal('modal-member'); showStatus('✏️ Integrante actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteMember = async id => {
     if (!confirm('¿Eliminar este integrante?')) return;
-    await deleteDoc(doc(db, 'members', id)); showStatus('<i class="fas fa-trash-alt"></i> Integrante eliminado');
+    await deleteDoc(doc(db, 'members', id)); showStatus('🗑️ Integrante eliminado');
   };
+
+  function renderBirthdays() {
+    const wrap = document.getElementById('birthdays-wrap');
+    if (!wrap) return;
+    const withBday = allMembers.filter(m => m.birthday);
+    if (!withBday.length) { wrap.innerHTML = ''; return; }
+
+    const today = new Date(); today.setHours(0,0,0,0);
+    const enriched = withBday.map(m => {
+      const [by, bm, bd] = m.birthday.split('-').map(Number);
+      let next = new Date(today.getFullYear(), bm - 1, bd);
+      if (next < today) next = new Date(today.getFullYear() + 1, bm - 1, bd);
+      const diffDays = Math.round((next - today) / 86400000);
+      const turningAge = next.getFullYear() - by;
+      return { m, next, diffDays, turningAge };
+    }).sort((a,b) => a.diffDays - b.diffDays).slice(0, 5);
+
+    const rows = enriched.map(({ m, next, diffDays, turningAge }) => {
+      const hasPhoto = m.photo && m.photo.trim();
+      const avInner = hasPhoto ? `<img src="${m.photo}" alt="${m.name}" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-user\\'></i>'" />` : `<i class="fas fa-user"></i>`;
+      const dateLabel = next.toLocaleDateString('es', { day: 'numeric', month: 'long' });
+      let whenLabel, whenCls;
+      if (diffDays === 0) { whenLabel = 'Hoy 🎉'; whenCls = 'today'; }
+      else if (diffDays === 1) { whenLabel = 'Mañana'; whenCls = 'today'; }
+      else { whenLabel = `En ${diffDays} días`; whenCls = 'soon'; }
+      return `<div class="birthday-row">
+        <div class="birthday-row-icon">${avInner}</div>
+        <div class="birthday-row-info">
+          <div class="birthday-row-name">${m.name}</div>
+          <div class="birthday-row-date">${dateLabel} · cumple ${turningAge}</div>
+        </div>
+        <span class="birthday-row-when ${whenCls}">${whenLabel}</span>
+      </div>`;
+    }).join('');
+
+    wrap.innerHTML = `<div class="birthdays-card">
+      <div class="birthdays-title"><span class="icon-badge sz-sm tint-gold"><i class="fas fa-cake-candles"></i></span> Próximos cumpleaños</div>
+      ${rows}
+    </div>`;
+  }
 
   onSnapshot(collection(db, 'members'), snap => {
     allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     const list = document.getElementById('members-list');
-    if (!allMembers.length) { list.innerHTML = emptyState('Aún no hay integrantes'); buildCarousels(); return; }
+    if (!allMembers.length) { list.innerHTML = emptyState('Aún no hay integrantes'); buildCarousels(); renderBirthdays(); return; }
     const roleOrder = ['VOICE','GA','GE','BASS','PIANO','DRUM','Otro'];
     const grouped = {};
     allMembers.forEach(m => { const role = m.instrument || 'Otro'; if (!grouped[role]) grouped[role] = []; grouped[role].push(m); });
@@ -1477,23 +1882,25 @@
     roleOrder.forEach(role => {
       if (!grouped[role]?.length) return;
       const rc = getRoleConfig(role);
-      html += `<div style="margin:14px 0 4px;font-size:0.7rem;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;">${rc.label}</div>`;
+      html += `<div class="role-section-label">${rc.label}</div>`;
       grouped[role].forEach(m => {
         const hasPhoto = m.photo && m.photo.trim();
         const avatar = hasPhoto
           ? `<img class="member-avatar-big" src="${m.photo}" alt="${m.name}" onerror="this.outerHTML='<div class=member-avatar-placeholder><i class=fas fa-user></i></div>'" />`
           : `<div class="member-avatar-placeholder"><i class="fas fa-user"></i></div>`;
+        const rc2 = m.instrument2 ? getRoleConfig(m.instrument2) : null;
         html += `<div class="member-card">
             ${avatar}
             <div class="card-info">
               <div class="card-title">${m.name}
-                <span class="badge ${m.status === 'Activo' ? 'badge-green' : 'badge-orange'}">${m.status}</span>
+                <span class="badge ${m.status === 'Activo' ? 'badge-green' : m.status === 'Invitado' ? 'badge-blue' : 'badge-orange'}">${m.status}</span>
                 <span class="role-badge ${rc.cls}">${rc.label}</span>
+                ${rc2 ? `<span class="role-badge ${rc2.cls}">${rc2.label}</span>` : ''}
               </div>
               <div class="card-sub">${m.phone ? '<i class="fas fa-phone"></i> ' + m.phone : 'Sin teléfono'}</div>
             </div>
             <div class="card-actions">
-              <button class="btn-icon" onclick="openEditMember('${m.id}',${JSON.stringify(m.name)},${JSON.stringify(m.instrument||'')},${JSON.stringify(m.phone||'')},${JSON.stringify(m.status||'Activo')},${JSON.stringify(m.photo||'')})"><i class="fas fa-edit"></i></button>
+              <button class="btn-icon" onclick="openEditMember('${m.id}')"><i class="fas fa-edit"></i></button>
               <button class="btn-icon" onclick="deleteMember('${m.id}')"><i class="fas fa-trash-alt"></i></button>
             </div>
           </div>`;
@@ -1501,6 +1908,7 @@
     });
     list.innerHTML = html;
     buildCarousels();
+    renderBirthdays();
     if (document.getElementById('culto').classList.contains('active')) renderCultoZones();
   });
 
@@ -1515,15 +1923,19 @@
       await addDoc(collection(db, 'events'), { name, date, place, type, createdAt: Date.now() });
       ['event-name','event-date','event-place'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('event-type').value = '';
-      showStatus('<i class="fas fa-check-circle"></i> Evento guardado');
+      updateDateFieldDisplay('event-date','event-date-field','Selecciona fecha');
+      showStatus('✅ Evento guardado');
     } catch(e) { alert('Error: ' + e.message); }
   };
-  window.openEditEvent = (id, name, date, place, type) => {
-    document.getElementById('edit-event-id').value = id;
-    document.getElementById('edit-event-name').value = name;
-    document.getElementById('edit-event-date').value = date || '';
-    document.getElementById('edit-event-place').value = place || '';
-    document.getElementById('edit-event-type').value = type || '';
+  window.openEditEvent = (id) => {
+    const ev = allEvents.find(x => x.id === id);
+    if (!ev) return;
+    document.getElementById('edit-event-id').value = ev.id;
+    document.getElementById('edit-event-name').value = ev.name || '';
+    document.getElementById('edit-event-date').value = ev.date || '';
+    document.getElementById('edit-event-place').value = ev.place || '';
+    document.getElementById('edit-event-type').value = ev.type || '';
+    updateDateFieldDisplay('edit-event-date','edit-event-date-field','Selecciona fecha');
     openModal('modal-event');
   };
   window.saveEventEdit = async () => {
@@ -1535,12 +1947,12 @@
     if (!name) return alert('El nombre no puede estar vacío');
     try {
       await updateDoc(doc(db, 'events', id), { name, date, place, type });
-      closeModal('modal-event'); showStatus('<i class="fas fa-edit"></i> Evento actualizado');
+      closeModal('modal-event'); showStatus('✏️ Evento actualizado');
     } catch(e) { alert('Error: ' + e.message); }
   };
   window.deleteEvent = async id => {
     if (!confirm('¿Eliminar este evento?')) return;
-    await deleteDoc(doc(db, 'events', id)); showStatus('<i class="fas fa-trash-alt"></i> Evento eliminado');
+    await deleteDoc(doc(db, 'events', id)); showStatus('🗑️ Evento eliminado');
   };
 
   // ══ HOME EVENTS ══
@@ -1558,8 +1970,12 @@
   function buildDaySection(repeId) {
     const cultoData = allCultos['culto_repe_' + repeId];
     if (!cultoData) return '';
-    const sabIds = cultoData.sabado || [], domIds = cultoData.domingo || [];
-    if (!sabIds.length && !domIds.length) return '';
+    const groups = [
+      { key: 'sab', ids: cultoData.sabado || [], label: 'Sábado', icon: 'fa-church' },
+      { key: 'dom', ids: cultoData.domingo || [], label: 'Domingo', icon: 'fa-sun' },
+      { key: 'esp', ids: cultoData.especial || [], label: 'Especial', icon: 'fa-star' },
+    ].filter(g => g.ids.length);
+    if (!groups.length) return '';
 
     function memberRow(id) {
       const m = allMembers.find(x => x.id === id);
@@ -1579,38 +1995,124 @@
     return `<div class="culto-days-section">
       <div class="culto-days-label"><i class="fas fa-microphone"></i> Quién canta cada día</div>
       <div class="culto-days-grid">
-        <div class="culto-day-card sab">
-          <div class="culto-day-title"><i class="fas fa-church"></i> Sábado</div>
-          <div class="culto-day-members">${sabIds.length ? sabIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
-        </div>
-        <div class="culto-day-card dom">
-          <div class="culto-day-title"><i class="fas fa-sun"></i> Domingo</div>
-          <div class="culto-day-members">${domIds.length ? domIds.map(memberRow).join('') : '<div class="culto-day-empty">Sin asignar</div>'}</div>
-        </div>
+        ${groups.map(g => `
+          <div class="culto-day-card ${g.key}">
+            <div class="culto-day-title"><i class="fas ${g.icon}"></i> ${g.label}</div>
+            <div class="culto-day-members">${g.ids.map(memberRow).join('')}</div>
+          </div>
+        `).join('')}
       </div>
     </div>`;
   }
+
+  // Compara fechas como texto "YYYY-MM-DD" para evitar corrimientos de zona horaria
+  function localDateStr(d) {
+    const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function eventCutoffStr() {
+    const d = new Date(); d.setDate(d.getDate() - 3);
+    return localDateStr(d);
+  }
+  function isEventRecentOrUpcoming(ev) {
+    if (!ev.date) return true;
+    return ev.date >= eventCutoffStr();
+  }
+
+  function stripTags(html) { return html.replace(/<[^>]+>/g, '').trim(); }
+
+  window.shareEventImage = async (eventId, btnEl) => {
+    const ev = allEvents.find(e => e.id === eventId);
+    if (!ev) return;
+    const relatedRepes = allRepes.filter(r => r.eventId === ev.id);
+    if (!relatedRepes.length) return;
+
+    const originalBtnHtml = btnEl ? btnEl.innerHTML : '';
+    if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...'; }
+
+    try {
+      const poster = document.getElementById('share-poster');
+      const dateLabel = ev.date ? formatEsDate(ev.date) : 'Fecha por definir';
+
+      function memberRow(id) {
+        const m = allMembers.find(x => x.id === id);
+        if (!m) return '';
+        const roleTxt = stripTags(getRoleConfig(m.instrument).label);
+        return `<div class="poster-member-row">👤 ${m.name} <span class="poster-member-role">${roleTxt}</span></div>`;
+      }
+
+      const repesHtml = relatedRepes.map(r => {
+        const cultoData = allCultos['culto_repe_' + r.id] || {};
+        const dayGroups = [
+          { ids: cultoData.sabado || [], label: 'Sábado', icon: '⛪', cls: 'sab' },
+          { ids: cultoData.domingo || [], label: 'Domingo', icon: '☀️', cls: 'dom' },
+          { ids: cultoData.especial || [], label: 'Especial', icon: '⭐', cls: 'esp' },
+        ].filter(g => g.ids.length);
+        const songsHtml = (r.songs || []).map((s, i) => `
+          <div class="poster-song-row"><div class="poster-song-num">${i+1}</div><span>${s.name}</span></div>
+        `).join('');
+        const daysHtml = dayGroups.length ? `
+          <div class="poster-days" style="grid-template-columns:repeat(${dayGroups.length},1fr);">
+            ${dayGroups.map(g => `
+              <div class="poster-day-card ${g.cls}">
+                <div class="poster-day-title">${g.icon} ${g.label}</div>
+                ${g.ids.map(memberRow).join('')}
+              </div>
+            `).join('')}
+          </div>
+        ` : '';
+        return `
+          <div class="poster-repe-block">
+            <div class="poster-repe-name">🎵 ${r.name}</div>
+            ${songsHtml}
+          </div>
+          ${daysHtml}
+        `;
+      }).join('');
+
+      poster.innerHTML = `
+        <div class="poster-header">
+          <div class="poster-logo">🎸</div>
+          <div>
+            <div class="poster-brand">Iglesia Metodista CQ</div>
+            <div class="poster-title">${ev.name}</div>
+            <div class="poster-meta">📅 ${dateLabel}${ev.place ? ' · 📍 ' + ev.place : ''}</div>
+          </div>
+        </div>
+        <div class="poster-section-label">🎶 Repertorio y equipo</div>
+        ${repesHtml}
+        <div class="poster-footer">Banda Trinidad</div>
+      `;
+
+      const canvas = await html2canvas(poster, { backgroundColor: null, scale: 2 });
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+      const fileName = `${ev.name.replace(/[^a-z0-9]+/gi, '-')}.png`;
+      const file = new File([blob], fileName, { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: ev.name, text: `${ev.name} · ${dateLabel}` });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = fileName;
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }
+      showStatus('✅ Imagen lista');
+    } catch(e) {
+      if (e?.name !== 'AbortError') alert('No se pudo generar la imagen: ' + e.message);
+    } finally {
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnHtml; }
+    }
+  };
 
   function renderHomeEvents() {
     const homeList = document.getElementById('home-events-list');
     if (!homeList) return;
     if (!allEvents.length) { homeList.innerHTML = emptyState('Aún no hay eventos programados'); return; }
 
-    const today = new Date();
+    const upcomingEvents = allEvents.filter(isEventRecentOrUpcoming);
 
-    const threeDaysAgo = new Date();
-    threeDaysAgo.setDate(today.getDate() - 3);
-    threeDaysAgo.setHours(0, 0, 0, 0);
-
- const upcomingEvents = allEvents.filter(ev => {
-    if (!ev.date) return true;
-    const evDate = new Date(ev.date);
-    evDate.setHours(0, 0, 0, 0);
-    // Mostrar eventos desde hace 3 días hasta eventos futuros
-    return evDate >= threeDaysAgo;
-  });
-
-    //if (!upcomingEvents.length) { homeList.innerHTML = emptyState('No hay eventos futuros'); return; }
     if (!upcomingEvents.length) { homeList.innerHTML = emptyState('No hay eventos recientes ni futuros'); return;}
 
     homeList.innerHTML = upcomingEvents.map(ev => {
@@ -1619,12 +2121,12 @@
         ? relatedRepes.map(r => {
             const songsHtml = r.songs?.length
               ? `<div class="home-repe-songs">
-                  <div style="font-size:0.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;"><i class="fas fa-music"></i> Canciones</div>
+                  <div style="font-size:0.68rem;font-weight:700;color:var(--forest);letter-spacing:0.3px;margin-bottom:4px;"><i class="fas fa-music"></i> Canciones</div>
                   ${r.songs.map((s,i) => {
                     const songData = allSongs.find(sg => sg.id === s.id);
                     const ytId = songData ? getYoutubeId(songData.youtube) : null;
                     const thumb = ytId ? `<a href="${songData.youtube}" target="_blank"><img class="home-repe-song-thumb" src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="thumb" onerror="this.style.display='none'" /></a>` : '';
-                    const nameEl = ytId && songData ? `<a href="${songData.youtube}" target="_blank" style="color:var(--dark);text-decoration:none;font-weight:600;">${s.name}${songData.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</a>` : `<span>${s.name}${songData?.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</span>`;
+                    const nameEl = ytId && songData ? `<a href="${songData.youtube}" target="_blank" style="color:var(--ink);text-decoration:none;font-weight:600;">${s.name}${songData.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</a>` : `<span>${s.name}${songData?.key ? ` <span class="badge badge-green">${songData.key}</span>` : ''}</span>`;
                     return `<div class="home-repe-song"><div class="home-repe-song-num">${i+1}</div>${thumb}${nameEl}</div>`;
                   }).join('')}
                 </div>` : '';
@@ -1634,7 +2136,7 @@
               ${songsHtml}${buildDaySection(r.id)}
             </div>`;
           }).join('')
-        : `<div class="home-repe" style="color:#aaa;font-size:0.8rem"><i class="fas fa-star"></i> Sin repes asociados aún.</div>`;
+        : `<div class="home-repe" style="color:#B3AA92;font-size:0.8rem"><i class="fas fa-star"></i> Sin repes asociados aún.</div>`;
       return `<div class="event-home-card">
         <div class="event-home-head">
           <div>
@@ -1645,25 +2147,47 @@
         </div>
         <div class="event-repes-title"><i class="fas fa-clipboard-list"></i> Repes para este evento</div>
         ${repesHtml}
+        ${relatedRepes.length ? `<button class="btn-share" onclick="shareEventImage('${ev.id}', this)"><i class="fas fa-share-nodes"></i> Compartir imagen</button>` : ''}
       </div>`;
     }).join('');
   }
 
-  onSnapshot(collection(db, 'events'), snap => {
-    allEvents = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  let showPastEvents = false;
+  window.togglePastEvents = () => { showPastEvents = !showPastEvents; renderEventsList(); };
+
+  function renderEventsList() {
     const list = document.getElementById('events-list');
-    if (!allEvents.length) { list.innerHTML = emptyState('Aún no hay eventos'); updateEventSelects(); renderHomeEvents(); return; }
-    list.innerHTML = allEvents.map(ev => `
+    if (!allEvents.length) { list.innerHTML = emptyState('Aún no hay eventos'); return; }
+
+    const visible = allEvents.filter(isEventRecentOrUpcoming);
+    const pastCount = allEvents.length - visible.length;
+    const eventsToShow = showPastEvents ? allEvents : visible;
+
+    const toggleHtml = pastCount > 0
+      ? `<button class="btn-secondary" style="margin-bottom:12px;width:100%;" onclick="togglePastEvents()">
+          <i class="fas fa-clock-rotate-left"></i> ${showPastEvents ? 'Ocultar' : 'Ver'} ${pastCount} evento${pastCount === 1 ? '' : 's'} pasado${pastCount === 1 ? '' : 's'}
+        </button>`
+      : '';
+
+    if (!eventsToShow.length) { list.innerHTML = toggleHtml + emptyState('No hay eventos recientes ni futuros'); return; }
+
+    list.innerHTML = toggleHtml + eventsToShow.map(ev => `
       <div class="card">
         <div class="card-info">
           <div class="card-title">${ev.name}${ev.type ? ` <span class="badge badge-orange">${ev.type}</span>` : ''}</div>
           <div class="card-sub">${ev.date || 'Sin fecha'}${ev.place ? ' · <i class="fas fa-map-marker-alt"></i> ' + ev.place : ''}</div>
         </div>
         <div class="card-actions">
-          <button class="btn-icon" onclick="openEditEvent('${ev.id}',${JSON.stringify(ev.name)},${JSON.stringify(ev.date||'')},${JSON.stringify(ev.place||'')},${JSON.stringify(ev.type||'')})"><i class="fas fa-edit"></i></button>
+          <button class="btn-icon" onclick="openEditEvent('${ev.id}')"><i class="fas fa-edit"></i></button>
           <button class="btn-icon" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash-alt"></i></button>
         </div>
       </div>`).join('');
+  }
+
+  onSnapshot(collection(db, 'events'), snap => {
+    allEvents = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+    if (!allEvents.length) { document.getElementById('events-list').innerHTML = emptyState('Aún no hay eventos'); updateEventSelects(); renderHomeEvents(); return; }
+    renderEventsList();
     updateEventSelects();
     loadAllCultos();
   });
@@ -1673,40 +2197,54 @@
     renderHomeEvents();
   });
 
-
-    document.addEventListener('DOMContentLoaded', () => {
-    function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
-      const input = document.getElementById(inputId);
-      const field = document.getElementById(fieldId);
-      if (!input || !field) return;
-      const placeholder = field.querySelector('.date-placeholder');
-
-      function update() {
-        const v = input.value;
-        if (!v) {
-          placeholder.textContent = defaultText;
-        } else {
-          const d = new Date(v + 'T00:00:00');
-          placeholder.textContent = d.toLocaleDateString();
-        }
-      }
-
-      input.addEventListener('change', update);
-      field.addEventListener('click', (e) => {
-        e.preventDefault();
-        input.focus();
-        if (typeof input.showPicker === 'function') input.showPicker();
-      });
-      field.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
-      });
-      update();
+  // ══ CAMPOS DE FECHA ══
+  function updateDateFieldDisplay(inputId, fieldId, defaultText) {
+    const input = document.getElementById(inputId);
+    const field = document.getElementById(fieldId);
+    if (!input || !field) return;
+    const placeholder = field.querySelector('.date-placeholder');
+    const v = input.value;
+    if (!v) {
+      placeholder.textContent = defaultText;
+    } else {
+      const d = new Date(v + 'T00:00:00');
+      placeholder.textContent = d.toLocaleDateString();
     }
+  }
 
-    // Inicializa los campos que necesites:
+  function initDateField(inputId, fieldId, defaultText = 'Selecciona fecha') {
+    const input = document.getElementById(inputId);
+    const field = document.getElementById(fieldId);
+    if (!input || !field) return;
+
+    function update() { updateDateFieldDisplay(inputId, fieldId, defaultText); }
+
+    input.addEventListener('change', update);
+    field.addEventListener('click', (e) => {
+      e.preventDefault();
+      input.focus();
+      if (typeof input.showPicker === 'function') input.showPicker();
+    });
+    field.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.click(); }
+    });
+    update();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
     initDateField('event-date', 'event-date-field', 'Selecciona fecha');
     initDateField('repe-date', 'repe-date-field', 'Selecciona fecha');
+    initDateField('edit-event-date', 'edit-event-date-field', 'Selecciona fecha');
+    initDateField('edit-repe-date', 'edit-repe-date-field', 'Selecciona fecha');
+    initDateField('member-birthday', 'member-birthday-field', 'Fecha de cumpleaños (opcional)');
+    initDateField('edit-member-birthday', 'edit-member-birthday-field', 'Fecha de cumpleaños');
   });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
 
 </script>
 </body>
